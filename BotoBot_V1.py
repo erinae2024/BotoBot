@@ -1,6 +1,7 @@
 # BotoBot Chatbot V1
 # Uses NLTK and Regular Expressions for pattern matching
 
+import streamlit as st
 import nltk
 from nltk.chat.util import Chat, reflections
 
@@ -199,19 +200,25 @@ def box_bullet(value, indent=16):
 def box_blank():
     return f"│{' ' * WIDTH}│"
 
+
 def show_candidate_list():
     """Returns a formatted string of all 2022 presidential candidates."""
-    lines = [
-        "\n╔══════════════════════════════════════════════════╗",
-        "║   BotoBot V1                                     ║",
-        "╠══════════════════════════════════════════════════╣",
-    ]
+    category = "full_name"
+    list =[]
     for i, key in enumerate(candidates, start=1):
-        name = candidates[key]["full_name"]
-        lines.append(f"║  {i:>2}. {name:<44}║")
-    lines.append("╚══════════════════════════════════════════════════╝")
-    return "\n".join(lines)
+        list.append(f"{i}. {candidates[key][category]}")
+    
+    if not list:
+        return "No candidates found."
+    
+    fullList = "\n".join(list)
+    return fullList
 
+    
+
+
+
+#remove the format part 2 maybe
 def show_candidate_profile(name_key):
     """Returns a formatted profile card for a given candidate."""
     c = candidates[name_key]
@@ -277,6 +284,8 @@ def find_candidate(user_input):
 # MEMBER ASSIGNMENT ZONE
 # Pairs list following the sampleBot.py format.
 # ==========================================
+
+# TODO: add pair for find_candidate(), show_candidate_profile()
 
 pairs = [
     # --- GREETINGS ---
@@ -382,52 +391,98 @@ pairs = [
 # CORE CHATBOT EXECUTION
 # ==========================================
 
-chatbot = Chat(pairs, reflections)
+# 3. Configure the Streamlit UI layout
+st.set_page_config(page_title="BotoBot Chatbot", page_icon="🤖")
+st.title("🤖 BotoBot Chatbot")
+st.caption("For CBPCOMM and CBEMC-5, created by Group Ilocos Empanada: Baranquil, Cruz, Evangelio, Magdaluyo")
 
-def run_chatbot():
-    print("\n╔══════════════════════════════════════════════════╗")
-    print("║   2022 PH Presidential Election Info Bot         ║")
-    print("║   Type 'quit' to exit at any time.               ║")
-    print("╚══════════════════════════════════════════════════╝")
-    print("\nBotoBot: Hello! I can tell you about the 2022 Philippine Presidential Candidates.")
-    print("         Try asking: 'Show me the 2022 presidential candidates'\n")
+# 4. Initialize NLTK Chat engine in Streamlit's session resource state
+@st.cache_resource
+def get_bot():
+    return Chat(pairs, reflections)
 
-    while True:
-        try:
-            user_input = input('You: ').strip()
+nltk_chatbot = get_bot()
 
-            if not user_input:
-                continue
+# 5. Initialize conversation history memory bucket
+if "messages" not in st.session_state:
+    st.session_state.messages = [
+        {"role": "assistant", "content": "Welcome to BotoBot! Ask me question about the 2022 Philippine presidential candidates, election laws or info, or voting processes!"}
+    ]
 
-            if user_input.lower() in ['quit', 'bye', 'exit', 'goodbye']:
-                print("BotoBot: Goodbye! Stay informed and remember to vote!")
-                break
+# comment below code for non-persistent chat history logs
+# 6. Render persistent chat history logs directly to UI layout containers
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
 
-            response = chatbot.respond(user_input)
+# 7. Accept user input triggers and map chat workflows
+if prompt := st.chat_input("Type your message here..."):
 
-            # Handle the special candidate list trigger
-            if response == '__SHOW_LIST__':
-                print("\nBotoBot:", show_candidate_list())
-                print("\nBotoBot: Would you like to know more about any of these candidates?")
-                print("         Just type their name! (e.g., 'Tell me about Leni Robredo')\n")
-                continue
+# Render user prompt interface elements immediately
+    with st.chat_message("user"):
+        st.markdown(prompt)
+    st.session_state.messages.append({"role": "user", "content": prompt})
+    
+    # Process prompt using NLTK reflection engine matching
+    bot_response = nltk_chatbot.respond(prompt)
 
-            # Check if user is asking about a specific candidate
-            candidate_key = find_candidate(user_input)
-            if candidate_key:
-                print("\nBotoBot:", show_candidate_profile(candidate_key), "\n")
-                continue
+    # Handle the special candidate list trigger
+    if bot_response == '__SHOW_LIST__':
+        bot_response =(show_candidate_list())
+    
+    # Render fallback assistant validation blocks if NLTK yields an empty string
+    if not bot_response:
+        bot_response = "I'm not sure I understand or I can not give an answer based on the dataset available to me right now."
 
-            # Use NLTK response if matched
-            if response:
-                print(f"BotoBot: {response}\n")
-            else:
-                # Fallback if no pattern matched
-                print("BotoBot: I'm not sure I understand. Try asking me to 'show the 2022 presidential candidates' or type a candidate's name!\n")
+    # Render structural bot outputs inside chat UI container blocks
+    with st.chat_message("assistant"):
+        st.markdown(bot_response)
+    st.session_state.messages.append({"role": "assistant", "content": bot_response})
 
-        except (KeyboardInterrupt, EOFError, SystemExit):
-            print("\nBotoBot: Goodbye! Stay informed and don't forget to vote!")
-            break
+# def run_chatbot():
+#     print("\n╔══════════════════════════════════════════════════╗")
+#     print("║   2022 PH Presidential Election Info Bot         ║")
+#     print("║   Type 'quit' to exit at any time.               ║")
+#     print("╚══════════════════════════════════════════════════╝")
+#     print("\nBotoBot: Hello! I can tell you about the 2022 Philippine Presidential Candidates.")
+#     print("         Try asking: 'Show me the 2022 presidential candidates'\n")
 
-if __name__ == '__main__':
-    run_chatbot()
+#     while True:
+#         try:
+#             user_input = input('You: ').strip()
+
+#             if not user_input:
+#                 continue
+
+#             if user_input.lower() in ['quit', 'bye', 'exit', 'goodbye']:
+#                 print("BotoBot: Goodbye! Stay informed and remember to vote!")
+#                 break
+
+#             response = chatbot.respond(user_input)
+
+#             # Handle the special candidate list trigger
+#             if response == '__SHOW_LIST__':
+#                 print("\nBotoBot:", show_candidate_list())
+#                 print("\nBotoBot: Would you like to know more about any of these candidates?")
+#                 print("         Just type their name! (e.g., 'Tell me about Leni Robredo')\n")
+#                 continue
+
+#             # Check if user is asking about a specific candidate
+#             candidate_key = find_candidate(user_input)
+#             if candidate_key:
+#                 print("\nBotoBot:", show_candidate_profile(candidate_key), "\n")
+#                 continue
+
+#             # Use NLTK response if matched
+#             if response:
+#                 print(f"BotoBot: {response}\n")
+#             else:
+#                 # Fallback if no pattern matched
+#                 print("BotoBot: I'm not sure I understand. Try asking me to 'show the 2022 presidential candidates' or type a candidate's name!\n")
+
+#         except (KeyboardInterrupt, EOFError, SystemExit):
+#             print("\nBotoBot: Goodbye! Stay informed and don't forget to vote!")
+#             break
+
+# if __name__ == '__main__':
+#     run_chatbot()
