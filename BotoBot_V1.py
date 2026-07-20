@@ -326,7 +326,7 @@ pairs = [
     # --- LAWS ---
     # REPUBLIC ACTS
     [
-        r'.*\b(ra|republic act)\b\s*(\d+)\b.*',
+        r'(?i)^(?:what is|what are|tell me about|explain|can you explain)\s+(?:ra|republic act)\s*(\d+)\??$',
         [
             "You brought up Republic Act %2. Just to make sure we're on the same page: RA 9006 is the Fair Election Act, RA 9369 covers the Automated Election System, and RA 8189 is all about Voter Registration."
         ]
@@ -335,7 +335,7 @@ pairs = [
 
     # LEGAL SUBSECTIONS
     [
-        r'.*section\s*(\d+)\s*\(([a-z])\).*',
+        r'(?i)^(?:what is|what are|tell me about|explain|can you explain)\s+section\s*(\d+)\s*\(([a-z])\)\??$',
         [
             "Ah, Section %1(%2). That's from the Omnibus Election Code. A common one people ask about is Section 261(a), which strictly deals with vote-buying and vote-selling."
         ]
@@ -344,7 +344,7 @@ pairs = [
 
     # GENERAL ELECTION OFFENSES
     [
-        r'.*(omnibus|bp\s*881|election\s*code|vote\s*buying|liquor\s*ban).*',
+        r'(?i)^(?:what are|what is|tell me about|explain|what are the penalties for)\s+(?:the\s+)?(?:omnibus election code|bp\s*881|election code|vote buying|liquor ban)(?:.*)?\??$',
         [
             "Under the Omnibus Election Code (BP 881), things like vote-buying or violating the liquor ban are serious election offenses. Anyone caught faces 1 to 6 years in jail, and no probation is allowed."
         ]
@@ -353,7 +353,7 @@ pairs = [
 
     # VOTER QUALIFICATIONS
     [
-        r'.*(who can vote|can i vote|who to vote|voter requirement|voter qualification).*',
+        r'(?i)^(?:who can vote|can i vote|what are the voter requirements|what are the voter qualifications|who is qualified to vote)\??$',
         [
             "To be eligible to vote, you need to be a Filipino citizen and at least 18 years old. You also must have lived in the Philippines for at least a year, and in the specific city or town where you plan to vote for at least 6 months before election day."
         ]
@@ -362,7 +362,7 @@ pairs = [
 
     # STRICT MATCHING
     [
-        r'^what are my rights\??$',
+        r'(?i)^what are my rights\??$',
         [
             "Under the 1987 Constitution, suffrage (the right to vote) is a fundamental right granted to all eligible citizens. No literacy, property, or other substantive requirements shall be imposed."
         ]
