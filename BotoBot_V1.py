@@ -391,9 +391,14 @@ pairs = [
 # CORE CHATBOT EXECUTION
 # ==========================================
 
+# chat icons
+USER_AVATAR = "UserMascot.png"
+BOT_AVATAR = "BotoBotMascot.png"
+
 # 3. Configure the Streamlit UI layout
-st.set_page_config(page_title="BotoBot Chatbot", page_icon="🤖")
-st.title("🤖 BotoBot Chatbot")
+st.set_page_config(page_title="BotoBot Chatbot", page_icon=BOT_AVATAR)
+#st.title("🤖 BotoBot Chatbot")
+st.image("BotoBotWideLogo.png", width="stretch")
 st.caption("For CBPCOMM and CBEMC-5, created by Group Ilocos Empanada: Baranquil, Cruz, Evangelio, Magdaluyo")
 
 # 4. Initialize NLTK Chat engine in Streamlit's session resource state
@@ -406,22 +411,23 @@ nltk_chatbot = get_bot()
 # 5. Initialize conversation history memory bucket
 if "messages" not in st.session_state:
     st.session_state.messages = [
-        {"role": "assistant", "content": "Welcome to BotoBot! Ask me question about the 2022 Philippine presidential candidates, election laws or info, or voting processes!"}
+        {"role": "assistant", 
+         "avatar": BOT_AVATAR, 
+         "content": "Welcome to BotoBot! Ask me question about the 2022 Philippine presidential candidates, election laws or info, or voting processes!"}
     ]
 
-# comment below code for non-persistent chat history logs
 # 6. Render persistent chat history logs directly to UI layout containers
 for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
+    with st.chat_message(message["role"], avatar=message.get("avatar")):
         st.markdown(message["content"])
 
 # 7. Accept user input triggers and map chat workflows
 if prompt := st.chat_input("Type your message here..."):
 
 # Render user prompt interface elements immediately
-    with st.chat_message("user"):
+    with st.chat_message("user", avatar=USER_AVATAR):
         st.markdown(prompt)
-    st.session_state.messages.append({"role": "user", "content": prompt})
+    st.session_state.messages.append({"role": "user", "avatar": USER_AVATAR, "content": prompt})
     
     # Process prompt using NLTK reflection engine matching
     bot_response = nltk_chatbot.respond(prompt)
@@ -435,9 +441,9 @@ if prompt := st.chat_input("Type your message here..."):
         bot_response = "I'm not sure I understand or I can not give an answer based on the dataset available to me right now."
 
     # Render structural bot outputs inside chat UI container blocks
-    with st.chat_message("assistant"):
+    with st.chat_message("assistant", avatar=BOT_AVATAR):
         st.markdown(bot_response)
-    st.session_state.messages.append({"role": "assistant", "content": bot_response})
+    st.session_state.messages.append({"role": "assistant", "avatar": BOT_AVATAR, "content": bot_response})
 
 # def run_chatbot():
 #     print("\n╔══════════════════════════════════════════════════╗")
