@@ -406,7 +406,7 @@ BOT_AVATAR = "BotoBotMascot.png"
 # 3. Configure the Streamlit UI layout
 st.set_page_config(page_title="BotoBot Chatbot", page_icon=BOT_AVATAR)
 #st.title("🤖 BotoBot Chatbot")
-st.image("BotoBotWideLogo.png", width="stretch")
+st.image("BotoBot_WideLogoTransparent.png", width="stretch")
 st.caption("For CBPCOMM and CBEMC-5, created by Group Ilocos Empanada: Baranquil, Cruz, Evangelio, Magdaluyo")
 
 # 4. Initialize NLTK Chat engine in Streamlit's session resource state
