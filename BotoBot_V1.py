@@ -308,7 +308,7 @@ pairs = [
     [
         r'(?i)^(?:what is|what are|tell me about|explain|can you explain)\s+section\s*(\d+)\s*\(([a-z])\)\??$',
         [
-            "Ah, Section %1(%2). That's from the Omnibus Election Code. A common one people ask about is Section 261(a), which strictly deals with election offenses such as vote-buying and vote-selling."
+            "Ah, Section %1(%2). That's from the Omnibus Election Code. A common one people ask about is Section 261(a), which strictly deals with vote-buying and vote-selling."
         ]
     ],
 
@@ -356,9 +356,9 @@ pairs = [
 
     [r'(.*)sino si leody de guzman(.*)', ['__SHOW_PROFILE__']],
 
-    [r'(.*)ano ang mga kailangan para makaboto(.*)', ['Upang maging rehistradong botante sa Pilipinas, ang isang tao ay dapat:\n1. May edad na hindi bababa sa 18 taong gulang bago o sa mismong araw ng halalang Pambansa at Lokal.\n2. Naninirahan sa Pilipinas sa loob ng hindi bababa sa isang (1) taon, at naninirahan sa lugar kung saan nais bumoto sa loob ng hindi bababa sa anim (6) na buwan bago ang halalang Pambansa at Lokal.\n3. Walang alinman sa mga sumusunod na dahilan ng diskwalipikasyon:\n\t3.1. Hinatulan sa pamamagitan ng pinal na desisyon na makulong nang hindi bababa sa isang (1) taon.\n\t3.2. Opisyal na hinatulan sa pamamagitan ng pinal na desisyon dahil sa paggawa ng anumang krimen na may kaugnayan sa kawalan ng katapatan sa lehitimong pamahalaan (hal. rebelyon, sedisyon, paglabag sa mga batas sa baril, atbp.).\n\t3.3. Idineklarang baliw o walang kakayahang mag-isip (incompetent) ng karampatang awtoridad (maliban kung idineklara ng tamang awtoridad na hindi na baliw o wala nang kakulangan sa kakayahang mag-isip).\n\n(https://comelec.gov.ph/?r=VoterRegistration/WhatisVoterRegistration/RegistrationRequirements)']],
+    [r'(.*)ano ang mga kailangan para makaboto(.*)', ['Narito ang mga kinakailangan upang mag-aplay para sa voter’s ID:\n1. Magdala ng balidong ID na inisyu ng gobyerno. I-print at punan ang CEF-1 form (gamit ang kompyuter o panulat) bago pumunta sa Office ng Election Officer (OEO), o pumunta sa OEO at punan ang CEF-1 form doon.\n\n(https://comelec.gov.ph/?r=VoterRegistration/HowtoRegister)']],
 
-    [r'(.*)ano ang section 261\(a\)(.*)',['Ah, Seksyon 261(a). Mula \'yan sa Omnibus Election Code. Isa sa mga karaniwang tinatanong ng mga tao ay ang Seksyon 261(a), kung saan tinatalakay nito ang mga election offenses katuland ng vote-buying at vote-selling.']],
+    [r'(.*)ano ang section 261\(a\)(.*)',['Ah, Seksyon 261(a). Mula \'yan sa Omnibus Election Code. Isa sa mga karaniwang tinatanong ng mga tao ay ang Seksyon 261(a), kung saan tinatalakay nito ang vote-buying at vote-selling.\n(https://comelec.gov.ph/?r=References/RelatedLaws/OmnibusElectionCode/OECArt22)']],
     
 
     # --- QUIT ---
