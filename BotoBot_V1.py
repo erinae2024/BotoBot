@@ -215,56 +215,27 @@ def show_candidate_list():
     return fullList
 
     
-
-
-
-#remove the format part 2 maybe
 def show_candidate_profile(name_key):
-    """Returns a formatted profile card for a given candidate."""
     c = candidates[name_key]
-    border_top    = "┌" + "─" * WIDTH + "┐"
-    border_mid    = "├" + "─" * WIDTH + "┤"
-    border_bottom = "└" + "─" * WIDTH + "┘"
+    info = []
 
-    header_text = "  CANDIDATE PROFILE"
-    lines = [
-        "",
-        border_top,
-        f"│{header_text:<{WIDTH}}│",
-        border_mid,
-    ]
+    info.append(f"Name: {c["full_name"]}")  
+    info.append(f"Age: {c["age"]}")
 
-    # --- Name & Age (always shown) ---
-    lines.append(box_line("Name", c["full_name"]))
-    lines.append(box_line("Age", c["age"] if c["age"] else "N/A"))
-
-    # --- Positions (list, optional) ---
     positions = c.get("positions", [])
-    if positions:
-        lines.append(box_blank())
-        lines.append(box_line("Position(s)", positions[0]))
-        for pos in positions[1:]:
-            lines.append(box_bullet(pos))
+    positionsList = ", ".join(positions)
+    info.append(f"Position(s): {positionsList}")
 
-    # --- Education (list, optional) ---
     education = c.get("education", [])
-    if education:
-        lines.append(box_blank())
-        lines.append(box_line("Education", education[0]))
-        for edu in education[1:]:
-            lines.append(box_bullet(edu))
+    educationList = ", ".join(education)
+    info.append(f"Education: {educationList}")
 
-    # --- Projects (list, optional) ---
     projects = c.get("projects", [])
-    if projects:
-        lines.append(box_blank())
-        lines.append(box_line("Projects", projects[0]))
-        for proj in projects[1:]:
-            lines.append(box_bullet(proj))
+    projectsList = ", ".join(projects)
+    info.append(f"Projects: {projectsList}")
 
-    lines.append(box_blank())
-    lines.append(border_bottom)
-    return "\n".join(lines)
+    return "\n\n".join(info)
+   
 
 def find_candidate(user_input):
     """
@@ -381,7 +352,9 @@ pairs = [
 
 
     #--TESTING--
-    [r'(.*)Ipinangako ba ni leni robredo na magiging corrupt yung pamahalaan niya(.*)',['Ayon sa artikulo ng VERA Files Fact Check, ang bailta na ito ay hindi totoo, at ginupit na news clip lamang galing sa Abril 2 na episodyo ng \'24 Oras Weekend\' kung saan sinabi ni Robredo: \"Ang pinapangako po namin ni Senator Kiko sa inyo, isang pamahalaan na hindi lang korap… Na \'pag ang gobyerno \'di korap, \'pag ang mga lingkod-bayan matitino at mahuhusay, kahit kakarampot ang pera ng pamahalaan, marami ang matutulungan."\n\n(https://verafiles.org/articles/vera-files-fact-check-fb-pages-mislead-robredo-clip-during-b)']],
+    [r'(.*)ipinangako ba ni leni robredo na magiging corrupt yung pamahalaan niya(.*)',['Ayon sa artikulo ng VERA Files Fact Check, ang bailta na ito ay hindi totoo, at ginupit na news clip lamang galing sa Abril 2 na episodyo ng \'24 Oras Weekend\' kung saan sinabi ni Robredo: \"Ang pinapangako po namin ni Senator Kiko sa inyo, isang pamahalaan na hindi lang korap… Na \'pag ang gobyerno \'di korap, \'pag ang mga lingkod-bayan matitino at mahuhusay, kahit kakarampot ang pera ng pamahalaan, marami ang matutulungan."\n\n(https://verafiles.org/articles/vera-files-fact-check-fb-pages-mislead-robredo-clip-during-b)']],
+
+    [r'(.*)sino si leody de guzman(.*)', ['__SHOW_PROFILE__']],
 
     [r'(.*)ano ang mga kailangan para makaboto(.*)', ['Upang maging rehistradong botante sa Pilipinas, ang isang tao ay dapat:\n1. May edad na hindi bababa sa 18 taong gulang bago o sa mismong araw ng halalang Pambansa at Lokal.\n2. Naninirahan sa Pilipinas sa loob ng hindi bababa sa isang (1) taon, at naninirahan sa lugar kung saan nais bumoto sa loob ng hindi bababa sa anim (6) na buwan bago ang halalang Pambansa at Lokal.\n3. Walang alinman sa mga sumusunod na dahilan ng diskwalipikasyon:\n\t3.1. Hinatulan sa pamamagitan ng pinal na desisyon na makulong nang hindi bababa sa isang (1) taon.\n\t3.2. Opisyal na hinatulan sa pamamagitan ng pinal na desisyon dahil sa paggawa ng anumang krimen na may kaugnayan sa kawalan ng katapatan sa lehitimong pamahalaan (hal. rebelyon, sedisyon, paglabag sa mga batas sa baril, atbp.).\n\t3.3. Idineklarang baliw o walang kakayahang mag-isip (incompetent) ng karampatang awtoridad (maliban kung idineklara ng tamang awtoridad na hindi na baliw o wala nang kakulangan sa kakayahang mag-isip).\n\n(https://comelec.gov.ph/?r=VoterRegistration/WhatisVoterRegistration/RegistrationRequirements)']],
 
@@ -407,7 +380,7 @@ BOT_AVATAR = "BotoBotMascot.png"
 st.set_page_config(page_title="BotoBot Chatbot", page_icon=BOT_AVATAR)
 #st.title("🤖 BotoBot Chatbot")
 st.image("BotoBot_WideLogoTransparent.png", width="stretch")
-st.caption("For CBPCOMM and CBEMC-5, created by Group Ilocos Empanada: Baranquil, Cruz, Evangelio, Magdaluyo")
+st.caption("An NLP-powered chatbot for voter education. This is a prototype developed by DLSU Computer Science Students")
 
 # 4. Initialize NLTK Chat engine in Streamlit's session resource state
 @st.cache_resource
@@ -421,7 +394,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = [
         {"role": "assistant", 
          "avatar": BOT_AVATAR, 
-         "content": "Welcome to BotoBot! Ask me question about the 2022 Philippine presidential candidates, election laws or info, or voting processes!"}
+         "content": "Welcome to BotoBot! Ask me a question about the 2022 Philippine presidential candidates, election laws or info, or voting processes!"}
     ]
 
 # 6. Render persistent chat history logs directly to UI layout containers
@@ -443,6 +416,9 @@ if prompt := st.chat_input("Type your message here..."):
     # Handle the special candidate list trigger
     if bot_response == '__SHOW_LIST__':
         bot_response =(show_candidate_list())
+
+    if bot_response == '__SHOW_PROFILE__':
+            bot_response =(show_candidate_profile('leody de guzman'))
     
     # Render fallback assistant validation blocks if NLTK yields an empty string
     if not bot_response:
