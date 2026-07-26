@@ -234,6 +234,9 @@ def show_candidate_profile(name_key):
     projectsList = ", ".join(projects)
     info.append(f"Projects: {projectsList}")
 
+    if name_key == "leody de guzman":
+        info.append("(https://www.rappler.com/people/n30635729-leody-de-guzman/)")
+
     return "\n\n".join(info)
    
 
@@ -356,7 +359,7 @@ pairs = [
 
     [r'(.*)sino si leody de guzman(.*)', ['__SHOW_PROFILE__']],
 
-    [r'(.*)ano ang mga kailangan para makaboto(.*)', ['Narito ang mga kinakailangan upang mag-aplay para sa voter’s ID:\n1. Magdala ng balidong ID na inisyu ng gobyerno. I-print at punan ang CEF-1 form (gamit ang kompyuter o panulat) bago pumunta sa Office ng Election Officer (OEO), o pumunta sa OEO at punan ang CEF-1 form doon.\n\n(https://comelec.gov.ph/?r=VoterRegistration/HowtoRegister)']],
+    [r'(.*)ano ang mga kailangan para makaboto(.*)', ['Narito ang mga kinakailangan upang mag-aplay para sa voter’s ID:\n1. Magdala ng balidong ID na inisyu ng gobyerno.\n2. I-print at punan ang CEF-1 form (gamit ang kompyuter o panulat) bago pumunta sa Office ng Election Officer (OEO), o pumunta sa OEO at punan ang CEF-1 form doon.\n\n(https://comelec.gov.ph/?r=VoterRegistration/HowtoRegister)']],
 
     [r'(.*)ano ang section 261\(a\)(.*)',['Ah, Seksyon 261(a). Mula \'yan sa Omnibus Election Code. Isa sa mga karaniwang tinatanong ng mga tao ay ang Seksyon 261(a), kung saan tinatalakay nito ang vote-buying at vote-selling.\n(https://comelec.gov.ph/?r=References/RelatedLaws/OmnibusElectionCode/OECArt22)']],
     
