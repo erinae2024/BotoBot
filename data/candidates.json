@@ -1,0 +1,63 @@
+{
+  "leni robredo": {
+    "full_name": "Maria Leonor Gerona Robredo",
+    "aliases": ["leni", "robredo", "vp leni"],
+    "pronouns": ["she", "her", "hers"],
+    "age": "57 (Born April 23, 1965)",
+    "tags": ["education", "health", "women", "poverty"],
+    "has_gov_experience": true,
+    "positions": ["Vice President of the Philippines (2016-2022)"],
+    "education": ["University of the Philippines (BA Economics)"],
+    "projects": [
+      {
+        "name": "Angat Buhay Program",
+        "tags": ["poverty", "health", "education"],
+        "link": "https://placeholder.com/angat"
+      },
+      {
+        "name": "Bayanihan E-Konsulta",
+        "tags": ["health", "covid"],
+        "link": "https://placeholder.com/ekonsulta"
+      }
+    ]
+  },
+  "leody de guzman": {
+    "full_name": "Leodegario Quitain de Guzman",
+    "aliases": ["leody", "ka leody", "de guzman", "guzman"],
+    "pronouns": ["he", "him", "his"],
+    "age": "62 (Born July 25, 1959)",
+    "tags": ["labor", "workers", "economy"],
+    "has_gov_experience": false,
+    "positions": ["Chairperson, Bukluran ng Manggagawang Pilipino"],
+    "education": ["PMI Colleges (BS Customs Administration)"],
+    "projects": [
+      {
+        "name": "Manggagawa Naman Electoral Platform",
+        "tags": ["labor", "wages"],
+        "link": "https://placeholder.com/manggagawa"
+      }
+    ]
+  },
+  "isko moreno": {
+    "full_name": "Francisco Moreno Domagoso",
+    "aliases": ["isko", "isko moreno", "domagoso", "yorme"],
+    "pronouns": ["he", "him", "his"],
+    "age": "47 (Born October 24, 1974)",
+    "tags": ["housing", "health", "infrastructure"],
+    "has_gov_experience": true,
+    "positions": ["Mayor of Manila (2019-2022)"],
+    "education": ["Pamantasan ng Lungsod ng Maynila (BSBA)"],
+    "projects": [
+      {
+        "name": "Manila COVID-19 Field Hospital",
+        "tags": ["health", "covid"],
+        "link": "https://placeholder.com/isko-health"
+      },
+      {
+        "name": "Tondominium Housing",
+        "tags": ["housing"],
+        "link": "https://placeholder.com/isko-housing"
+      }
+    ]
+  }
+}
