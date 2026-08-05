@@ -53,7 +53,10 @@ TRAINING_DATA = [
     ("what candidate supports health and housing", "__MATCH_TAG__"),
     ("who advocates for women and poverty", "__MATCH_TAG__"),
     ("which candidate has government experience", "__MATCH_TAG__"),
-    ("who focuses on labor", "__MATCH_TAG__")
+    ("who focuses on labor", "__MATCH_TAG__"),
+    ("who are the candidates focused on health", "__MATCH_TAG__"),
+    ("candidates focused on health", "__MATCH_TAG__"),
+    ("who supports health", "__MATCH_TAG__")
 ]
 
 def extract_features(text):
@@ -64,7 +67,7 @@ def train_classifier():
     formatted_data = [(extract_features(text), intent) for (text, intent) in TRAINING_DATA]
     return NaiveBayesClassifier.train(formatted_data)
 
-def get_intent(user_input, classifier, threshold=0.35):
+def get_intent(user_input, classifier, threshold=0.25):
     features = extract_features(user_input)
     dist = classifier.prob_classify(features)
     best_intent = dist.max()
