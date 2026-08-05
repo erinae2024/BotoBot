@@ -24,6 +24,10 @@ st.set_page_config(page_title="BotoBot Chatbot", page_icon=BOT_AVATAR)
 st.image("BotoBot_WideLogoTransparent.png", width="stretch")
 st.caption("An NLP-powered chatbot for voter education. Developed by DLSU Computer Science Students.")
 
+# ui thing, remove link icon when you hover over candidate name when showing candidate info
+st.html("<style>[data-testid='stHeaderActionElements'] {display: none;}</style>")
+
+
 @st.cache_resource
 def load_assets():
     with open('data/candidates.json', 'r') as f:
@@ -46,7 +50,7 @@ if "messages" not in st.session_state:
 
 # Language Selection Gate
 if not st.session_state.response_lang:
-    st.markdown("### How would you like me to respond? / Paano mo gusto na sumagot ako?")
+    st.markdown("### How would you like me to respond? Paano mo gusto na sumagot ako?")
     col1, col2 = st.columns(2)
     if col1.button("English"):
         st.session_state.response_lang = 'en'
@@ -119,11 +123,17 @@ if prompt := st.chat_input("Ask about candidates, voting, or elections..."):
         elif intent == '__SHOW_PROFILE__':
             if st.session_state.active_candidate_key:
                 c = candidates_data[st.session_state.active_candidate_key]
+
+                # show list of projects
+                projectsList = [project["name"] for project in c["projects"]]
+
                 final_response = (
                     f"### {c['full_name']}\n"
                     f"* **Age:** {c['age']}\n"
                     f"* **Positions:** {', '.join(c['positions'])}\n"
-                    f"* **Education:** {', '.join(c['education'])}"
+                    f"* **Education:** {', '.join(c['education'])}\n"
+                    f"* **Projects:** {', '.join(projectsList)}\n\n"
+                    f"Links: {', '.join(c['links'])}\n"
                 )
             else:
                 final_response = "Who are you asking about?"
