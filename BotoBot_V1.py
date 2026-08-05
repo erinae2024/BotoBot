@@ -12,24 +12,30 @@ from nltk.chat.util import Chat, reflections
 
 candidates = {
     "ernesto abella": {
-        "full_name": "Ernesto Corpus Abella",
+        "full_name": "Ernesto \"Ernie\" Corpus Abella",
         "age": "72 (Born March 22, 1950)",
         "positions": [
             "Presidential Spokesperson (2016-2017)",
             "Undersecretary, DFA (2017-2021)",
         ],
         "education": [
-            "Ateneo de Manila University (MA)",
-            "Ateneo de Davao University (BA Pre-Med)",
-            "Silliman University (M.Div.)"
+            "Asian Institute of Management (Master in Entrepreneurship)",
+            "Silliman University (Master in Divinity)"
         ],
         "projects": [
             "Founder of Hope of Asia",
-            "Founder of The Jesus Fellowship"
+            "Founder of The Jesus Fellowship",
+            "Founder of Southpoint School in Davao City",
+            "Founding member of One Accord Credit Cooperative"
+        ],
+        "links":[
+            "(https://www.gmanetwork.com/news/eleksyon2022/candidates/ernestoabella/)",
+            "(https://www.abs-cbn.com/halalan2022/candidates/ernesto-abella)",
+            "(https://www.inquirer.net/duterte/cabinet/)"
         ]
     },
     "leody de guzman": {
-        "full_name": "Leodegario Quitain de Guzman",
+        "full_name": "Leodegario \"Ka Leody\" Quitain de Guzman",
         "age": "62 (Born July 25, 1959)",
         "positions": [
             "Chairperson, Bukluran ng Manggagawang Pilipino",
@@ -41,10 +47,15 @@ candidates = {
         "projects": [
             "Manggagawa Naman Electoral Platform",
             "Labor Rights Advocacies"
+        ],
+        "links":[
+            "(https://www.gmanetwork.com/news/eleksyon2022/candidates/leodegariodeguzman)",
+            "(https://www.abs-cbn.com/halalan2022/candidates/leody-de-guzman)",
+            "(https://newsinfo.inquirer.net/1589683/de-guzmanlabors-turnto-be-frontand-center)"
         ]
     },
     "isko moreno": {
-        "full_name": "Francisco Moreno Domagoso",
+        "full_name": "Francisco \"Isko\" Moreno Domagoso",
         "age": "47 (Born October 24, 1974)",
         "positions": [
             "Mayor of Manila (2019-2022)",
@@ -52,12 +63,17 @@ candidates = {
             "Undersecretary, DSWD (2018)"
         ],
         "education": [
-            "Pamantasan ng Lungsod ng Maynila (BSBA)",
-            "Arellano University (Law School)"
+            "Pamantasan ng Lungsod ng Maynila (Public Administration)",
+            "International Academy of Management and Economics (Bachelor of Science in Business Administration)"
         ],
         "projects": [
             "Manila COVID-19 Field Hospital",
             "Tondominium & Binondominium Public Housing"
+        ],
+        "links":[
+            "(https://www.gmanetwork.com/news/eleksyon2022/candidates/franciscodomagoso/)",
+            "(https://www.abs-cbn.com/halalan2022/candidates/isko-moreno)",
+            "(https://newsinfo.inquirer.net/1534385/manila-covid-19-field-hospital-ready-for-returning-overseas-filipinos)"
         ]
     },
     "norberto gonzales": {
@@ -68,42 +84,70 @@ candidates = {
             "National Security Adviser (2005-2010)"
         ],
         "education": [
-            "Ateneo de Davao University (BS Pre-Med)"
+            "Ateneo de Davao University (BS Pre-Med)",
+            "National Defense College of the Philippines (Master in National Security Administration)"
         ],
         "projects": [
             "Founder, Partido Demokratiko Sosyalista ng Pilipinas",
             "Peace negotiations with insurgent groups"
+        ],
+        "links":[
+            "(https://www.gmanetwork.com/news/eleksyon2022/candidates/norbertogonzales/)",
+            "(https://www.abs-cbn.com/halalan2022/candidates/norberto-gonzales)",
+            "(https://www.rappler.com/people/n50319899-norberto-gonzales/)"
         ]
     },
     "panfilo lacson": {
-        "full_name": "Panfilo Morena Lacson",
+        "full_name": "Panfilo \"Ping\" Morena Lacson",
         "age": "73 (Born June 1, 1948)",
         "positions": [
             "Senator of the Philippines (2001-13, 2016-22)",
-            "Chief, Philippine National Police (1999-2001)"
+            "Presidential Assistant on Rehabilitation and Recovery (2013-2015)",
+            "Chief, Philippine National Police (1999-2001)",
+            "Chief, Presidential Anti-Organized Crime Task Force (1998-2001)",
+            "Project Officer, Special Project Alpha (1996-1997)",
+            "Chief, Presidential Anti-Crime Commission Task Force Habagat (1992-1995)",
+            "Provincial Director, Laguna PC (1992)",
+            "Commander, Ceby Metropolitan District Command (1989-1992)",
+            "PC-INP Anti-Carnapping Task Force (1986-1988)",
+            "Metrocom Intelligence and Security Group (1971-1986)"
         ],
         "education": [
-            "Philippine Military Academy (Class of 1971)",
-            "Lyceum of the Philippines (MA Gov. Mgmt)"
+            "Philippine Military Academy (Bachelor of Science)",
+            "Lyceum of the Philippines (Masters in Government Management)"
         ],
         "projects": [
-            "National ID System Act (Sponsor)",
-            "Anti-Terrorism Act of 2020 (Sponsor)"
+            "RA 11055: National ID Law (Principal Sponsor)",
+            "RA 11479: Anti-Terrorism Act of 2020 (Sponsor and Co-author)",
+            "RA 11053: Anti-Hazing Law of 2018 (Sponsor and Author)",
+            "RA 10969: Free Irrigation Service Act",
+            "RA 10351: Sin Tax Law",
+        ],
+        "links":[
+            "(https://www.gmanetwork.com/news/eleksyon2022/candidates/panfilolacson/)",
+            "(https://www.abs-cbn.com/halalan2022/candidates/ping-lacson)",
+            "(https://ldr.senate.gov.ph/senator/panfilo-m-lacson)"
+
         ]
     },
     "faisal mangondato": {
         "full_name": "Faisal Mangondato",
         "age": "59 (Born December 30, 1962)",
         "positions": [
-            "Businessman",
-            "KTPNAN Presidential Candidate (2022)"
+            "National President, Katipunan Party",
+            "President, Kalaw Printext Marketing in Marantao, Lanao del Sur",
+            "Managing Director, Kalaw Travel and Tour"
         ],
         "education": [
-            "Philippine Women's University"
+            "Philippine Women's University (BS Medical Technology)"
         ],
         "projects": [
-            "Advocacy for Philippine Federalism",
-            "Mindanao Peace Initiatives"
+            "Advocacy for Philippine Federalism"        
+        ],
+        "links":[
+            "(https://www.gmanetwork.com/news/eleksyon2022/candidates/faisalmangondato/)",
+            "(https://www.abs-cbn.com/halalan2022/candidates/faisal-mangondato)",
+            "(https://newsinfo.inquirer.net/1591346/faisal-mangondatos-voice-is-loudest-for-mindanao)"
         ]
     },
     "bongbong marcos": {
@@ -111,16 +155,25 @@ candidates = {
         "age": "64 (Born September 13, 1957)",
         "positions": [
             "Senator of the Philippines (2010-2016)",
+            "Congressman, 2nd District, Ilocos Norte (1992-95, 2007-10)"
             "Governor of Ilocos Norte (1983-86, 1998-2007)",
-            "Representative, Ilocos Norte (1992-95, 2007-10)"
+            "Vice Governor, Ilocos Norte (1981-1983)"
         ],
         "education": [
-            "University of Oxford (Special Diploma)",
-            "Wharton School of Business (MBA, dropout)"
+            "University of Oxford (Special Diploma in Social Studies)"
         ],
         "projects": [
-            "Bangui Wind Farm (Initiated during term)",
-            "Sama-Sama Tayong Babangon Muli Campaign"
+            "RA 10363: Creating Seven Additional Branches of the Regional Court (Co-Author)",
+            "RA 10632: Postponing the Sangguniang Kabataan Election (Author)",
+            "RA 10884: Balanced Housing Development Program Amendments (Author)",
+        ],
+        "links":[
+            "(https://www.gmanetwork.com/news/eleksyon2022/candidates/ferdinandjrmarcos/)",
+            "(https://www.abs-cbn.com/halalan2022/candidates/bongbong-marcos)",
+            "(https://ldr.senate.gov.ph/bills/senate-bill-no-1186-16th-congress-republic)",
+            "(https://issuances-library.senate.gov.ph/bills/senate-bill-no-2947-16th-congress-republic)",
+            "(https://issuances-library.senate.gov.ph/bills/senate-bill-no-3034-15th-congress-republic)",
+            "(https://verafiles.org/articles/vera-files-fact-check-posts-claiming-bongbong-marcos-authore)"
         ]
     },
     "jose montemayor jr": {
@@ -139,6 +192,10 @@ candidates = {
         "projects": [
             "Free Medical and Legal Missions",
             "COVID-19 Alternative Policy Advocacies"
+        ],
+        "links":[
+            "(https://www.gmanetwork.com/news/eleksyon2022/candidates/josejrmontemayor/)",
+            "(https://www.abs-cbn.com/halalan2022/candidates/jose-montemayor)"
         ]
     },
     "manny pacquiao": {
@@ -155,6 +212,10 @@ candidates = {
         "projects": [
             "Pacman Village (Free Housing Project)",
             "Pabahay Programs"
+        ],
+        "links":[
+            "(https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/)",
+            "(https://www.abs-cbn.com/halalan2022/candidates/manny-pacquiao)"
         ]
     },
     "leni robredo": {
@@ -172,6 +233,10 @@ candidates = {
             "Angat Buhay Program",
             "Bayanihan E-Konsulta",
             "Vaccine Express"
+        ],
+        "links":[
+            "(https://www.gmanetwork.com/news/eleksyon2022/candidates/marialeonorrobredo/)",
+            "(https://www.abs-cbn.com/halalan2022/candidates/leni-robredo)"
         ]
     },
 }
@@ -179,11 +244,11 @@ candidates = {
 # ==========================================
 # HELPER FUNCTIONS
 # ==========================================
-
+"""
 WIDTH = 82  # Inner width of the box (between │ and │)
 
 def box_line(label, value):
-    """Formats a single labeled row that fits inside the box."""
+    # Formats a single labeled row that fits inside the box.
     text = f"  {label:<11}: {value}"
     # Truncate if too long so it doesn't break the border
     if len(text) > WIDTH - 1:
@@ -191,7 +256,7 @@ def box_line(label, value):
     return f"│{text:<{WIDTH}}│"
 
 def box_bullet(value, indent=16):
-    """Formats a bullet-point continuation line inside the box."""
+    # Formats a bullet-point continuation line inside the box.
     text = f"{' ' * indent}• {value}"
     if len(text) > WIDTH - 1:
         text = text[:WIDTH - 4] + "..."
@@ -199,10 +264,11 @@ def box_bullet(value, indent=16):
 
 def box_blank():
     return f"│{' ' * WIDTH}│"
+"""
 
 
 def show_candidate_list():
-    """Returns a formatted string of all 2022 presidential candidates."""
+    # Returns a formatted string of all 2022 presidential candidates.
     category = "full_name"
     list =[]
     for i, key in enumerate(candidates, start=1):
@@ -210,12 +276,15 @@ def show_candidate_list():
     
     if not list:
         return "No candidates found."
+
+    list.append("\n\n(https://www.comelec.gov.ph/php-tpls-attachments/2022NLE/TentativeListsofCandidates/NATIONAL_01112022.pdf)")
     
     fullList = "\n".join(list)
     return fullList
 
     
 def show_candidate_profile(name_key):
+    # Returns a list of info about the Presidential candidate being asked about
     c = candidates[name_key]
     info = []
 
@@ -234,8 +303,9 @@ def show_candidate_profile(name_key):
     projectsList = ", ".join(projects)
     info.append(f"Projects: {projectsList}")
 
-    if name_key == "leody de guzman":
-        info.append("(https://www.rappler.com/people/n30635729-leody-de-guzman/)")
+    links = c.get("links", [])
+    linksList = "\n".join(links)
+    info.append(linksList)
 
     return "\n\n".join(info)
    
@@ -421,7 +491,7 @@ if prompt := st.chat_input("Type your message here..."):
         bot_response =(show_candidate_list())
 
     if bot_response == '__SHOW_PROFILE__':
-            bot_response =(show_candidate_profile('leody de guzman'))
+            bot_response =(show_candidate_profile('bongbong marcos'))
     
     # Render fallback assistant validation blocks if NLTK yields an empty string
     if not bot_response:
@@ -431,51 +501,3 @@ if prompt := st.chat_input("Type your message here..."):
     with st.chat_message("assistant", avatar=BOT_AVATAR):
         st.markdown(bot_response)
     st.session_state.messages.append({"role": "assistant", "avatar": BOT_AVATAR, "content": bot_response})
-
-# def run_chatbot():
-#     print("\n╔══════════════════════════════════════════════════╗")
-#     print("║   2022 PH Presidential Election Info Bot         ║")
-#     print("║   Type 'quit' to exit at any time.               ║")
-#     print("╚══════════════════════════════════════════════════╝")
-#     print("\nBotoBot: Hello! I can tell you about the 2022 Philippine Presidential Candidates.")
-#     print("         Try asking: 'Show me the 2022 presidential candidates'\n")
-
-#     while True:
-#         try:
-#             user_input = input('You: ').strip()
-
-#             if not user_input:
-#                 continue
-
-#             if user_input.lower() in ['quit', 'bye', 'exit', 'goodbye']:
-#                 print("BotoBot: Goodbye! Stay informed and remember to vote!")
-#                 break
-
-#             response = chatbot.respond(user_input)
-
-#             # Handle the special candidate list trigger
-#             if response == '__SHOW_LIST__':
-#                 print("\nBotoBot:", show_candidate_list())
-#                 print("\nBotoBot: Would you like to know more about any of these candidates?")
-#                 print("         Just type their name! (e.g., 'Tell me about Leni Robredo')\n")
-#                 continue
-
-#             # Check if user is asking about a specific candidate
-#             candidate_key = find_candidate(user_input)
-#             if candidate_key:
-#                 print("\nBotoBot:", show_candidate_profile(candidate_key), "\n")
-#                 continue
-
-#             # Use NLTK response if matched
-#             if response:
-#                 print(f"BotoBot: {response}\n")
-#             else:
-#                 # Fallback if no pattern matched
-#                 print("BotoBot: I'm not sure I understand. Try asking me to 'show the 2022 presidential candidates' or type a candidate's name!\n")
-
-#         except (KeyboardInterrupt, EOFError, SystemExit):
-#             print("\nBotoBot: Goodbye! Stay informed and don't forget to vote!")
-#             break
-
-# if __name__ == '__main__':
-#     run_chatbot()
