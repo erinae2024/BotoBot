@@ -2,8 +2,4 @@ streamlit
 nltk
 rapidfuzz
 flashtext
-deep-translatorstreamlit
-nltk
-rapidfuzz
-flashtext
 deep-translator
