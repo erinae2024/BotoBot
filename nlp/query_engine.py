@@ -1,54 +1,114 @@
 # nlp/query_engine.py
 
 import re
+from nltk.tokenize import word_tokenize
 from rapidfuzz import fuzz, process
 
-VALID_TAGS = ["education", "health", "women", "poverty", "labor", "workers", "economy", "housing", "infrastructure", "government experience"]
+def get_dynamic_tags(candidates_data):
+    """Dynamically extracts all valid tags from the candidate database."""
+    tags = set(["government experience"])
+    for data in candidates_data.values():
+        tags.update(data.get('tags', []))
+        for proj in data.get('projects', []):
+            tags.update(proj.get('tags', []))
+    return list(tags)
+
+def normalize_contractions(text):
+    """Normalizes common user contractions for clean tokenization."""
+    text = re.sub(r"\b(who's|whos)\b", "who is", text, flags=re.IGNORECASE)
+    text = re.sub(r"\b(what's|whats)\b", "what is", text, flags=re.IGNORECASE)
+    text = re.sub(r"\b(how's|hows)\b", "how is", text, flags=re.IGNORECASE)
+    return text
 
 def resolve_pronouns(text, active_candidate_key, candidates_data):
     if not active_candidate_key:
         return text
     
-    pronouns = candidates_data[active_candidate_key].get('pronouns', ['he', 'she', 'they', 'her', 'his', 'him', 'niya'])
-    pattern = r'\b(' + '|'.join(pronouns) + r'|this candidate)\b'
+    # Merge candidate-specific pronouns with generic fallbacks
+    specific_pronouns = candidates_data[active_candidate_key].get('pronouns', [])
+    generic_pronouns = ['he', 'she', 'they', 'her', 'his', 'him', 'niya', 'kanya']
+    all_pronouns = list(set(specific_pronouns + generic_pronouns))
     
+    pattern = r'\b(' + '|'.join(all_pronouns) + r'|this candidate)\b'
     name = candidates_data[active_candidate_key]['full_name']
     return re.sub(pattern, name, text, flags=re.IGNORECASE)
 
 def extract_and_normalize_slots(text, active_candidate_key, candidates_data):
-    detected_candidate_key = None
-    project_found = None
-    normalized_text = text
-
+    """
+    Uses N-Gram Sliding Window matching to extract candidates and projects.
+    Eliminates false matches caused by conversational filler words.
+    """
+    normalized_text = normalize_contractions(text)
+    words = word_tokenize(normalized_text)
+    
+    # 1. Build Candidate Map
     alias_map = {}
     for key, data in candidates_data.items():
         alias_map[data['full_name'].lower()] = (key, data['full_name'])
         for alias in data.get('aliases', []):
             alias_map[alias.lower()] = (key, alias)
-            
-    best_candidate_match = process.extractOne(text.lower(), list(alias_map.keys()), scorer=fuzz.partial_ratio)
-    
-    if best_candidate_match and best_candidate_match[1] > 80:
-        matched_alias = best_candidate_match[0]
-        detected_candidate_key, matched_str = alias_map[matched_alias]
-        pattern = re.compile(re.escape(matched_str), re.IGNORECASE)
+
+    # 2. Build Project Map
+    all_projects = {}
+    for key, data in candidates_data.items():
+        for proj in data.get('projects', []):
+            all_projects[proj['name'].lower()] = proj['name']
+
+    detected_candidate_key = None
+    matched_candidate_str = None
+    project_found = None
+    raw_cand_ngram = ""
+    raw_proj_ngram = ""
+
+    # 3. Generate Word N-Grams (1 to 4 words)
+    ngrams = []
+    n_words = len(words)
+    for size in range(1, min(5, n_words + 1)):
+        for i in range(n_words - size + 1):
+            ngram_str = " ".join(words[i:i+size])
+            ngrams.append(ngram_str)
+
+    # 4. Extract Candidate via N-Gram Matching
+    best_cand_score = 0
+    for ngram in ngrams:
+        if len(ngram) < 3: # Skip tiny tokens like "is", "a"
+            continue
+        match = process.extractOne(ngram.lower(), list(alias_map.keys()), scorer=fuzz.ratio)
+        if match and match[1] >= 68:
+            # If the score is higher, OR if the score is tied but the string length is longer
+            if match[1] > best_cand_score or (match[1] == best_cand_score and len(ngram) > len(raw_cand_ngram)):
+                best_cand_score = match[1]
+                matched_alias = match[0]
+                detected_candidate_key, matched_candidate_str = alias_map[matched_alias]
+                raw_cand_ngram = ngram
+
+    # 5. Extract Project via N-Gram Matching
+    best_proj_score = 0
+    for ngram in ngrams:
+        if len(ngram) < 4: # Projects are multi-word phrases
+            continue
+        match = process.extractOne(ngram.lower(), list(all_projects.keys()), scorer=fuzz.ratio)
+        if match and match[1] >= 72:
+            if match[1] > best_proj_score or (match[1] == best_proj_score and len(ngram) > len(raw_proj_ngram)):
+                best_proj_score = match[1]
+                project_found = all_projects[match[0]]
+                raw_proj_ngram = ngram
+
+    # Normalize Candidate in prompt
+    if detected_candidate_key and raw_cand_ngram:
+        pattern = re.compile(re.escape(raw_cand_ngram), re.IGNORECASE)
         normalized_text = pattern.sub('_CANDIDATE_', normalized_text)
 
-    all_projects = []
-    for data in candidates_data.values():
-        for proj in data.get('projects', []):
-            all_projects.append(proj['name'])
-
-    best_proj_match = process.extractOne(text.lower(), all_projects, scorer=fuzz.token_set_ratio)
-    if best_proj_match and best_proj_match[1] > 75:
-        project_found = best_proj_match[0]
-        pattern = re.compile(re.escape(project_found), re.IGNORECASE)
+    # Normalize Project in prompt
+    if project_found and raw_proj_ngram:
+        pattern = re.compile(re.escape(raw_proj_ngram), re.IGNORECASE)
         normalized_text = pattern.sub('_PROJECT_', normalized_text)
 
     return detected_candidate_key, project_found, normalized_text
 
 def match_candidates_by_tag(query_text, candidates_data):
-    tag_regex = r'(?i)\b(' + '|'.join(VALID_TAGS) + r')\b'
+    dynamic_tags = get_dynamic_tags(candidates_data)
+    tag_regex = r'(?i)\b(' + '|'.join(dynamic_tags) + r')\b'
     match = re.search(tag_regex, query_text)
     
     if not match:
@@ -89,18 +149,35 @@ def get_candidate_projects(active_candidate_key, candidates_data):
     return response
 
 def verify_project_association(query_text, project_found, active_candidate_key, candidates_data):
-    if not active_candidate_key:
-        return "Please specify which candidate you are asking about."
-        
-    c_data = candidates_data[active_candidate_key]
-    candidate_projects = [p['name'].lower() for p in c_data.get('projects', [])]
-    
     search_target = project_found.lower() if project_found else query_text.lower()
-    best_match = process.extractOne(search_target, candidate_projects, scorer=fuzz.token_set_ratio)
+
+    if active_candidate_key:
+        c_data = candidates_data[active_candidate_key]
+        candidate_projects = [p['name'].lower() for p in c_data.get('projects', [])]
+        best_match = process.extractOne(search_target, candidate_projects, scorer=fuzz.token_set_ratio)
+        if best_match and best_match[1] > 70:
+            matched_proj_name = best_match[0]
+            proj_data = next(p for p in c_data['projects'] if p['name'].lower() == matched_proj_name)
+            return f"Yes, '{proj_data['name']}' is a project by {c_data['full_name']}.\nDetails: {proj_data['link']}"
+
+    all_projects = []
+    for key, data in candidates_data.items():
+        for proj in data.get('projects', []):
+            all_projects.append((proj['name'].lower(), key, proj))
+
+    best_global_match = process.extractOne(search_target, [p[0] for p in all_projects], scorer=fuzz.token_set_ratio)
     
-    if best_match and best_match[1] > 70:
-        matched_proj_name = best_match[0]
-        proj_data = next(p for p in c_data['projects'] if p['name'].lower() == matched_proj_name)
-        return f"Yes, '{proj_data['name']}' is a project by {c_data['full_name']}.\nDetails: {proj_data['link']}"
-    else:
-        return f"There is no information associating {c_data['full_name']} with that project in my database."
+    if best_global_match and best_global_match[1] > 70:
+        matched_proj_name = best_global_match[0]
+        _, owning_candidate_key, proj_data = next(p for p in all_projects if p[0] == matched_proj_name)
+        owner_name = candidates_data[owning_candidate_key]['full_name']
+        
+        if active_candidate_key and active_candidate_key != owning_candidate_key:
+            active_name = candidates_data[active_candidate_key]['full_name']
+            return f"There is no information associating {active_name} with that project. However, '{proj_data['name']}' is actually a project by **{owner_name}**.\nDetails: {proj_data['link']}"
+        else:
+            return f"'{proj_data['name']}' is a project by **{owner_name}**.\nDetails: {proj_data['link']}"
+
+    if active_candidate_key:
+        return f"There is no information associating {candidates_data[active_candidate_key]['full_name']} with that project in my database."
+    return "I couldn't find any information about that specific project in my database."

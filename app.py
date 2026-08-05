@@ -3,11 +3,13 @@
 import streamlit as st
 import json
 import random
+import re
 from nltk.chat.util import Chat, reflections
 from nlp.patterns import pairs
 from nlp.translator import build_entity_masker, process_language
 from nlp.classifier import train_classifier, get_intent
 from nlp.query_engine import (
+    get_dynamic_tags,
     resolve_pronouns,
     extract_and_normalize_slots,
     match_candidates_by_tag,
@@ -29,9 +31,13 @@ def load_assets():
     masker, mask_map = build_entity_masker(candidates_data)
     classifier = train_classifier()
     chatbot = Chat(pairs, reflections)
-    return candidates_data, masker, mask_map, classifier, chatbot
+    
+    # Retrieve tags dynamically once at startup
+    dynamic_tags = get_dynamic_tags(candidates_data)
+    
+    return candidates_data, masker, mask_map, classifier, chatbot, dynamic_tags
 
-candidates_data, masker, mask_map, classifier, chatbot = load_assets()
+candidates_data, masker, mask_map, classifier, chatbot, dynamic_tags = load_assets()
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -52,18 +58,20 @@ if not st.session_state.response_lang:
         st.rerun()
     st.stop()
 
+# Render History
 for message in st.session_state.messages:
     avatar = USER_AVATAR if message["role"] == "user" else BOT_AVATAR
     with st.chat_message(message["role"], avatar=avatar):
         st.markdown(message["content"])
 
+# Core Execution Loop
 if prompt := st.chat_input("Ask about candidates, voting, or elections..."):
     
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user", avatar=USER_AVATAR):
         st.markdown(prompt)
 
-    # 1. Pronoun Resolution ("her" -> "Maria Leonor Gerona Robredo")
+    # 1. Pronoun Resolution
     resolved_prompt = resolve_pronouns(prompt, st.session_state.active_candidate_key, candidates_data)
 
     # 2. Tagalog Translation Bridge
@@ -85,8 +93,15 @@ if prompt := st.chat_input("Ask about candidates, voting, or elections..."):
     if regex_response:
         final_response = regex_response
     else:
-        # 5. Use Naive Bayes ML Classifier on Normalized Text
-        intent = get_intent(normalized_prompt, classifier, threshold=0.35)
+        # 5. Zero-Friction Tag Interceptor
+        tag_regex = r'(?i)\b(' + '|'.join(dynamic_tags) + r')\b'
+        has_tag_word = bool(re.search(tag_regex, translated_prompt))
+        
+        # If a tag is mentioned, but NO specific candidate/project is in the prompt, it's a tag query.
+        if has_tag_word and not detected_candidate_key and not project_found:
+            intent = '__MATCH_TAG__'
+        else:
+            intent = get_intent(normalized_prompt, classifier, threshold=0.25)
         
         if intent == '__SHOW_LIST__':
             list_str = "\n".join([f"* {data['full_name']}" for key, data in candidates_data.items()])
@@ -121,17 +136,17 @@ if prompt := st.chat_input("Ask about candidates, voting, or elections..."):
         else:
             final_response = "I'm not sure I understand. Try asking me to 'show the 2022 presidential candidates'!"
 
-    # 6. Reverse Translation
-    if st.session_state.response_lang == 'tl':
-        final_response, _ = process_language(final_response, masker, mask_map, target_lang='tl')
-
-    # 7. Inject Conversational Hint
+    # 6. Inject Conversational Hint
     if random.random() < 0.40:
         hints = ["Which candidates prioritize education?", "Which candidates have government experience?", "Who focuses on labor?"]
         if st.session_state.active_candidate_key:
             name = candidates_data[st.session_state.active_candidate_key]['full_name']
             hints.extend([f"How old is {name}?", f"What are {name}'s projects?"])
         final_response += f"\n\n💡 *Tip: You can also ask me: '{random.choice(hints)}'*"
+
+    # 7. Reverse Translation
+    if st.session_state.response_lang == 'tl':
+        final_response, _ = process_language(final_response, masker, mask_map, target_lang='tl')
 
     with st.chat_message("assistant", avatar=BOT_AVATAR):
         st.markdown(final_response)
