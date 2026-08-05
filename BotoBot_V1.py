@@ -177,15 +177,19 @@ candidates = {
         ]
     },
     "jose montemayor jr": {
-        "full_name": "Jose C. Montemayor Jr.",
-        "age": "65 (Born approx. 1956)",
+        "full_name": "Jose \"Joey\" Cabrera Montemayor Jr.",
+        "age": "64 (Born February 17, 1962)",
         "positions": [
+            "Author",
             "Cardiologist",
             "Lawyer",
             "DPP Presidential Candidate (2022)"
         ],
         "education": [
+            "Cardinal Santos Med. Ctr., 1987",
+            "Cardinal Santos Med. Ctr., 1991",
             "University of the Philippines (Medicine)",
+            "Farcorners International Theological Seminary",
             "Far Eastern University",
             "Philippine Law School"
         ],
@@ -195,7 +199,9 @@ candidates = {
         ],
         "links":[
             "(https://www.gmanetwork.com/news/eleksyon2022/candidates/josejrmontemayor/)",
-            "(https://www.abs-cbn.com/halalan2022/candidates/jose-montemayor)"
+            "(https://www.abs-cbn.com/halalan2022/candidates/jose-montemayor)",
+            "(https://online.phc.gov.ph/docfind/view.php?med_id=196)",
+            "(https://central.com.ph/product/montemayor-domestic-violence-in-the-philippines/)"
         ]
     },
     "manny pacquiao": {
