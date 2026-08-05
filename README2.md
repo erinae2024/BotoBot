@@ -6,7 +6,7 @@
 
    ```bash
    python -m venv venv
-   source venv/Scripts/activate  # On Windows
+   venv/Scripts/activate  # On Windows
    Install the required dependencies:
    ```
 
