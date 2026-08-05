@@ -194,28 +194,37 @@ candidates = {
             "Philippine Law School"
         ],
         "projects": [
+            "Green Spaces Initiative",
             "Free Medical and Legal Missions",
             "COVID-19 Alternative Policy Advocacies"
         ],
         "links":[
             "(https://www.gmanetwork.com/news/eleksyon2022/candidates/josejrmontemayor/)",
             "(https://www.abs-cbn.com/halalan2022/candidates/jose-montemayor)",
+            "(https://www.facebook.com/VotePilipinas/)",
             "(https://online.phc.gov.ph/docfind/view.php?med_id=196)",
             "(https://central.com.ph/product/montemayor-domestic-violence-in-the-philippines/)"
         ]
     },
     "manny pacquiao": {
-        "full_name": "Emmanuel Dapidran Pacquiao",
+        "full_name": "Emmanuel \*Manny\* Dapidran Pacquiao Sr.",
         "age": "43 (Born December 17, 1978)",
         "positions": [
             "Senator of the Philippines (2016-2022)",
             "Representative, Sarangani (2010-2016)",
+            "Reservist, Philippine Army (2006-Present)",
+            "TV host, actor, singer, endorser",
             "8-Division World Boxing Champion"
         ],
         "education": [
-            "University of Makati (BA Political Science)"
+            "University of Makati (BA Political Science)",
+            "Development Academy of the Philippines"
         ],
         "projects": [
+            "RA 11346: An Act Increasing the Excise Tax on Tobacco Products",
+            "RA 11467: Increasing Excise Tax on Alcohol Products and Cigarettes",
+            "RA 10828: Establishing an LTO District Office in Sarangani Province",
+            "RA 11227: Handbook for OFWs Act",
             "Pacman Village (Free Housing Project)",
             "Pabahay Programs"
         ],
@@ -225,11 +234,14 @@ candidates = {
         ]
     },
     "leni robredo": {
-        "full_name": "Maria Leonor Gerona Robredo",
+        "full_name": "Maria Leonor \*Leni\* Gerona Robredo",
         "age": "57 (Born April 23, 1965)",
         "positions": [
             "Vice President of the Philippines (2016-2022)",
-            "Representative, Camarines Sur (2013-2016)"
+            "Representative, Camarines Sur (2013-2016)",
+            "Public Attorney, Public Attorney's Office (1997-1999)",
+            "Economist, Bicol River Basin Development Program Office (1986-1987, 1989-1990)",
+            "President, Naga City Council for Women"
         ],
         "education": [
             "University of the Philippines (BA Economics)",
@@ -238,11 +250,19 @@ candidates = {
         "projects": [
             "Angat Buhay Program",
             "Bayanihan E-Konsulta",
-            "Vaccine Express"
+            "Vaccine Express",
+            "RA 10649: Increasing the Burial Assistance for Veterans from 10,000 to 20,000",
+            "RA 10708: Rendering Election Service Non-Compulsory for Public School Teachers",
+            "RA 10665: Open High School System Act",
+            "RA 10906: Anti-Mail Order Spouse Law"
         ],
         "links":[
             "(https://www.gmanetwork.com/news/eleksyon2022/candidates/marialeonorrobredo/)",
-            "(https://www.abs-cbn.com/halalan2022/candidates/leni-robredo)"
+            "(https://www.abs-cbn.com/halalan2022/candidates/leni-robredo)",
+            "(https://www.hks.harvard.edu/centers/cpl/publications/lessons-philippines-leni-robredo-angat-buhay-and-accountable-leadership)",
+            "(https://www.foi.gov.ph/agencies/ovp/SUCCESSFUL/)",
+            "(https://lawphil.net/statutes/repacts/ra2014/ra_10649_2014.html)"
+
         ]
     },
 }
