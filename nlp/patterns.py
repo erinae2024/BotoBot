@@ -11,17 +11,23 @@ pairs = [
     [r'(?i).*(section|sec\.?)\s*(\d+)\s*\(([a-z])\).*',
      ["Ah, Section %2(%3). That's from the Omnibus Election Code. A common one people ask about is Section 261(a), which strictly deals with vote-buying and vote-selling."]],
 
-    # 3. REQUIREMENTS & PRECINCTS (Relaxed to catch "how do I register")
-    [r'(?i).*(require|requirement|need|needed|how).*(register|apply|vote).*',
+    # 3. REQUIREMENTS & PRECINCTS
+    [r'(?i).*(require|requirement|need|needed).*(register|apply|voter.*id).*',
      ["Here are the requirements to apply for a voter's ID:\n1. Bring a valid government-issued ID.\n2. Print and fill up the CEF-1 form.\n\n(https://comelec.gov.ph/?r=VoterRegistration/HowtoRegister)"]],
      
-    [r'(?i).*(where|how).*(vote|precinct|polling).*',
+    [r'(?i).*(how).*(register|apply for.*id).*',
+     ["Here are the requirements to apply for a voter's ID:\n1. Bring a valid government-issued ID.\n2. Print and fill up the CEF-1 form.\n\n(https://comelec.gov.ph/?r=VoterRegistration/HowtoRegister)"]],
+
+    [r'(?i).*(where).*(vote|precinct|polling).*',
+     ["Voting is done at the voting precinct assigned to you. You can find your precinct at COMELEC's Precinct Finder: https://precinctfinder.comelec.gov.ph."]],
+     
+    [r'(?i).*(how).*(find|check).*(precinct|polling).*',
      ["Voting is done at the voting precinct assigned to you. You can find your precinct at COMELEC's Precinct Finder: https://precinctfinder.comelec.gov.ph."]],
 
-    # 4. GREETINGS & QUIT (Anchor removed so "umm hello" works)
-    [r'(?i).*\b(hi+|hello+|hey+|greetings|good morning|good afternoon|good evening)\b.*',
+    # 4. GREETINGS & QUIT
+    [r'(?i)^\s*(hi+|hello+|hey+|greetings|good morning|good afternoon|good evening)\s*[!?.,]*\s*$',
      ["Hello! Welcome to BotoBot! How can I help you with the 2022 Philippine Presidential Candidates or election info?"]],
     
-    [r'(?i).*\b(quit+|bye+|goodbye|exit)\b.*',
+    [r'(?i)^\s*(quit+|bye+|goodbye|exit)\s*[!?.,]*\s*$',
      ["Goodbye! Stay informed and remember to vote wisely!"]]
 ]
