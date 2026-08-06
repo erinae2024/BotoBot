@@ -79,15 +79,33 @@ def extract_and_normalize_slots(text, active_candidate_key, candidates_data):
 
     best_cand_score = 0
     for ngram in ngrams:
-        if len(ngram) < 3:
+        ngram_clean = ngram.strip().lower()
+        if len(ngram_clean) < 3:
             continue
-        match = process.extractOne(ngram.lower(), list(alias_map.keys()), scorer=fuzz.ratio)
-        if match and match[1] >= 68:
-            if match[1] > best_cand_score or (match[1] == best_cand_score and len(ngram) > len(raw_cand_ngram)):
-                best_cand_score = match[1]
-                matched_alias = match[0]
-                detected_candidate_key, matched_candidate_str = alias_map[matched_alias]
-                raw_cand_ngram = ngram
+        
+        match = process.extractOne(ngram_clean, list(alias_map.keys()), scorer=fuzz.ratio)
+        if match:
+            matched_alias = match[0]
+            score = match[1]
+            
+            # 🔒 DYNAMIC THRESHOLDING: Prevents short aliases (e.g., 'leni', 'ping') from matching words like 'lenient'
+            alias_len = len(matched_alias)
+            ngram_len = len(ngram_clean)
+            
+            if alias_len <= 4:
+                if abs(ngram_len - alias_len) > 1:
+                    min_cand_thresh = 88
+                else:
+                    min_cand_thresh = 80
+            else:
+                min_cand_thresh = 68
+                
+            if score >= min_cand_thresh:
+                if score > best_cand_score or (score == best_cand_score and len(ngram_clean) > len(raw_cand_ngram)):
+                    best_cand_score = score
+                    matched_alias_str = matched_alias
+                    detected_candidate_key, matched_candidate_str = alias_map[matched_alias_str]
+                    raw_cand_ngram = ngram
 
     best_proj_score = 0
     for ngram in ngrams:
@@ -96,7 +114,6 @@ def extract_and_normalize_slots(text, active_candidate_key, candidates_data):
             continue
         
         match = process.extractOne(ngram_clean, list(all_projects.keys()), scorer=fuzz.ratio)
-        # THRESHOLD FIX: Raised threshold to 82 to stop "projects" matching "products" (75)
         min_threshold = 88 if len(ngram_clean.split()) == 1 else 82
         if match and match[1] >= min_threshold:
             if match[1] > best_proj_score or (match[1] == best_proj_score and len(ngram) > len(raw_proj_ngram)):
@@ -104,12 +121,13 @@ def extract_and_normalize_slots(text, active_candidate_key, candidates_data):
                 project_found = all_projects[match[0]]
                 raw_proj_ngram = ngram
 
+    # 🔒 BOUNDARY FIX: Added \b to prevent prefix corruption
     if detected_candidate_key and raw_cand_ngram:
-        pattern = re.compile(re.escape(raw_cand_ngram), re.IGNORECASE)
+        pattern = re.compile(r'\b' + re.escape(raw_cand_ngram) + r'\b', re.IGNORECASE)
         normalized_text = pattern.sub('_CANDIDATE_', normalized_text)
 
     if project_found and raw_proj_ngram:
-        pattern = re.compile(re.escape(raw_proj_ngram), re.IGNORECASE)
+        pattern = re.compile(r'\b' + re.escape(raw_proj_ngram) + r'\b', re.IGNORECASE)
         normalized_text = pattern.sub('_PROJECT_', normalized_text)
 
     return detected_candidate_key, project_found, normalized_text

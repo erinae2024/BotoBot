@@ -1,5 +1,5 @@
-streamlit
-nltk
-rapidfuzz
-flashtext
-deep-translator
+streamlit>=1.30.0
+nltk>=3.8.1
+rapidfuzz>=3.5.0
+flashtext>=2.7
+deep-translator>=1.11.4
