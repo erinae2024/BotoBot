@@ -114,15 +114,19 @@ pairs = [
     # 5. GREETINGS, THANKS, & QUIT (Typo & Slang Tolerant)
     # ==========================================
 
+    # ==========================================
+    # 5. GREETINGS, THANKS, & QUIT (Typo & Translation Safe)
+    # ==========================================
+
     # Greetings
     [r'(?i).*(hi+|hello+|hey+|greetings|good morning|good afternoon|good evening|magandang (umaga|hapon|gabi|bati)|gandang).*',
      ["Hello! Welcome to BotoBot! How can I help you with the 2022 Philippine Presidential Candidates or election info?"]],
     
-    # Thanks / Salamat (Catches thank, thanks, tnx, thx, ty, salamat, slmt)
-    [r'(?i).*(thank|thx|tnx|\bty\b|salamat|\bslmt\b|appreciate).*',
-     ["You're very welcome! Feel free to ask if you need anything else cleared up."]],
+    # Thanks / Salamat
+    [r'(?i).*(thank|thx|tnx|\bty\b|salam+a+t+|\bslmt\b|salamuch|appreciate).*',
+     ["You're very welcome! Feel free to ask if you have any more questions."]],
     
-    # Quit / Paalam (Catches bye, babay, paalam, cge, sige, gege)
+    # Quit / Paalam 
     [r'(?i).*(quit+|bye+|goodbye|exit|paalam|see you|babay|\bcge\b|\bsige\b|\bgege\b).*',
      ["Goodbye! Stay informed and remember to vote wisely!"]]
 ]
