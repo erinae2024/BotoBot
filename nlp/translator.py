@@ -4,7 +4,7 @@ import re
 from flashtext import KeywordProcessor
 from deep_translator import GoogleTranslator
 
-TAGALOG_TRIGGERS = r'(?i)\b(boto|bumoto|halalan|eleksyon|botohan|sino|ano|paano|saan|bakit|kailan|mga|niya|tungkol|ba|proyekto)\b'
+TAGALOG_TRIGGERS = r'(?i)\b(boto|bumoto|halalan|eleksyon|botohan|sino|ano|paano|saan|bakit|kailan|mga|niya|tungkol|ba|proyekto|kredensyal)\b'
 
 def build_entity_masker(candidates_data):
     kp = KeywordProcessor(case_sensitive=False)

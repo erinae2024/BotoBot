@@ -84,8 +84,11 @@ TRAINING_DATA = [
 ]
 
 def extract_features(text):
+    # trying fix for 'credentials' question showing age
+    STOP_WORDS = {"what", "is", "are", "the", "of", "a", "an", "i", "how", "about"}
+
     words = word_tokenize(text.lower())
-    return {word: True for word in words}
+    return {word: True for word in words if word not in STOP_WORDS}
 
 def train_classifier():
     formatted_data = [(extract_features(text), intent) for (text, intent) in TRAINING_DATA]
