@@ -11,11 +11,11 @@ pairs = [
     [r'(?i).*(republic act|r\.?a\.?)\s*(9006|9369|8189|7166).*',
      ["Yes, Republic Act %2 is a relevant election law! For context: RA 9006 is the Fair Election Act, RA 9369 covers the Automated Election System, RA 8189 is Voter Registration, and RA 7166 covers Synchronized Elections."]],
 
-    # Catches irrelevant or untracked RAs 
+    # Catches irrelevant or untracked RAs
     [r'(?i).*(republic act|r\.?a\.?)\s*(\d+).*',
      ["You mentioned Republic Act %2. However, I only track laws specifically relevant to Philippine elections. The main election laws I can help you with are RA 9006 (Fair Election Act), RA 9369 (Automated Elections), and RA 8189 (Voter Registration)."]],
 
-    # Legal Sections 
+    # Legal Sections
     [r'(?i).*(section|sec\.?)\s*(\d+)(?:\s*\(([a-z])\))?.*',
      ["Ah, Section %2. That's from the Omnibus Election Code. A common subsection people ask about is Section 261(a), which strictly deals with vote-buying and vote-selling."]],
 
@@ -23,6 +23,9 @@ pairs = [
     [r'(?i).*(omnibus election code|bp\s*881|liquor ban).*',
      ["Under the Omnibus Election Code (BP 881), things like vote-buying or violating the liquor ban are serious election offenses. Anyone caught faces 1 to 6 years in jail, and no probation is allowed."]],
 
+    # ELECTION OFFENSES (Vote Buying / Selling)
+    [r'(?i).*(vote[- ]?buying|vote[- ]?selling|buy(ing)?\s+votes?|sell(ing)?\s+votes?|bili ng boto|bayad.*boto|boto.*bayad).*|.*(vote).*(money|pesos|bribe).*|.*(money|pesos|bribe).*(vote).*',
+     ["According to Article XXII (26), Section 261, vote-buying and vote-selling are election offenses where you or another person offers to give money or something valuable to make someone vote for or against a candidate. If you witness or experience someone doing this, immediately do the following:\n1.) If possible, document the offense by taking photos or videos.\n2.) Take note of details such as date and time, place, and what exactly happened.\n\nElection offense reports and other similar problems can be reported using MovePH's #PHVoteWatch Google Form (https://docs.google.com/forms/d/e/1FAIpQLSe7d5ayZyUsWwe8dxHR69swD_IERN0v34WwvM3WwENEgiNicA/viewform).\n\n(https://www.rappler.com/moveph/things-to-do-if-witness-vote-buying-violations-irregularities/)"]],
 
     # ==========================================
     # 2. VOTING REQUIREMENTS, PRECINCTS, ELIGIBILITY
@@ -40,7 +43,8 @@ pairs = [
     [r'(?i).*(how).*(find|check).*(precinct|polling).*',
      ["Voting is done at the voting precinct assigned to you. You can find your precinct at COMELEC's Precinct Finder: https://precinctfinder.comelec.gov.ph."]],
 
-    [r'(?i).*(qualif|eligib|who can|requirement).*(vote|voter).*',
+    # Voter Qualifications (Softened trigger to include 'can i / can we / can anyone')
+    [r'(?i).*(qualif|eligib|who can|can (i|we|anyone)|requirement).*(vote|voter).*',
      ["To be a registered voter in the Philippines, a person must be:\n1. At least 18 years old before or on the day of National and Local election.\n2. Be a Philippine resident for at least one (1) year in the place where they wish to vote in for at least six (6) months before the National and Local elections.\n3. Not have the following disqualifications:\n3.1.) Sentenced by final judgment to suffer imprisonment for at least one (1) year.\n\t3.2.) Officially sentenced by final judgment of having committed any crime involving disloyalty to the duly-constituted government (e.g. rebellion, sedition, violation of firearms laws, etc.).\n\t3.3) Declared insane or incompetent by competent authority.\n\n(https://comelec.gov.ph/?r=VoterRegistration/WhatisVoterRegistration/RegistrationRequirements)"]],
 
     [r'(?i).*(valid|list of|what).*(id|ids).*(vote|voter|register|apply).*',

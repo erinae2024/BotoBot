@@ -52,7 +52,8 @@ def extract_and_normalize_slots(text, active_candidate_key, candidates_data):
             
             proj_tokens = re.findall(r'\b[a-zA-Z0-9\-]{4,}\b', proj_name.lower())
             for token in proj_tokens:
-                if token not in stop_words and token not in all_projects:
+                # STRICT FIX: Added 'and not token.isdigit()' to prevent fuzzy matching on years/numbers
+                if token not in stop_words and token not in all_projects and not token.isdigit():
                     all_projects[token] = proj_name
 
     detected_candidate_key = None
