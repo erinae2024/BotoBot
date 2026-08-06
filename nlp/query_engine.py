@@ -18,6 +18,9 @@ def normalize_contractions(text):
     text = re.sub(r"\b(who's|whos)\b", "who is", text, flags=re.IGNORECASE)
     text = re.sub(r"\b(what's|whats)\b", "what is", text, flags=re.IGNORECASE)
     text = re.sub(r"\b(how's|hows)\b", "how is", text, flags=re.IGNORECASE)
+
+    # test fix for apostrophe
+    text = re.sub(r"(?<=\w)('s|')(?:(?=\s)|$)", "", text)
     return text
 
 def resolve_pronouns(text, active_candidate_key, candidates_data):
