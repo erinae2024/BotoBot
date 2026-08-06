@@ -24,7 +24,7 @@ pairs = [
     [r'(?i).*(how).*(find|check).*(precinct|polling).*',
      ["Voting is done at the voting precinct assigned to you. You can find your precinct at COMELEC's Precinct Finder: https://precinctfinder.comelec.gov.ph."]],
 
-    [r'(?i).*(can)?.*(vote).*|.*(vote).*(qualifications|eligibility)',
+    [r'(?i)(vote).*|.*(vote).*(qualifi.*|eligib.*)',
      ["To be a registered voter in the Philippines, a person must be:\n1. At least 18 years old before or on the day of National and Local election.\n2.Be a Philippine resident for at least one (1) year in the place where they wish to vote in for at least six (6) months before the National and Local elections.\n3. Not have the following disqualifications:\n3.1.) Sentenced by final judgment to suffer imprisonment for at least one (1) year.\n\t3.2.) Officially sentenced by final judgment of having committed any crime involving disloyalty to the duly-constituted government (e.g. rebellion, sedition, violation of firearms laws, etc.).\n\t3.3) Declared insane or incompetent by competent authority (unless declared no longer insane or incompentent by proper authority).\n\n(https://comelec.gov.ph/?r=VoterRegistration/WhatisVoterRegistration/RegistrationRequirements)"]],
 
     [r'(?i).*(valid)?\bid\b(.*)',
@@ -68,6 +68,10 @@ pairs = [
 
     [r'(?i)(.*)((vp)?leni|robredo)(.*)(corrupt|government)(.*)',
      ['According to a VERA Files Fact Check article, this report is false; it is merely a clipped news segment from the April 2 episode of *24 Oras Weekend* in which Robredo said (in Filipino): "What Senator Kiko and I promise you is a government that is not corrupt... Because when the government is not corrupt, and when public servants are upright and competent, even if government funds are meager, many people can be helped."\n\n(https://verafiles.org/articles/vera-files-fact-check-fb-pages-mislead-robredo-clip-during-b)']],
+
+    # ELECTION OFFENSES
+    [r'(?i)(money|(P)?\d+|pesos)(.*)(vote)(.*)|(.*)(vote)(.*)(money|\d+|pesos)',
+     ['According to Article XXII (26), Section 261, vote-buying and vote-selling are election offenses where you or another person offers to give money or something valuable to make someone vote for or against a candidate. If you witness or experienced someone doing this, immediately do the following:\n1.) If possible, document the offense by taking photos or videos.\n2.)Take note of details such as date and time, place, and what exactly happened.\n\nElection offense reports and other similar problems can be reported using MovePH\'s #PHVoteWatch Google Form (https://docs.google.com/forms/d/e/1FAIpQLSe7d5ayZyUsWwe8dxHR69swD_IERN0v34WwvM3WwENEgiNicA/viewform).\n\n(https://www.rappler.com/moveph/things-to-do-if-witness-vote-buying-violations-irregularities/)']],
 
     # 4. GREETINGS & QUIT
     [r'(?i)^\s*(hi+|hello+|hey+|greetings|good morning|good afternoon|good evening)\s*[!?.,]*\s*$',
