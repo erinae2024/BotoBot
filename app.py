@@ -50,11 +50,11 @@ if not st.session_state.response_lang:
     col1, col2 = st.columns(2)
     if col1.button("English"):
         st.session_state.response_lang = 'en'
-        st.session_state.messages.append({"role": "assistant", "content": "Welcome to BotoBot! Ask me a question about the 2022 Philippine presidential candidates or voting processes!"})
+        st.session_state.messages.append({"role": "assistant", "content": "Welcome to BotoBot! Ask me a question about the 2022 Philippine presidential candidates, voting processes, or election-related laws! For example:\n- Who are the 2022 presdiential candidates?\n- What are the requirements for a voter\'s ID?\n- What is RA 9006?\n- Who is (Candidate Name)?\n- What is (Candidate Name)'s projects?"})
         st.rerun()
     if col2.button("Tagalog"):
         st.session_state.response_lang = 'tl'
-        st.session_state.messages.append({"role": "assistant", "content": "Maligayang pagdating sa BotoBot! Magtanong tungkol sa mga kandidato o proseso ng pagboto!"})
+        st.session_state.messages.append({"role": "assistant", "content": "Maligayang pagdating sa BotoBot! Magtanong tungkol sa mga kandidato, o proseso ng pagboto, o mga batas tungkol sa eleksyon! Halimbawa:\n- Sino ang mga 2022 kandidato para sa pagkapangulo?\n- Ano ang mga kailangan para makakuha ng voter\'s ID?\n -Ano ang RA 9006?\n- Sino si (Pangalan ng Kandidato)?\n- Ano ang mga proyekto ni (Pangalan ng Kandidato)?"})
         st.rerun()
     st.stop()
 
