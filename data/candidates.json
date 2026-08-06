@@ -1,51 +1,61 @@
 {
   "ernesto abella": {
-        "full_name": "Ernesto \"Ernie\" Corpus Abella",
-        "aliases": ["ernesto", "ernie", "abella"],
-        "pronouns": ["he", "him", "his"],
-        "age": "72 (Born March 22, 1950)",
-        "tags": ["education", "finance"],
-        "has_gov_experience": true,
-        "positions": [
-            "Presidential Spokesperson (2016-2017)",
-            "Undersecretary, DFA (2017-2021)"
-        ],
-        "education": [
-            "Asian Institute of Management (Master in Entrepreneurship)",
-            "Silliman University (Master in Divinity)"
-        ],
-        "projects": [
-            {
-                "name": "Founder of Southpoint School in Davao City",
-                "tags": ["education"],
-                "link": "https://www.southpointschool.edu.ph/"
-            },
-            {
-                "name": "Founding member of One Accord Credit Cooperative",
-                "tags": ["finance"],
-                "link": "https://cda.gov.ph/wp-content/uploads/2023/07/11.08_DA-Malu_2022-List-of-coops-with-financial-service.pdf"
-            }
-        ],
-        "links": [
-          "(https://www.gmanetwork.com/news/eleksyon2022/candidates/ernestoabella/)",
-          "(https://www.abs-cbn.com/halalan2022/candidates/ernesto-abella)",
-          "(https://www.southpointschool.edu.ph/)"
-        ]
+    "full_name": "Ernesto \"Ernie\" Corpus Abella",
+    "aliases": ["ernesto", "ernie", "abella", "ernesto abella", "ernie abella"],
+    "pronouns": ["he", "him", "his"],
+    "age": "72 (Born March 22, 1950)",
+    "tags": ["education", "finance"],
+    "has_gov_experience": true,
+    "positions": [
+      "Presidential Spokesperson (2016-2017)",
+      "Undersecretary, DFA (2017-2021)"
+    ],
+    "education": [
+      "Asian Institute of Management (Master in Entrepreneurship)",
+      "Silliman University (Master in Divinity)"
+    ],
+    "projects": [
+      {
+        "name": "Founder of Southpoint School in Davao City",
+        "tags": ["education"],
+        "link": "https://www.southpointschool.edu.ph/"
+      },
+      {
+        "name": "Founding member of One Accord Credit Cooperative",
+        "tags": ["finance"],
+        "link": "https://cda.gov.ph/wp-content/uploads/2023/07/11.08_DA-Malu_2022-List-of-coops-with-financial-service.pdf"
+      }
+    ],
+    "links": [
+      "https://www.gmanetwork.com/news/eleksyon2022/candidates/ernestoabella/",
+      "https://www.abs-cbn.com/halalan2022/candidates/ernesto-abella",
+      "https://www.southpointschool.edu.ph/"
+    ]
   },
   "leni robredo": {
     "full_name": "Maria Leonor \"Leni\" Gerona Robredo",
-    "aliases": ["leni", "robredo", "vp leni"],
+    "aliases": [
+      "leni",
+      "robredo",
+      "vp leni",
+      "leni robredo",
+      "maria leonor robredo"
+    ],
     "pronouns": ["she", "her", "hers"],
     "age": "57 (Born April 23, 1965)",
     "tags": ["education", "health", "women", "poverty"],
     "has_gov_experience": true,
-    "positions": 
-    ["Vice President of the Philippines (2016-2022)", 
-    "Representative, Camarines Sur (2013-2016)", 
-    "Public Attorney, Public Attorney's Office (1997-1999)", 
-    "Economist, Bicol River Basin Development Program Office (1986-1987, 1989-1990)",
-    "President, Naga City Council for Women"],
-    "education": ["University of the Philippines (BA Economics)", "University of Nueva Caceres (Law)"],
+    "positions": [
+      "Vice President of the Philippines (2016-2022)",
+      "Representative, Camarines Sur (2013-2016)",
+      "Public Attorney, Public Attorney's Office (1997-1999)",
+      "Economist, Bicol River Basin Development Program Office (1986-1987, 1989-1990)",
+      "President, Naga City Council for Women"
+    ],
+    "education": [
+      "University of the Philippines (BA Economics)",
+      "University of Nueva Caceres (Law)"
+    ],
     "projects": [
       {
         "name": "Angat Buhay Program",
@@ -58,32 +68,38 @@
         "link": "https://www.angatbuhay.ph/bayanihan-e-konsulta-patuloy-na-umaarangkada/"
       },
       {
-                "name": "Vaccine Express",
-                "tags": ["health", "covid"],
-                "link": "https://newsinfo.inquirer.net/1476533/robredos-vaccine-express-heads-to-pasig-looks-to-immunize-4000-vs-covid-19"
+        "name": "Vaccine Express",
+        "tags": ["health", "covid"],
+        "link": "https://newsinfo.inquirer.net/1476533/robredos-vaccine-express-heads-to-pasig-looks-to-immunize-4000-vs-covid-19"
       },
-            {
-                "name": "RA 10708: Tax Incentives Management and Transparency Act (TIMTA)",
-                "tags": ["taxation"],
-                "link": ["https://issuances-library.senate.gov.ph/bills/house-bill-no-5831-16th-congress-republic", "https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2010708"]
-            }
+      {
+        "name": "RA 10708: Tax Incentives Management and Transparency Act (TIMTA)",
+        "tags": ["taxation"],
+        "link": [
+          "https://issuances-library.senate.gov.ph/bills/house-bill-no-5831-16th-congress-republic",
+          "https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2010708"
+        ]
+      }
     ],
     "links": [
-      "(https://www.gmanetwork.com/news/eleksyon2022/candidates/marialeonorrobredo/)",
-      "(https://www.abs-cbn.com/halalan2022/candidates/leni-robredo)",
-      "(https://www.hks.harvard.edu/centers/cpl/publications/lessons-philippines-leni-robredo-angat-buhay-and-accountable-leadership)",
-      "(https://www.foi.gov.ph/agencies/ovp/SUCCESSFUL/)",
-      "(https://lawphil.net/statutes/repacts/ra2014/ra_10649_2014.html)"
+      "https://www.gmanetwork.com/news/eleksyon2022/candidates/marialeonorrobredo/",
+      "https://www.abs-cbn.com/halalan2022/candidates/leni-robredo",
+      "https://www.hks.harvard.edu/centers/cpl/publications/lessons-philippines-leni-robredo-angat-buhay-and-accountable-leadership",
+      "https://www.foi.gov.ph/agencies/ovp/SUCCESSFUL/",
+      "https://lawphil.net/statutes/repacts/ra2014/ra_10649_2014.html"
     ]
   },
   "leody de guzman": {
     "full_name": "Leodegario Quitain de Guzman",
-    "aliases": ["leody", "ka leody", "de guzman", "guzman"],
+    "aliases": ["leody", "ka leody", "de guzman", "guzman", "leody de guzman"],
     "pronouns": ["he", "him", "his"],
     "age": "62 (Born July 25, 1959)",
     "tags": ["labor", "workers", "economy"],
     "has_gov_experience": false,
-    "positions": ["Chairperson, Bukluran ng Manggagawang Pilipino", "Chairman, Partido Lakas ng Masa (PLM)"],
+    "positions": [
+      "Chairperson, Bukluran ng Manggagawang Pilipino",
+      "Chairman, Partido Lakas ng Masa (PLM)"
+    ],
     "education": ["PMI Colleges (BS Customs Administration)"],
     "projects": [
       {
@@ -92,21 +108,35 @@
         "link": "https://newsinfo.inquirer.net/1589683/de-guzmanlabors-turnto-be-frontand-center"
       }
     ],
-    "links":[
-      "(https://www.gmanetwork.com/news/eleksyon2022/candidates/leodegariodeguzman)",
-      "(https://www.abs-cbn.com/halalan2022/candidates/leody-de-guzman)",
-      "(https://newsinfo.inquirer.net/1589683/de-guzmanlabors-turnto-be-frontand-center)"
+    "links": [
+      "https://www.gmanetwork.com/news/eleksyon2022/candidates/leodegariodeguzman",
+      "https://www.abs-cbn.com/halalan2022/candidates/leody-de-guzman",
+      "https://newsinfo.inquirer.net/1589683/de-guzmanlabors-turnto-be-frontand-center"
     ]
   },
   "isko moreno": {
     "full_name": "Francisco Moreno Domagoso",
-    "aliases": ["isko", "isko moreno", "domagoso", "yorme"],
+    "aliases": [
+      "isko",
+      "isko moreno",
+      "domagoso",
+      "yorme",
+      "francisco moreno",
+      "francisco domagoso"
+    ],
     "pronouns": ["he", "him", "his"],
     "age": "47 (Born October 24, 1974)",
     "tags": ["housing", "health", "infrastructure"],
     "has_gov_experience": true,
-    "positions": ["Mayor of Manila (2019-2022)", "Vice Mayor of Manila (2007-2016)", "Undersecretary, DSWD (2018)"],
-    "education": ["Pamantasan ng Lungsod ng Maynila (BSBA)", "International Academy of Management and Economics (Bachelor of Science in Business Administration)"],
+    "positions": [
+      "Mayor of Manila (2019-2022)",
+      "Vice Mayor of Manila (2007-2016)",
+      "Undersecretary, DSWD (2018)"
+    ],
+    "education": [
+      "Pamantasan ng Lungsod ng Maynila (BSBA)",
+      "International Academy of Management and Economics (Bachelor of Science in Business Administration)"
+    ],
     "projects": [
       {
         "name": "Manila COVID-19 Field Hospital",
@@ -116,263 +146,338 @@
       {
         "name": "Tondominium & Binondominium Public Housing",
         "tags": ["housing"],
-        "link": ["https://newsinfo.inquirer.net/1284609/tondominium-rising-in-manilas-largest-slum-area", "https://newsinfo.inquirer.net/1583552/isko-moreno-to-inaugurate-binondominium-on-easter-sunday"]
+        "link": [
+          "https://newsinfo.inquirer.net/1284609/tondominium-rising-in-manilas-largest-slum-area",
+          "https://newsinfo.inquirer.net/1583552/isko-moreno-to-inaugurate-binondominium-on-easter-sunday"
+        ]
       }
     ],
-    "links":[
-      "(https://www.gmanetwork.com/news/eleksyon2022/candidates/franciscodomagoso/)",
-      "(https://www.abs-cbn.com/halalan2022/candidates/isko-moreno)",
-      "(https://newsinfo.inquirer.net/1534385/manila-covid-19-field-hospital-ready-for-returning-overseas-filipinos)",
-      "(https://newsinfo.inquirer.net/1284609/tondominium-rising-in-manilas-largest-slum-area)", 
-      "(https://newsinfo.inquirer.net/1583552/isko-moreno-to-inaugurate-binondominium-on-easter-sunday)"
+    "links": [
+      "https://www.gmanetwork.com/news/eleksyon2022/candidates/franciscodomagoso/",
+      "https://www.abs-cbn.com/halalan2022/candidates/isko-moreno",
+      "https://newsinfo.inquirer.net/1534385/manila-covid-19-field-hospital-ready-for-returning-overseas-filipinos",
+      "https://newsinfo.inquirer.net/1284609/tondominium-rising-in-manilas-largest-slum-area",
+      "https://newsinfo.inquirer.net/1583552/isko-moreno-to-inaugurate-binondominium-on-easter-sunday"
     ]
   },
   "norberto gonzales": {
-        "full_name": "Norberto B. Gonzales",
-        "aliases": ["norberto", "gonzales"],
-        "pronouns": ["he", "him", "his"],
-        "age": "75 (Born April 17, 1947)",
-        "tags": ["security", "peace", "politics"],
-        "has_gov_experience": true,
-        "positions": [
-            "Secretary of National Defense (2009-2010)",
-            "National Security Adviser (2005-2010)"
-        ],
-        "education": [
-            "Ateneo de Davao University (BS Pre-Med)",
-            "National Defense College of the Philippines (Master in National Security Administration)"
-        ],
-        "projects": [
-            {
-                "name": "Founder, Partido Demokratiko Sosyalista ng Pilipinas",
-                "tags": ["politics"],
-                "link": "https://www.rappler.com/people/n50319899-norberto-gonzales/"
-            }
-        ],
-        "links": [
-          "(https://www.gmanetwork.com/news/eleksyon2022/candidates/norbertogonzales/)",
-          "(https://www.abs-cbn.com/halalan2022/candidates/norberto-gonzales)",
-          "(https://www.rappler.com/people/n50319899-norberto-gonzales/)"
+    "full_name": "Norberto B. Gonzales",
+    "aliases": ["norberto", "gonzales", "norberto gonzales"],
+    "pronouns": ["he", "him", "his"],
+    "age": "75 (Born April 17, 1947)",
+    "tags": ["security", "peace", "politics"],
+    "has_gov_experience": true,
+    "positions": [
+      "Secretary of National Defense (2009-2010)",
+      "National Security Adviser (2005-2010)"
+    ],
+    "education": [
+      "Ateneo de Davao University (BS Pre-Med)",
+      "National Defense College of the Philippines (Master in National Security Administration)"
+    ],
+    "projects": [
+      {
+        "name": "Founder, Partido Demokratiko Sosyalista ng Pilipinas",
+        "tags": ["politics"],
+        "link": "https://www.rappler.com/people/n50319899-norberto-gonzales/"
+      }
+    ],
+    "links": [
+      "https://www.gmanetwork.com/news/eleksyon2022/candidates/norbertogonzales/",
+      "https://www.abs-cbn.com/halalan2022/candidates/norberto-gonzales",
+      "https://www.rappler.com/people/n50319899-norberto-gonzales/"
+    ]
+  },
+  "panfilo lacson": {
+    "full_name": "Panfilo \"Ping\" Morena Lacson",
+    "aliases": [
+      "ping",
+      "lacson",
+      "ping lacson",
+      "panfilo lacson",
+      "panfilo ping lacson"
+    ],
+    "pronouns": ["he", "him", "his"],
+    "age": "73 (Born June 1, 1948)",
+    "tags": ["security", "governance", "taxation", "tax", "agriculture"],
+    "has_gov_experience": true,
+    "positions": [
+      "Senator of the Philippines (2001-13, 2016-22)",
+      "Presidential Assistant on Rehabilitation and Recovery (2013-2015)",
+      "Chief, Philippine National Police (1999-2001)",
+      "Chief, Presidential Anti-Organized Crime Task Force (1998-2001)",
+      "Project Officer, Special Project Alpha (1996-1997)",
+      "Chief, Presidential Anti-Crime Commission Task Force Habagat (1992-1995)",
+      "Provincial Director, Laguna PC (1992)",
+      "Commander, Ceby Metropolitan District Command (1989-1992)",
+      "PC-INP Anti-Carnapping Task Force (1986-1988)",
+      "Metrocom Intelligence and Security Group (1971-1986)"
+    ],
+    "education": [
+      "Philippine Military Academy (Bachelor of Science)",
+      "Lyceum of the Philippines (Masters in Government Management)"
+    ],
+    "projects": [
+      {
+        "name": "RA 11055: National ID Law (Principal Sponsor)",
+        "tags": ["governance"],
+        "link": [
+          "https://ldr.senate.gov.ph/senator/panfilo-m-lacson",
+          "https://philsys.gov.ph/legal-bases/"
         ]
-    },
-    "panfilo lacson": {
-        "full_name": "Panfilo \"Ping\" Morena Lacson",
-        "aliases": ["ping", "lacson", "ping lacson"],
-        "pronouns": ["he", "him", "his"],
-        "age": "73 (Born June 1, 1948)",
-        "tags": ["security", "governance", "taxation", "tax", "agriculture"],
-        "has_gov_experience": true,
-        "positions": [
-            "Senator of the Philippines (2001-13, 2016-22)",
-            "Presidential Assistant on Rehabilitation and Recovery (2013-2015)",
-            "Chief, Philippine National Police (1999-2001)",
-            "Chief, Presidential Anti-Organized Crime Task Force (1998-2001)",
-            "Project Officer, Special Project Alpha (1996-1997)",
-            "Chief, Presidential Anti-Crime Commission Task Force Habagat (1992-1995)",
-            "Provincial Director, Laguna PC (1992)",
-            "Commander, Ceby Metropolitan District Command (1989-1992)",
-            "PC-INP Anti-Carnapping Task Force (1986-1988)",
-            "Metrocom Intelligence and Security Group (1971-1986)"
-        ],
-        "education": [
-            "Philippine Military Academy (Bachelor of Science)",
-            "Lyceum of the Philippines (Masters in Government Management)"
-        ],
-        "projects": [
-            {
-                "name": "RA 11055: National ID Law (Principal Sponsor)",
-                "tags": ["governance"],
-                "link": ["https://ldr.senate.gov.ph/senator/panfilo-m-lacson", "https://philsys.gov.ph/legal-bases/"]
-            },
-            {
-                "name": "RA 11479: Anti-Terrorism Act of 2020 (Sponsor and Co-author)",
-                "tags": ["security"],
-                "link": ["https://ldr.senate.gov.ph/senator/panfilo-m-lacson", "https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/92597"]
-            },
-            {
-                "name": "RA 11053: Anti-Hazing Law of 2018 (Sponsor and Author)",
-                "tags": ["security"],
-                "link": ["https://ldr.senate.gov.ph/senator/panfilo-m-lacson", "https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/85055", "https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/85055"]
-            },
-            {
-                "name": "RA 10969: Free Irrigation Service Act",
-                "tags": ["agriculture"],
-                "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/panfilolacson/", "https://issuances-library.senate.gov.ph/bills/senate-bill-no-1465-17th-congress-republic", "https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/81182"]
-            },
-            {
-                "name": "RA 10351: Sin Tax Law",
-                "tags": ["taxation", "tax"],
-                "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/panfilolacson/", "https://ldr.senate.gov.ph/bills/senate-bill-no-3299-15th-congress-republic","https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/51245"]
-            }
-        ],
-        "links": [
-          "(https://www.gmanetwork.com/news/eleksyon2022/candidates/panfilolacson/)",
-          "(https://www.abs-cbn.com/halalan2022/candidates/ping-lacson)",
-          "(https://ldr.senate.gov.ph/senator/panfilo-m-lacson)"
+      },
+      {
+        "name": "RA 11479: Anti-Terrorism Act of 2020 (Sponsor and Co-author)",
+        "tags": ["security"],
+        "link": [
+          "https://ldr.senate.gov.ph/senator/panfilo-m-lacson",
+          "https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/92597"
         ]
-    },
-    "faisal mangondato": {
-        "full_name": "Faisal Mangondato",
-        "aliases": ["faisal", "mangondato"],
-        "pronouns": ["he", "him", "his"],
-        "age": "59 (Born December 30, 1962)",
-        "tags": ["governance", "federalism", "mindanao"],
-        "has_gov_experience": false,
-        "positions": [
-            "National President, Katipunan Party",
-            "President, Kalaw Printext Marketing in Marantao, Lanao del Sur",
-            "Managing Director, Kalaw Travel and Tour"
-        ],
-        "education": [
-            "Philippine Women's University (BS Medical Technology)"
-        ],
-        "projects": [
-            {
-                "name": "Advocacy for Philippine Federalism",
-                "tags": ["federalism", "governance", "mindanao"],
-                "link": "https://newsinfo.inquirer.net/1591346/faisal-mangondatos-voice-is-loudest-for-mindanao"
-            }
-        ],
-        "links": [
-          "(https://www.gmanetwork.com/news/eleksyon2022/candidates/faisalmangondato/)",
-          "(https://www.abs-cbn.com/halalan2022/candidates/faisal-mangondato)",
-          "(https://newsinfo.inquirer.net/1591346/faisal-mangondatos-voice-is-loudest-for-mindanao)"
+      },
+      {
+        "name": "RA 11053: Anti-Hazing Law of 2018 (Sponsor and Author)",
+        "tags": ["security"],
+        "link": [
+          "https://ldr.senate.gov.ph/senator/panfilo-m-lacson",
+          "https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/85055"
         ]
-    },
-    "bongbong marcos": {
-        "full_name": "Ferdinand Romualdez Marcos Jr.",
-        "aliases": ["bongbong", "bbm", "marcos"],
-        "pronouns": ["he", "him", "his"],
-        "age": "64 (Born September 13, 1957)",
-        "tags": ["governance", "housing", "judiciary", "youth"],
-        "has_gov_experience": true,
-        "positions": [
-            "Senator of the Philippines (2010-2016)",
-            "Congressman, 2nd District, Ilocos Norte (1992-95, 2007-10)",
-            "Governor of Ilocos Norte (1983-86, 1998-2007)",
-            "Vice Governor, Ilocos Norte (1981-1983)"
-        ],
-        "education": [
-            "University of Oxford (Special Diploma in Social Studies)"
-        ],
-        "projects": [
-            {
-                "name": "RA 10363: Creating Seven Additional Branches of the Regional Court (Co-Author)",
-                "tags": ["judiciary"],
-                "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/ferdinandjrmarcos/", "https://issuances-library.senate.gov.ph/bills/senate-bill-no-3034-15th-congress-republic", "https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2010363"]
-            },
-            {
-                "name": "RA 10632: Postponing the Sangguniang Kabataan Election (Author)",
-                "tags": ["youth", "governance"],
-                "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/ferdinandjrmarcos/","https://ldr.senate.gov.ph/bills/senate-bill-no-1186-16th-congress-republic", "https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/63136"]
-            },
-            {
-                "name": "RA 10884: Balanced Housing Development Program Amendments (Author)",
-                "tags": ["housing"],
-                "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/ferdinandjrmarcos/", "https://issuances-library.senate.gov.ph/bills/senate-bill-no-2947-16th-congress-republic", "https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2010884"]
-            },
-            {
-              "name": "RA 10752: The Right-of-Way Act",
-              "tags": ["infrastructure"],
-              "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/ferdinandjrmarcos/", "https://ldr.senate.gov.ph/bills/senate-bill-no-3004-16th-congress-republic", "https://ldr.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2010752"]
-            }
-        ],
-        "links": [
-          "(https://www.gmanetwork.com/news/eleksyon2022/candidates/ferdinandjrmarcos/)",
-          "(https://www.abs-cbn.com/halalan2022/candidates/bongbong-marcos)",
-          "(https://verafiles.org/articles/vera-files-fact-check-posts-claiming-bongbong-marcos-authore)"
+      },
+      {
+        "name": "RA 10969: Free Irrigation Service Act",
+        "tags": ["agriculture"],
+        "link": [
+          "https://www.gmanetwork.com/news/eleksyon2022/candidates/panfilolacson/",
+          "https://issuances-library.senate.gov.ph/bills/senate-bill-no-1465-17th-congress-republic",
+          "https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/81182"
         ]
-    },
-    "jose montemayor jr": {
-        "full_name": "Jose \"Joey\" Cabrera Montemayor Jr.",
-        "aliases": ["jose", "joey", "montemayor"],
-        "pronouns": ["he", "him", "his"],
-        "age": "64 (Born February 17, 1962)",
-        "tags": ["health", "environment", "covid", "poverty"],
-        "has_gov_experience": false,
-        "positions": [
-            "Consultant in Clinical and Interventional Cardiology at St. Luke's Medical Center, National Kidney Institute, and Philippine Heart Center",
-            "Consultant in Internal Medicine and Clinical Cardiology at the National Kidney and Transplant Institute",  
-            "Professor of Law at San Sebastian College; University of Manila; Polytechnic University of the Philippines; San Beda College",
-            "Legal Counsel and Legal Officer, Philippine Heart Center",
-            "Author"
-        ],
-        "education": [
-            "Cardinal Santos Med. Ctr., 1987",
-            "Cardinal Santos Med. Ctr., 1991",
-            "University of the Philippines (Medicine)",
-            "Farcorners International Theological Seminary (Master of Divinity)",
-            "Far Eastern University-NRMF Institute of Medicine (Doctor of Medicine)",
-            "Philippine Law School (Bachelor of Laws)"
-        ],
-        "projects": [
-            {
-                "name": "OFW Aid Advocacy",
-                "tags": ["ofw"],
-                "link": "https://www.abs-cbn.com/news/02/19/22/presidential-bet-montemayor-pushes-for-better-ofw-aid"
-            },
-            {
-                "name": "Law and crime related books",
-                "tags": ["law", "legal", "book"],
-                "link": "https://tuklas.up.edu.ph/Author/Home?author=%22Montemayor%2C+Jose+Cabrera+Jr%22&type=Author&page=2"
-            }
-
-        ],
-        "links": [
-          "(https://www.gmanetwork.com/news/eleksyon2022/candidates/josejrmontemayor/)",
-            "(https://www.abs-cbn.com/halalan2022/candidates/jose-montemayor)",
-            "(https://online.phc.gov.ph/docfind/view.php?med_id=196)",
-            "(https://central.com.ph/product/montemayor-domestic-violence-in-the-philippines/)"
+      },
+      {
+        "name": "RA 10351: Sin Tax Law",
+        "tags": ["taxation", "tax"],
+        "link": [
+          "https://www.gmanetwork.com/news/eleksyon2022/candidates/panfilolacson/",
+          "https://ldr.senate.gov.ph/bills/senate-bill-no-3299-15th-congress-republic",
+          "https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/51245"
         ]
-    },
-    "manny pacquiao": {
-        "full_name": "Emmanuel \"Manny\" Dapidran Pacquiao Sr.",
-        "aliases": ["manny", "pacquiao", "pacman"],
-        "pronouns": ["he", "him", "his"],
-        "age": "43 (Born December 17, 1978)",
-        "tags": ["taxation", "tax", "housing", "poverty", "labor"],
-        "has_gov_experience": true,
-        "positions": [
-            "Senator of the Philippines (2016-2022)",
-            "Representative, Sarangani (2010-2016)",
-            "Reservist, Philippine Army (2006-Present)",
-            "TV host, actor, singer, endorser",
-            "8-Division World Boxing Champion"
-        ],
-        "education": [
-            "University of Makati (BA Political Science)",
-            "Development Academy of the Philippines (Certificate Course on Development Legislation and Governance)"
-        ],
-        "projects": [
-            {
-                "name": "RA 11346: An Act Increasing the Excise Tax on Tobacco Products",
-                "tags": ["taxation", "tax", "health"],
-                "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/","https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2011346"]
-            },
-            {
-                "name": "RA 11467: Increasing Excise Tax on Alcohol Products and Cigarettes",
-                "tags": ["taxation", "tax", "health"],
-                "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/","https://issuances-library.senate.gov.ph/bills/senate-bill-no-1074-18th-congress-republic", "https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/92612"]
-            },
-            {
-                "name": "RA 10828: Establishing an LTO District Office in Sarangani Province",
-                "tags": ["infrastructure"],
-                "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/", "https://issuances-library.senate.gov.ph/bills/house-bill-no-5825-16th-congress-republic", "https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2010828"]
-            },
-            {
-                "name": "RA 11227: Handbook for OFWs Act",
-                "tags": ["labor", "workers"],
-                "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/", "https://issuances-library.senate.gov.ph/bills/senate-bill-no-192-17th-congress-republic", "https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2011227"]
-            },
-            {
-                "name": "Pacman Village (Free Housing Project)",
-                "tags": ["housing", "poverty"],
-                "link": ["https://www.abs-cbn.com/news/02/09/22/pacquiao-unveils-planned-free-housing-program-for-ph", "https://newsinfo.inquirer.net/1591131/pacquiao-leads-groundbreaking-of-2-pacman-villages-in-eastern-visayas", "https://www.philstar.com/headlines/2022/02/10/2159780/pacquiao-vows-replicate-pacman-village-entire-philippine"]
-            }
-        ],
-        "links": [
-            "(https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/)",
-            "(https://www.abs-cbn.com/halalan2022/candidates/manny-pacquiao)"
+      }
+    ],
+    "links": [
+      "https://www.gmanetwork.com/news/eleksyon2022/candidates/panfilolacson/",
+      "https://www.abs-cbn.com/halalan2022/candidates/ping-lacson",
+      "https://ldr.senate.gov.ph/senator/panfilo-m-lacson"
+    ]
+  },
+  "faisal mangondato": {
+    "full_name": "Faisal Mangondato",
+    "aliases": ["faisal", "mangondato", "faisal mangondato"],
+    "pronouns": ["he", "him", "his"],
+    "age": "59 (Born December 30, 1962)",
+    "tags": ["governance", "federalism", "mindanao"],
+    "has_gov_experience": false,
+    "positions": [
+      "National President, Katipunan Party",
+      "President, Kalaw Printext Marketing in Marantao, Lanao del Sur",
+      "Managing Director, Kalaw Travel and Tour"
+    ],
+    "education": ["Philippine Women's University (BS Medical Technology)"],
+    "projects": [
+      {
+        "name": "Advocacy for Philippine Federalism",
+        "tags": ["federalism", "governance", "mindanao"],
+        "link": "https://newsinfo.inquirer.net/1591346/faisal-mangondatos-voice-is-loudest-for-mindanao"
+      }
+    ],
+    "links": [
+      "https://www.gmanetwork.com/news/eleksyon2022/candidates/faisalmangondato/",
+      "https://www.abs-cbn.com/halalan2022/candidates/faisal-mangondato",
+      "https://newsinfo.inquirer.net/1591346/faisal-mangondatos-voice-is-loudest-for-mindanao"
+    ]
+  },
+  "bongbong marcos": {
+    "full_name": "Ferdinand Romualdez Marcos Jr.",
+    "aliases": [
+      "bongbong",
+      "bbm",
+      "marcos",
+      "bongbong marcos",
+      "ferdinand marcos",
+      "ferdinand marcos jr"
+    ],
+    "pronouns": ["he", "him", "his"],
+    "age": "64 (Born September 13, 1957)",
+    "tags": ["governance", "housing", "judiciary", "youth"],
+    "has_gov_experience": true,
+    "positions": [
+      "Senator of the Philippines (2010-2016)",
+      "Congressman, 2nd District, Ilocos Norte (1992-95, 2007-10)",
+      "Governor of Ilocos Norte (1983-86, 1998-2007)",
+      "Vice Governor, Ilocos Norte (1981-1983)"
+    ],
+    "education": ["University of Oxford (Special Diploma in Social Studies)"],
+    "projects": [
+      {
+        "name": "RA 10363: Creating Seven Additional Branches of the Regional Court (Co-Author)",
+        "tags": ["judiciary"],
+        "link": [
+          "https://www.gmanetwork.com/news/eleksyon2022/candidates/ferdinandjrmarcos/",
+          "https://issuances-library.senate.gov.ph/bills/senate-bill-no-3034-15th-congress-republic",
+          "https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2010363"
         ]
-    }
+      },
+      {
+        "name": "RA 10632: Postponing the Sangguniang Kabataan Election (Author)",
+        "tags": ["youth", "governance"],
+        "link": [
+          "https://www.gmanetwork.com/news/eleksyon2022/candidates/ferdinandjrmarcos/",
+          "https://ldr.senate.gov.ph/bills/senate-bill-no-1186-16th-congress-republic",
+          "https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/63136"
+        ]
+      },
+      {
+        "name": "RA 10884: Balanced Housing Development Program Amendments (Author)",
+        "tags": ["housing"],
+        "link": [
+          "https://www.gmanetwork.com/news/eleksyon2022/candidates/ferdinandjrmarcos/",
+          "https://issuances-library.senate.gov.ph/bills/senate-bill-no-2947-16th-congress-republic",
+          "https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2010884"
+        ]
+      },
+      {
+        "name": "RA 10752: The Right-of-Way Act",
+        "tags": ["infrastructure"],
+        "link": [
+          "https://www.gmanetwork.com/news/eleksyon2022/candidates/ferdinandjrmarcos/",
+          "https://ldr.senate.gov.ph/bills/senate-bill-no-3004-16th-congress-republic",
+          "https://ldr.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2010752"
+        ]
+      }
+    ],
+    "links": [
+      "https://www.gmanetwork.com/news/eleksyon2022/candidates/ferdinandjrmarcos/",
+      "https://www.abs-cbn.com/halalan2022/candidates/bongbong-marcos",
+      "https://verafiles.org/articles/vera-files-fact-check-posts-claiming-bongbong-marcos-authore"
+    ]
+  },
+  "jose montemayor jr": {
+    "full_name": "Jose \"Joey\" Cabrera Montemayor Jr.",
+    "aliases": [
+      "joey",
+      "montemayor",
+      "jose montemayor",
+      "joey montemayor",
+      "jose montemayor jr"
+    ],
+    "pronouns": ["he", "him", "his"],
+    "age": "64 (Born February 17, 1962)",
+    "tags": ["health", "environment", "covid", "poverty"],
+    "has_gov_experience": false,
+    "positions": [
+      "Consultant in Clinical and Interventional Cardiology at St. Luke's Medical Center, National Kidney Institute, and Philippine Heart Center",
+      "Consultant in Internal Medicine and Clinical Cardiology at the National Kidney and Transplant Institute",
+      "Professor of Law at San Sebastian College; University of Manila; Polytechnic University of the Philippines; San Beda College",
+      "Legal Counsel and Legal Officer, Philippine Heart Center",
+      "Author"
+    ],
+    "education": [
+      "Cardinal Santos Med. Ctr., 1987",
+      "Cardinal Santos Med. Ctr., 1991",
+      "University of the Philippines (Medicine)",
+      "Farcorners International Theological Seminary (Master of Divinity)",
+      "Far Eastern University-NRMF Institute of Medicine (Doctor of Medicine)",
+      "Philippine Law School (Bachelor of Laws)"
+    ],
+    "projects": [
+      {
+        "name": "OFW Aid Advocacy",
+        "tags": ["ofw"],
+        "link": "https://www.abs-cbn.com/news/02/19/22/presidential-bet-montemayor-pushes-for-better-ofw-aid"
+      },
+      {
+        "name": "Law and crime related books",
+        "tags": ["law", "legal", "book"],
+        "link": "https://tuklas.up.edu.ph/Author/Home?author=%22Montemayor%2C+Jose+Cabrera+Jr%22&type=Author&page=2"
+      }
+    ],
+    "links": [
+      "https://www.gmanetwork.com/news/eleksyon2022/candidates/josejrmontemayor/",
+      "https://www.abs-cbn.com/halalan2022/candidates/jose-montemayor",
+      "https://online.phc.gov.ph/docfind/view.php?med_id=196",
+      "https://central.com.ph/product/montemayor-domestic-violence-in-the-philippines/"
+    ]
+  },
+  "manny pacquiao": {
+    "full_name": "Emmanuel \"Manny\" Dapidran Pacquiao Sr.",
+    "aliases": [
+      "manny",
+      "pacquiao",
+      "pacman",
+      "manny pacquiao",
+      "emmanuel pacquiao"
+    ],
+    "pronouns": ["he", "him", "his"],
+    "age": "43 (Born December 17, 1978)",
+    "tags": ["taxation", "tax", "housing", "poverty", "labor"],
+    "has_gov_experience": true,
+    "positions": [
+      "Senator of the Philippines (2016-2022)",
+      "Representative, Sarangani (2010-2016)",
+      "Reservist, Philippine Army (2006-Present)",
+      "TV host, actor, singer, endorser",
+      "8-Division World Boxing Champion"
+    ],
+    "education": [
+      "University of Makati (BA Political Science)",
+      "Development Academy of the Philippines (Certificate Course on Development Legislation and Governance)"
+    ],
+    "projects": [
+      {
+        "name": "RA 11346: An Act Increasing the Excise Tax on Tobacco Products",
+        "tags": ["taxation", "tax", "health"],
+        "link": [
+          "https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/",
+          "https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2011346"
+        ]
+      },
+      {
+        "name": "RA 11467: Increasing Excise Tax on Alcohol Products and Cigarettes",
+        "tags": ["taxation", "tax", "health"],
+        "link": [
+          "https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/",
+          "https://issuances-library.senate.gov.ph/bills/senate-bill-no-1074-18th-congress-republic",
+          "https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/92612"
+        ]
+      },
+      {
+        "name": "RA 10828: Establishing an LTO District Office in Sarangani Province",
+        "tags": ["infrastructure"],
+        "link": [
+          "https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/",
+          "https://issuances-library.senate.gov.ph/bills/house-bill-no-5825-16th-congress-republic",
+          "https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2010828"
+        ]
+      },
+      {
+        "name": "RA 11227: Handbook for OFWs Act",
+        "tags": ["labor", "workers"],
+        "link": [
+          "https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/",
+          "https://issuances-library.senate.gov.ph/bills/senate-bill-no-192-17th-congress-republic",
+          "https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2011227"
+        ]
+      },
+      {
+        "name": "Pacman Village (Free Housing Project)",
+        "tags": ["housing", "poverty"],
+        "link": [
+          "https://www.abs-cbn.com/news/02/09/22/pacquiao-unveils-planned-free-housing-program-for-ph",
+          "https://newsinfo.inquirer.net/1591131/pacquiao-leads-groundbreaking-of-2-pacman-villages-in-eastern-visayas",
+          "https://www.philstar.com/headlines/2022/02/10/2159780/pacquiao-vows-replicate-pacman-village-entire-philippine"
+        ]
+      }
+    ],
+    "links": [
+      "https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/",
+      "https://www.abs-cbn.com/halalan2022/candidates/manny-pacquiao"
+    ]
+  }
 }

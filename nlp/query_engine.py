@@ -18,8 +18,6 @@ def normalize_contractions(text):
     text = re.sub(r"\b(who's|whos)\b", "who is", text, flags=re.IGNORECASE)
     text = re.sub(r"\b(what's|whats)\b", "what is", text, flags=re.IGNORECASE)
     text = re.sub(r"\b(how's|hows)\b", "how is", text, flags=re.IGNORECASE)
-
-    # test fix for apostrophe
     text = re.sub(r"(?<=\w)('s|')(?:(?=\s)|$)", "", text)
     return text
 
@@ -27,7 +25,6 @@ def resolve_pronouns(text, active_candidate_key, candidates_data):
     if not active_candidate_key:
         return text
     
-    # Merge candidate-specific pronouns with generic fallbacks
     specific_pronouns = candidates_data[active_candidate_key].get('pronouns', [])
     generic_pronouns = ['he', 'she', 'they', 'her', 'his', 'him', 'niya', 'kanya']
     all_pronouns = list(set(specific_pronouns + generic_pronouns))
@@ -37,21 +34,15 @@ def resolve_pronouns(text, active_candidate_key, candidates_data):
     return re.sub(pattern, name, text, flags=re.IGNORECASE)
 
 def extract_and_normalize_slots(text, active_candidate_key, candidates_data):
-    """
-    Uses N-Gram Sliding Window matching to extract candidates and projects.
-    Eliminates false matches caused by conversational filler words.
-    """
     normalized_text = normalize_contractions(text)
     words = word_tokenize(normalized_text)
     
-    # 1. Build Candidate Map
     alias_map = {}
     for key, data in candidates_data.items():
         alias_map[data['full_name'].lower()] = (key, data['full_name'])
         for alias in data.get('aliases', []):
             alias_map[alias.lower()] = (key, alias)
 
-    # 2. Build Project Map (Full titles + distinct shorthand keywords)
     all_projects = {}
     stop_words = {"public", "housing", "field", "hospital", "program", "e-konsulta", "covid-19", "covid", "project"}
     for key, data in candidates_data.items():
@@ -59,7 +50,6 @@ def extract_and_normalize_slots(text, active_candidate_key, candidates_data):
             proj_name = proj['name']
             all_projects[proj_name.lower()] = proj_name
             
-            # Map unique shorthand words (e.g., "tondominium" -> "Tondominium & Binondominium Public Housing")
             proj_tokens = re.findall(r'\b[a-zA-Z0-9\-]{4,}\b', proj_name.lower())
             for token in proj_tokens:
                 if token not in stop_words and token not in all_projects:
@@ -71,7 +61,6 @@ def extract_and_normalize_slots(text, active_candidate_key, candidates_data):
     raw_cand_ngram = ""
     raw_proj_ngram = ""
 
-    # 3. Generate Word N-Grams (1 to 5 words)
     ngrams = []
     n_words = len(words)
     for size in range(1, min(6, n_words + 1)):
@@ -79,10 +68,9 @@ def extract_and_normalize_slots(text, active_candidate_key, candidates_data):
             ngram_str = " ".join(words[i:i+size])
             ngrams.append(ngram_str)
 
-    # 4. Extract Candidate via N-Gram Matching
     best_cand_score = 0
     for ngram in ngrams:
-        if len(ngram) < 3: # Skip tiny tokens
+        if len(ngram) < 3:
             continue
         match = process.extractOne(ngram.lower(), list(alias_map.keys()), scorer=fuzz.ratio)
         if match and match[1] >= 68:
@@ -92,10 +80,9 @@ def extract_and_normalize_slots(text, active_candidate_key, candidates_data):
                 detected_candidate_key, matched_candidate_str = alias_map[matched_alias]
                 raw_cand_ngram = ngram
 
-    # 5. Extract Project via N-Gram Matching
     best_proj_score = 0
     for ngram in ngrams:
-        if len(ngram.strip()) < 3: # Skip tiny tokens like "is", "a"
+        if len(ngram.strip()) < 3:
             continue
         match = process.extractOne(ngram.lower(), list(all_projects.keys()), scorer=fuzz.ratio)
         if match and match[1] >= 75:
@@ -104,24 +91,26 @@ def extract_and_normalize_slots(text, active_candidate_key, candidates_data):
                 project_found = all_projects[match[0]]
                 raw_proj_ngram = ngram
 
-    # Normalize Candidate in prompt
     if detected_candidate_key and raw_cand_ngram:
         pattern = re.compile(re.escape(raw_cand_ngram), re.IGNORECASE)
         normalized_text = pattern.sub('_CANDIDATE_', normalized_text)
 
-    # Normalize Project in prompt
     if project_found and raw_proj_ngram:
         pattern = re.compile(re.escape(raw_proj_ngram), re.IGNORECASE)
         normalized_text = pattern.sub('_PROJECT_', normalized_text)
 
     return detected_candidate_key, project_found, normalized_text
 
-def match_candidates_by_tag(query_text, candidates_data):
+def match_candidates_by_tag(query_text, candidates_data, detected_candidate_key=None):
     dynamic_tags = get_dynamic_tags(candidates_data)
     tag_regex = r'(?i)\b(' + '|'.join(dynamic_tags) + r')\b'
     match = re.search(tag_regex, query_text)
     
     if not match:
+        extracted = re.sub(r'(?i)\b(which|who|what|candidates|candidate|prioritize|focus|focuses|on|supports|support|advocates|for|care|cares|about|associated|with|in|are|is|the|any|does|anyone)\b', '', query_text)
+        extracted = re.sub(r'[^\w\s]', '', extracted).strip()
+        if extracted and len(extracted) > 2:
+            return f"I couldn't find any candidates directly associated with '{extracted}'."
         return "I'm not sure which specific advocacy or field you are asking about."
     
     query_tag = match.group(1).lower()
@@ -139,9 +128,22 @@ def match_candidates_by_tag(query_text, candidates_data):
         if query_tag in all_tags:
             matches.append(data['full_name'])
             
-    if not matches:
+    unique_matches = sorted(list(set(matches)))
+
+    if detected_candidate_key and detected_candidate_key in candidates_data:
+        cand_name = candidates_data[detected_candidate_key]['full_name']
+        if cand_name in unique_matches:
+            prefix = f"Yes, **{cand_name}** is associated with **{query_tag}**.\n\n"
+        else:
+            prefix = f"No, **{cand_name}** is not directly listed for **{query_tag}** in my database.\n\n"
+        
+        if not unique_matches:
+            return prefix + f"I couldn't find any candidates directly associated with '{query_tag}'."
+        return prefix + f"All candidates associated with **{query_tag}** include: " + ", ".join(unique_matches)
+
+    if not unique_matches:
         return f"I couldn't find any candidates directly associated with '{query_tag}'."
-    return f"Candidates associated with **{query_tag}** include: " + ", ".join(set(matches))
+    return f"Candidates associated with **{query_tag}** include: " + ", ".join(unique_matches)
 
 def get_candidate_projects(active_candidate_key, candidates_data):
     if not active_candidate_key:
