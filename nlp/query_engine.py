@@ -44,15 +44,23 @@ def extract_and_normalize_slots(text, active_candidate_key, candidates_data):
             alias_map[alias.lower()] = (key, alias)
 
     all_projects = {}
-    stop_words = {"public", "housing", "field", "hospital", "program", "e-konsulta", "covid-19", "covid", "project"}
+    # EXPANDED STOP WORDS: Blocks generic words from being indexed as project triggers
+    stop_words = {
+        "public", "housing", "field", "hospital", "program", "e-konsulta", "covid-19", "covid", 
+        "project", "projects", "product", "products", "related", "books", "book", "national", 
+        "service", "branches", "creating", "additional", "system", "management", "transparency", 
+        "establishing", "province", "handbook", "advocacy", "village", "free", "amendments", 
+        "postponing", "increasing", "excise", "tobacco", "alcohol", "cigarettes", "district", 
+        "office", "court", "regional", "laws", "law", "act", "platform"
+    }
+
     for key, data in candidates_data.items():
         for proj in data.get('projects', []):
             proj_name = proj['name']
             all_projects[proj_name.lower()] = proj_name
             
-            proj_tokens = re.findall(r'\b[a-zA-Z0-9\-]{4,}\b', proj_name.lower())
+            proj_tokens = re.findall(r'\b[a-zA-Z0-9\-]{5,}\b', proj_name.lower())
             for token in proj_tokens:
-                # STRICT FIX: Added 'and not token.isdigit()' to prevent fuzzy matching on years/numbers
                 if token not in stop_words and token not in all_projects and not token.isdigit():
                     all_projects[token] = proj_name
 
@@ -83,10 +91,14 @@ def extract_and_normalize_slots(text, active_candidate_key, candidates_data):
 
     best_proj_score = 0
     for ngram in ngrams:
-        if len(ngram.strip()) < 3:
+        ngram_clean = ngram.strip().lower()
+        if len(ngram_clean) < 4 or ngram_clean in stop_words:
             continue
-        match = process.extractOne(ngram.lower(), list(all_projects.keys()), scorer=fuzz.ratio)
-        if match and match[1] >= 75:
+        
+        match = process.extractOne(ngram_clean, list(all_projects.keys()), scorer=fuzz.ratio)
+        # THRESHOLD FIX: Raised threshold to 82 to stop "projects" matching "products" (75)
+        min_threshold = 88 if len(ngram_clean.split()) == 1 else 82
+        if match and match[1] >= min_threshold:
             if match[1] > best_proj_score or (match[1] == best_proj_score and len(ngram) > len(raw_proj_ngram)):
                 best_proj_score = match[1]
                 project_found = all_projects[match[0]]
