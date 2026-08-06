@@ -64,7 +64,7 @@
       },
             {
                 "name": "RA 10708: Tax Incentives Management and Transparency Act (TIMTA)",
-                "tags": ["education", "labor"],
+                "tags": ["taxation"],
                 "link": ["https://issuances-library.senate.gov.ph/bills/house-bill-no-5831-16th-congress-republic", "https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2010708"]
             }
     ],
@@ -160,7 +160,7 @@
         "aliases": ["ping", "lacson", "ping lacson"],
         "pronouns": ["he", "him", "his"],
         "age": "73 (Born June 1, 1948)",
-        "tags": ["security", "governance", "taxation", "agriculture"],
+        "tags": ["security", "governance", "taxation", "tax", "agriculture"],
         "has_gov_experience": true,
         "positions": [
             "Senator of the Philippines (2001-13, 2016-22)",
@@ -201,7 +201,7 @@
             },
             {
                 "name": "RA 10351: Sin Tax Law",
-                "tags": ["taxation"],
+                "tags": ["taxation", "tax"],
                 "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/panfilolacson/", "https://ldr.senate.gov.ph/bills/senate-bill-no-3299-15th-congress-republic","https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/51245"]
             }
         ],
@@ -330,7 +330,7 @@
         "aliases": ["manny", "pacquiao", "pacman"],
         "pronouns": ["he", "him", "his"],
         "age": "43 (Born December 17, 1978)",
-        "tags": ["taxation", "housing", "poverty", "labor"],
+        "tags": ["taxation", "tax", "housing", "poverty", "labor"],
         "has_gov_experience": true,
         "positions": [
             "Senator of the Philippines (2016-2022)",
@@ -346,12 +346,12 @@
         "projects": [
             {
                 "name": "RA 11346: An Act Increasing the Excise Tax on Tobacco Products",
-                "tags": ["taxation", "health"],
+                "tags": ["taxation", "tax", "health"],
                 "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/","https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2011346"]
             },
             {
                 "name": "RA 11467: Increasing Excise Tax on Alcohol Products and Cigarettes",
-                "tags": ["taxation", "health"],
+                "tags": ["taxation", "tax", "health"],
                 "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/","https://issuances-library.senate.gov.ph/bills/senate-bill-no-1074-18th-congress-republic", "https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/92612"]
             },
             {
