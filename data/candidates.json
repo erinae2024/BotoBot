@@ -62,25 +62,10 @@
                 "tags": ["health", "covid"],
                 "link": "https://newsinfo.inquirer.net/1476533/robredos-vaccine-express-heads-to-pasig-looks-to-immunize-4000-vs-covid-19"
       },
-      {
-                "name": "RA 10649: Increasing the Burial Assistance for Veterans from 10,000 to 20,000",
-                "tags": ["poverty"],
-                "link": "https://placeholder.com/veterans-burial-assistance"
-            },
             {
-                "name": "RA 10708: Rendering Election Service Non-Compulsory for Public School Teachers",
+                "name": "RA 10708: Tax Incentives Management and Transparency Act (TIMTA)",
                 "tags": ["education", "labor"],
-                "link": "https://placeholder.com/teachers-election-service"
-            },
-            {
-                "name": "RA 10665: Open High School System Act",
-                "tags": ["education"],
-                "link": "https://placeholder.com/open-high-school"
-            },
-            {
-                "name": "RA 10906: Anti-Mail Order Spouse Law",
-                "tags": ["women"],
-                "link": "https://placeholder.com/anti-mail-order-spouse"
+                "link": ["https://issuances-library.senate.gov.ph/bills/house-bill-no-5831-16th-congress-republic", "https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2010708"]
             }
     ],
     "links": [
@@ -327,9 +312,9 @@
                 "link": "https://www.abs-cbn.com/news/02/19/22/presidential-bet-montemayor-pushes-for-better-ofw-aid"
             },
             {
-                "name": "Domestic Violence in the Philippines (Book)",
-                "tags": ["domestic violence"],
-                "link": "https://central.com.ph/product/montemayor-domestic-violence-in-the-philippines/?srsltid=AfmBOoov-MFX6Ay8tC-cDF--8nLlxoWrSApX4a43oBKgBBibizdY5IQ-"
+                "name": "Law and crime related books",
+                "tags": ["law", "legal", "book"],
+                "link": "https://tuklas.up.edu.ph/Author/Home?author=%22Montemayor%2C+Jose+Cabrera+Jr%22&type=Author&page=2"
             }
 
         ],
@@ -362,27 +347,27 @@
             {
                 "name": "RA 11346: An Act Increasing the Excise Tax on Tobacco Products",
                 "tags": ["taxation", "health"],
-                "link": "https://placeholder.com/tobacco-excise-tax"
+                "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/","https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2011346"]
             },
             {
                 "name": "RA 11467: Increasing Excise Tax on Alcohol Products and Cigarettes",
                 "tags": ["taxation", "health"],
-                "link": "https://placeholder.com/alcohol-excise-tax"
+                "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/","https://issuances-library.senate.gov.ph/bills/senate-bill-no-1074-18th-congress-republic", "https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/92612"]
             },
             {
                 "name": "RA 10828: Establishing an LTO District Office in Sarangani Province",
                 "tags": ["infrastructure"],
-                "link": "https://placeholder.com/lto-sarangani"
+                "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/", "https://issuances-library.senate.gov.ph/bills/house-bill-no-5825-16th-congress-republic", "https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2010828"]
             },
             {
                 "name": "RA 11227: Handbook for OFWs Act",
                 "tags": ["labor", "workers"],
-                "link": "https://placeholder.com/ofw-handbook-act"
+                "link": ["https://www.gmanetwork.com/news/eleksyon2022/candidates/emmanuelpacquiao/", "https://issuances-library.senate.gov.ph/bills/senate-bill-no-192-17th-congress-republic", "https://issuances-library.senate.gov.ph/legislative%2Bissuances/Republic%20Act%20No.%2011227"]
             },
             {
                 "name": "Pacman Village (Free Housing Project)",
                 "tags": ["housing", "poverty"],
-                "link": "https://placeholder.com/pacman-village"
+                "link": ["https://www.abs-cbn.com/news/02/09/22/pacquiao-unveils-planned-free-housing-program-for-ph", "https://newsinfo.inquirer.net/1591131/pacquiao-leads-groundbreaking-of-2-pacman-villages-in-eastern-visayas", "https://www.philstar.com/headlines/2022/02/10/2159780/pacquiao-vows-replicate-pacman-village-entire-philippine"]
             }
         ],
         "links": [
