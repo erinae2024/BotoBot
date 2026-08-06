@@ -18,12 +18,16 @@ TRAINING_DATA = [
 
     # SHOW PROFILE
     ("tell me about _CANDIDATE_", "__SHOW_PROFILE__"),
+    ("tell me about _CANDIDATE_ please", "__SHOW_PROFILE__"),
     ("who is _CANDIDATE_", "__SHOW_PROFILE__"),
     ("sino si _CANDIDATE_", "__SHOW_PROFILE__"),
     ("_CANDIDATE_", "__SHOW_PROFILE__"),
     ("how about _CANDIDATE_", "__SHOW_PROFILE__"),
     ("i mean _CANDIDATE_", "__SHOW_PROFILE__"),
     ("details of _CANDIDATE_", "__SHOW_PROFILE__"),
+    ("info about _CANDIDATE_", "__SHOW_PROFILE__"),
+    ("information about _CANDIDATE_", "__SHOW_PROFILE__"),
+    ("profile of _CANDIDATE_", "__SHOW_PROFILE__"),
     ("what is the platform of _CANDIDATE_", "__SHOW_PROFILE__"),
     ("ano ang plataporma ni _CANDIDATE_", "__SHOW_PROFILE__"),
     ("platform of _CANDIDATE_", "__SHOW_PROFILE__"),
@@ -31,7 +35,7 @@ TRAINING_DATA = [
     ("_CANDIDATE_ platform", "__SHOW_PROFILE__"),
     ("_CANDIDATE_ 's platform", "__SHOW_PROFILE__"),
     ("what are the credentials of _CANDIDATE_", "__SHOW_PROFILE__"),
-    ("credentials of _CANDIDATE_'", "__SHOW_PROFILE__"),
+    ("credentials of _CANDIDATE_", "__SHOW_PROFILE__"),
     ("_CANDIDATE_ 's credentials", "__SHOW_PROFILE__"),
     ("ano ang mga kredensyal ni _CANDIDATE_", "__SHOW_PROFILE__"),
     ("kredensyal ni _CANDIDATE_", "__SHOW_PROFILE__"),
@@ -50,9 +54,17 @@ TRAINING_DATA = [
 
     # VERIFY SPECIFIC PROJECT
     ("tell me about _PROJECT_", "__VERIFY_PROJECT__"),
+    ("tell me about the _PROJECT_ project", "__VERIFY_PROJECT__"),
+    ("info about _PROJECT_", "__VERIFY_PROJECT__"),
+    ("information about _PROJECT_", "__VERIFY_PROJECT__"),
     ("what is _PROJECT_", "__VERIFY_PROJECT__"),
+    ("what is the _PROJECT_ project", "__VERIFY_PROJECT__"),
     ("did _CANDIDATE_ create _PROJECT_", "__VERIFY_PROJECT__"),
     ("is _PROJECT_ by _CANDIDATE_", "__VERIFY_PROJECT__"),
+    ("is _PROJECT_ created by _CANDIDATE_", "__VERIFY_PROJECT__"),
+    ("details of _PROJECT_", "__VERIFY_PROJECT__"),
+    ("does _CANDIDATE_ own _PROJECT_", "__VERIFY_PROJECT__"),
+    ("is _PROJECT_ a project of _CANDIDATE_", "__VERIFY_PROJECT__"),
 
     # SHOW AGE
     ("how old is _CANDIDATE_", "__SHOW_AGE__"),

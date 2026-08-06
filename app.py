@@ -24,9 +24,7 @@ st.set_page_config(page_title="BotoBot Chatbot", page_icon=BOT_AVATAR)
 st.image("BotoBot_WideLogoTransparent.png", width="stretch")
 st.caption("An NLP-powered chatbot for voter education. Developed by DLSU Computer Science Students.")
 
-# ui thing, remove link icon when you hover over candidate name when showing candidate info
 st.html("<style>[data-testid='stHeaderActionElements'] {display: none;}</style>")
-
 
 @st.cache_resource
 def load_assets():
@@ -36,7 +34,6 @@ def load_assets():
     classifier = train_classifier()
     chatbot = Chat(pairs, reflections)
     
-    # Retrieve tags dynamically once at startup
     dynamic_tags = get_dynamic_tags(candidates_data)
     
     return candidates_data, masker, mask_map, classifier, chatbot, dynamic_tags
@@ -48,7 +45,6 @@ if "messages" not in st.session_state:
     st.session_state.active_candidate_key = None
     st.session_state.response_lang = None
 
-# Language Selection Gate
 if not st.session_state.response_lang:
     st.markdown("### How would you like me to respond? Paano mo gusto na sumagot ako?")
     col1, col2 = st.columns(2)
@@ -62,26 +58,21 @@ if not st.session_state.response_lang:
         st.rerun()
     st.stop()
 
-# Render History
 for message in st.session_state.messages:
     avatar = USER_AVATAR if message["role"] == "user" else BOT_AVATAR
     with st.chat_message(message["role"], avatar=avatar):
         st.markdown(message["content"])
 
-# Core Execution Loop
 if prompt := st.chat_input("Ask about candidates, voting, or elections..."):
     
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user", avatar=USER_AVATAR):
         st.markdown(prompt)
 
-    # 1. Pronoun Resolution
     resolved_prompt = resolve_pronouns(prompt, st.session_state.active_candidate_key, candidates_data)
 
-    # 2. Tagalog Translation Bridge
     translated_prompt, is_tagalog = process_language(resolved_prompt, masker, mask_map, target_lang='en')
 
-    # 3. Slot Extraction & Normalization
     detected_candidate_key, project_found, normalized_prompt = extract_and_normalize_slots(
         translated_prompt, st.session_state.active_candidate_key, candidates_data
     )
@@ -91,28 +82,27 @@ if prompt := st.chat_input("Ask about candidates, voting, or elections..."):
 
     final_response = ""
 
-    # 4. Attempt Strict Regex Match 
     regex_response = chatbot.respond(translated_prompt)
 
     if regex_response:
         final_response = regex_response
     else:
-        # 5. Zero-Friction Tag Interceptor
         tag_regex = r'(?i)\b(' + '|'.join(dynamic_tags) + r')\b'
         has_tag_word = bool(re.search(tag_regex, translated_prompt))
         
-        # If a tag is mentioned, but NO specific candidate/project is in the prompt, it's a tag query.
-        if has_tag_word and not detected_candidate_key and not project_found:
+        if has_tag_word and not project_found:
             intent = '__MATCH_TAG__'
         else:
             intent = get_intent(normalized_prompt, classifier, threshold=0.25)
+            if intent == '__VERIFY_PROJECT__' and not project_found and detected_candidate_key:
+                intent = '__SHOW_PROFILE__'
         
         if intent == '__SHOW_LIST__':
             list_str = "\n".join([f"* {data['full_name']}" for key, data in candidates_data.items()])
             final_response = f"Here are the 2022 Presidential Candidates in my database:\n\n{list_str}"
             
         elif intent == '__MATCH_TAG__':
-            final_response = match_candidates_by_tag(translated_prompt, candidates_data)
+            final_response = match_candidates_by_tag(translated_prompt, candidates_data, detected_candidate_key)
             
         elif intent == '__SHOW_PROJECTS__':
             final_response = get_candidate_projects(st.session_state.active_candidate_key, candidates_data)
@@ -124,7 +114,6 @@ if prompt := st.chat_input("Ask about candidates, voting, or elections..."):
             if st.session_state.active_candidate_key:
                 c = candidates_data[st.session_state.active_candidate_key]
 
-                # show list of projects
                 projectsList = [project["name"] for project in c["projects"]]
 
                 final_response = (
@@ -146,7 +135,6 @@ if prompt := st.chat_input("Ask about candidates, voting, or elections..."):
         else:
             final_response = "I'm not sure I understand. Try asking me to 'show the 2022 presidential candidates'!"
 
-    # 6. Inject Conversational Hint
     if random.random() < 0.40:
         hints = ["Which candidates prioritize education?", "Which candidates have government experience?", "Who focuses on labor?"]
         if st.session_state.active_candidate_key:
@@ -154,7 +142,6 @@ if prompt := st.chat_input("Ask about candidates, voting, or elections..."):
             hints.extend([f"How old is {name}?", f"What are {name}'s projects?"])
         final_response += f"\n\n💡 *Tip: You can also ask me: '{random.choice(hints)}'*"
 
-    # 7. Reverse Translation
     if st.session_state.response_lang == 'tl':
         final_response, _ = process_language(final_response, masker, mask_map, target_lang='tl')
 
