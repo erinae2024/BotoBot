@@ -110,14 +110,19 @@ pairs = [
     [r'(?i).*(leni|robredo).*(corrupt).*|.*(corrupt).*(leni|robredo).*',
      ['According to a VERA Files Fact Check, this report is false; it is a clipped news segment where Robredo actually promised a government that is not corrupt.\n\n(https://verafiles.org/articles/vera-files-fact-check-fb-pages-mislead-robredo-clip-during-b)']],
 
-
     # ==========================================
-    # 5. GREETINGS & QUIT
+    # 5. GREETINGS, THANKS, & QUIT (Typo & Slang Tolerant)
     # ==========================================
 
-    [r'(?i)^\s*(hi+|hello+|hey+|greetings|good morning|good afternoon|good evening)\s*[!?.,]*\s*$',
+    # Greetings
+    [r'(?i).*(hi+|hello+|hey+|greetings|good morning|good afternoon|good evening|magandang (umaga|hapon|gabi|bati)|gandang).*',
      ["Hello! Welcome to BotoBot! How can I help you with the 2022 Philippine Presidential Candidates or election info?"]],
     
-    [r'(?i)^\s*(quit+|bye+|goodbye|exit)\s*[!?.,]*\s*$',
+    # Thanks / Salamat (Catches thank, thanks, tnx, thx, ty, salamat, slmt)
+    [r'(?i).*(thank|thx|tnx|\bty\b|salamat|\bslmt\b|appreciate).*',
+     ["You're very welcome! Feel free to ask if you need anything else cleared up."]],
+    
+    # Quit / Paalam (Catches bye, babay, paalam, cge, sige, gege)
+    [r'(?i).*(quit+|bye+|goodbye|exit|paalam|see you|babay|\bcge\b|\bsige\b|\bgege\b).*',
      ["Goodbye! Stay informed and remember to vote wisely!"]]
 ]
