@@ -15,13 +15,6 @@ TRAINING_DATA = [
     ("give me the list of candidates", "__SHOW_LIST__"),
     ("sino mga kandidato", "__SHOW_LIST__"),
     ("list of candidates", "__SHOW_LIST__"),
-    ("who are the candidates", "__SHOW_LIST__"),
-    ("who are the kandidatos", "__SHOW_LIST__"),
-    ("who to vote", "__SHOW_LIST__"),
-    ("who can i vote for", "__SHOW_LIST__"),
-    ("who can i vote", "__SHOW_LIST__"),
-    ("i want to vote who are the candidates i can vote", "__SHOW_LIST__"),
-    ("sino mga pwede iboto", "__SHOW_LIST__"),
 
     # SHOW PROFILE
     ("tell me about _CANDIDATE_", "__SHOW_PROFILE__"),
@@ -56,15 +49,8 @@ TRAINING_DATA = [
     ("mga proyekto ni _CANDIDATE_", "__SHOW_PROJECTS__"),
     ("what are her projects", "__SHOW_PROJECTS__"),
     ("what are his projects", "__SHOW_PROJECTS__"),
-    ("what project he have", "__SHOW_PROJECTS__"),
-    ("what project she have", "__SHOW_PROJECTS__"),
-    ("what project does _CANDIDATE_ have", "__SHOW_PROJECTS__"),
-    ("his projects", "__SHOW_PROJECTS__"),
-    ("her projects", "__SHOW_PROJECTS__"),
-    ("what is his advocacy", "__SHOW_PROJECTS__"),
-    ("what are his advocacy", "__SHOW_PROJECTS__"),
-    ("what does he champion", "__SHOW_PROJECTS__"),
-    ("what are the projects by _CANDIDATE_", "__SHOW_PROJECTS__"),
+    ("what are her proyekto", "__SHOW_PROJECTS__"),
+    ("what are his proyekto", "__SHOW_PROJECTS__"),
 
     # VERIFY SPECIFIC PROJECT
     ("tell me about _PROJECT_", "__VERIFY_PROJECT__"),
@@ -84,7 +70,6 @@ TRAINING_DATA = [
     ("how old is _CANDIDATE_", "__SHOW_AGE__"),
     ("what is _CANDIDATE_ 's age", "__SHOW_AGE__"),
     ("age of _CANDIDATE_", "__SHOW_AGE__"),
-    ("so he is age now is", "__SHOW_AGE__"),
 
     # TAG MATCHING
     ("which candidates prioritize education", "__MATCH_TAG__"),
@@ -99,7 +84,9 @@ TRAINING_DATA = [
 ]
 
 def extract_features(text):
-    STOP_WORDS = {"what", "is", "are", "the", "of", "a", "an", "i", "how", "about"}
+    # trying fix for 'credentials' question showing age
+    STOP_WORDS = {"what", "is", "are", "the", "of", "a", "an", "i", "how", "about", "which"}
+
     words = word_tokenize(text.lower())
     return {word: True for word in words if word not in STOP_WORDS}
 

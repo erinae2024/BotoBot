@@ -117,12 +117,12 @@ pairs = [
     # 6. GREETINGS, THANKS, & QUIT
     # ==========================================
 
-    [r'(?i).*(hi+|hello+|hey+|greetings|good morning|good afternoon|good evening|magandang (umaga|hapon|gabi|bati)|gandang).*',
+    [r'(?i)(.*)(hi+|hello+|hey+|greetings|good morning|good afternoon|good evening|magandang (umaga|hapon|gabi|bati)|gandang)(.*)',
      ["Hello! Welcome to BotoBot! How can I help you with the 2022 Philippine Presidential Candidates or election info?"]],
     
-    [r'(?i).*(thank|thx|tnx|\bty\b|salam+a+t+|\bslmt\b|salamuch|appreciate).*',
+    [r'(?i)(.*)(thank|thx|tnx|\bty\b|salam+a+t+|\bslmt\b|salamuch|appreciate)(.*)',
      ["You're very welcome! Feel free to ask if you have any more questions."]],
     
-    [r'(?i).*(quit+|bye+|goodbye|exit|paalam|see you|babay|\bcge\b|\bsige\b|\bgege\b).*',
+    [r'(?i)(.*)(quit+|bye+|goodbye|exit|paalam|see you|babay|\bcge\b|\bsige\b|\bgege\b)(.*)',
      ["Goodbye! Stay informed and remember to vote wisely!"]]
 ]
