@@ -113,16 +113,21 @@ pairs = [
     [r'(?i).*(leni|robredo).*(corrupt).*|.*(corrupt).*(leni|robredo).*',
      ['According to a VERA Files Fact Check, this report is false; it is a clipped news segment where Robredo actually promised a government that is not corrupt.\n\n(https://verafiles.org/articles/vera-files-fact-check-fb-pages-mislead-robredo-clip-during-b)']],
 
-    # ==========================================
-    # 6. GREETINGS, THANKS, & QUIT
+     # ==========================================
+    # 6. GREETINGS, THANKS, & QUIT (Boundary Protected)
     # ==========================================
 
-    [r'(?i).*(hi+|hello+|hey+|greetings|good morning|good afternoon|good evening|magandang (umaga|hapon|gabi|bati)|gandang).*',
+    # Greetings (Added \b boundaries so "hi" won't match inside "which", "machine", etc.)
+    [r'(?i).*\b(hi+|hello+|hey+|greetings|good morning|good afternoon|good evening|magandang (umaga|hapon|gabi|bati)|gandang)\b.*',
      ["Hello! Welcome to BotoBot! How can I help you with the 2022 Philippine Presidential Candidates or election info?"]],
     
-    [r'(?i).*(thank|thx|tnx|\bty\b|salam+a+t+|\bslmt\b|salamuch|appreciate).*',
+    # Thanks / Salamat (Boundary Protected)
+    [r'(?i).*\b(thank|thanks|thx|tnx|ty|salam+a+t+|slmt|salamuch|appreciate)\b.*',
      ["You're very welcome! Feel free to ask if you have any more questions."]],
     
-    [r'(?i).*(quit+|bye+|goodbye|exit|paalam|see you|babay|\bcge\b|\bsige\b|\bgege\b).*',
+    # Quit / Paalam (Boundary Protected)
+    [r'(?i).*\b(quit+|bye+|goodbye|exit|paalam|see you|babay|cge|sige|gege)\b.*',
      ["Goodbye! Stay informed and remember to vote wisely!"]]
 ]
+
+    
