@@ -180,3 +180,4 @@ if prompt := st.chat_input("Ask about candidates, voting, or elections..."):
     with st.chat_message("assistant", avatar=BOT_AVATAR):
         st.markdown(final_response)
     st.session_state.messages.append({"role": "assistant", "content": final_response})
+
