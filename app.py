@@ -24,10 +24,12 @@ st.set_page_config(page_title="BotoBot Chatbot", page_icon=BOT_AVATAR)
 st.image("BotoBot_WideLogoTransparent.png", width="stretch")
 st.caption("An NLP-powered chatbot for voter education. Developed by DLSU Computer Science Students.")
 
+# Hides the top right menu
 st.html("<style>[data-testid='stHeaderActionElements'] {display: none;}</style>")
 
+# CACHE BUSTER: Renamed to load_assets_v2 to force Streamlit to wipe its memory
 @st.cache_resource
-def load_assets():
+def load_assets_v2():
     with open('data/candidates.json', 'r') as f:
         candidates_data = json.load(f)
     masker, mask_map = build_entity_masker(candidates_data)
@@ -38,7 +40,8 @@ def load_assets():
     
     return candidates_data, masker, mask_map, classifier, chatbot, dynamic_tags
 
-candidates_data, masker, mask_map, classifier, chatbot, dynamic_tags = load_assets()
+# Call the new function name here
+candidates_data, masker, mask_map, classifier, chatbot, dynamic_tags = load_assets_v2()
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
