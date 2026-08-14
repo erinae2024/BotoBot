@@ -87,15 +87,18 @@ if prompt := st.chat_input("Ask about candidates, voting, or elections..."):
     if regex_response:
         final_response = regex_response
     else:
-        tag_regex = r'(?i)\b(' + '|'.join(dynamic_tags) + r')\b'
-        has_tag_word = bool(re.search(tag_regex, translated_prompt))
+        # Let Naive Bayes attempt classification first with a STRICTER threshold (0.40)
+        intent = get_intent(normalized_prompt, classifier, threshold=0.40)
         
-        if has_tag_word and not project_found:
-            intent = '__MATCH_TAG__'
-        else:
-            intent = get_intent(normalized_prompt, classifier, threshold=0.25)
-            if intent == '__VERIFY_PROJECT__' and not project_found and detected_candidate_key:
-                intent = '__SHOW_PROFILE__'
+        # If Naive Bayes falls back (None), try matching by tags
+        if not intent:
+            tag_regex = r'(?i)\b(' + '|'.join(dynamic_tags) + r')\b'
+            if bool(re.search(tag_regex, translated_prompt)) and not project_found:
+                intent = '__MATCH_TAG__'
+                
+        # Safe downgrade for project verification
+        if intent == '__VERIFY_PROJECT__' and not project_found and detected_candidate_key:
+            intent = '__SHOW_PROFILE__'
         
         if intent == '__SHOW_LIST__':
             list_str = "\n".join([f"* {data.get('full_name', key.title())}" for key, data in candidates_data.items()])

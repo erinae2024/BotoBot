@@ -56,6 +56,8 @@ TRAINING_DATA = [
     ("mga proyekto ni _CANDIDATE_", "__SHOW_PROJECTS__"),
     ("what are her projects", "__SHOW_PROJECTS__"),
     ("what are his projects", "__SHOW_PROJECTS__"),
+    ("what are her proyekto", "__SHOW_PROJECTS__"),
+    ("what are his proyekto", "__SHOW_PROJECTS__"),
     ("what project he have", "__SHOW_PROJECTS__"),
     ("what project she have", "__SHOW_PROJECTS__"),
     ("what project does _CANDIDATE_ have", "__SHOW_PROJECTS__"),
@@ -99,7 +101,9 @@ TRAINING_DATA = [
 ]
 
 def extract_features(text):
-    STOP_WORDS = {"what", "is", "are", "the", "of", "a", "an", "i", "how", "about"}
+    # Brutal fix for rogue verbs spiking the candidate list probability
+    STOP_WORDS = {"what", "is", "are", "the", "of", "a", "an", "i", "how", "about", "which", "to", "want", "for", "me", "do", "you"}
+
     words = word_tokenize(text.lower())
     return {word: True for word in words if word not in STOP_WORDS}
 
