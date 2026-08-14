@@ -45,8 +45,17 @@ pairs = [
     [r'(?i).*(laws?|batas).*(elect|halalan).*|.*(elect|halalan).*(laws?|batas).*',
      ["Key Philippine election laws include:\n* **RA 9006** (Fair Election Act): https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/3603\n* **RA 9369** (Automated Election System Law): https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/7412\n* **RA 8189** (Voter's Registration Act): https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/4068\n* **BP 881** (Omnibus Election Code): https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/53271"]],
     
-    [r'(?i).*(republic act|r\.?a\.?)\s*(9006|9369|8189|7166).*',
-     ["Yes, Republic Act %2 is a relevant election law! For context: RA 9006 is the Fair Election Act, RA 9369 covers the Automated Election System, RA 8189 is Voter Registration, and RA 7166 covers Synchronized Elections.\n\n(https://www.officialgazette.gov.ph/1991/11/26/republic-act-no-7166/)"]],
+    [r'(?i).*(republic act|r\.?a\.?)\s*(9006).*',
+     ["Yes, Republic Act 9006 is a relevant election law! Also known as the Fair Election Act, it governs campaign rules and legal media usage during the election period.\n\n(https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/3603)"]],
+
+    [r'(?i).*(republic act|r\.?a\.?)\s*(9369).*',
+     ["Yes, Republic Act 9369 is a relevant election law! This act covers the authorization and implementation of the Automated Election System (AES) in the Philippines.\n\n(https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/7412)"]],
+
+    [r'(?i).*(republic act|r\.?a\.?)\s*(8189).*',
+     ["Yes, Republic Act 8189 is a relevant election law! Known as The Voter's Registration Act, it dictates the system of continuing registration for eligible voters.\n\n(https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/4068)"]],
+
+    [r'(?i).*(republic act|r\.?a\.?)\s*(7166).*',
+     ["Yes, Republic Act 7166 is a relevant election law! This act provides for Synchronized National and Local Elections and outlines the electoral reforms necessary to facilitate them.\n\n(https://www.officialgazette.gov.ph/1991/11/26/republic-act-no-7166/)"]],
 
     [r'(?i).*(republic act|r\.?a\.?)\s*(\d+).*',
      ["You mentioned Republic Act %2. However, I only track laws specifically relevant to Philippine elections. The main election laws I can help you with are RA 9006 (Fair Election Act), RA 9369 (Automated Elections), and RA 8189 (Voter Registration)."]],
