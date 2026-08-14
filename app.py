@@ -4,6 +4,7 @@ import streamlit as st
 import json
 import random
 import re
+import time # Added time for cache busting
 from nltk.chat.util import Chat, reflections
 from nlp.patterns import pairs
 from nlp.translator import build_entity_masker, process_language
@@ -27,9 +28,9 @@ st.caption("An NLP-powered chatbot for voter education. Developed by DLSU Comput
 # Hides the top right menu
 st.html("<style>[data-testid='stHeaderActionElements'] {display: none;}</style>")
 
-# CACHE BUSTER: Renamed to load_assets_v2 to force Streamlit to wipe its memory
-@st.cache_resource
-def load_assets_v2():
+# Added TTL to force a refresh if the server hangs onto old memory
+@st.cache_resource(ttl=60)
+def load_assets_v3(force_refresh_token):
     with open('data/candidates.json', 'r') as f:
         candidates_data = json.load(f)
     masker, mask_map = build_entity_masker(candidates_data)
@@ -40,8 +41,8 @@ def load_assets_v2():
     
     return candidates_data, masker, mask_map, classifier, chatbot, dynamic_tags
 
-# Call the new function name here
-candidates_data, masker, mask_map, classifier, chatbot, dynamic_tags = load_assets_v2()
+force_refresh_token = 1
+candidates_data, masker, mask_map, classifier, chatbot, dynamic_tags = load_assets_v3(force_refresh_token)
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -180,4 +181,3 @@ if prompt := st.chat_input("Ask about candidates, voting, or elections..."):
     with st.chat_message("assistant", avatar=BOT_AVATAR):
         st.markdown(final_response)
     st.session_state.messages.append({"role": "assistant", "content": final_response})
-
