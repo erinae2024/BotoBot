@@ -42,7 +42,7 @@ pairs = [
     # 3. SPECIFIC ELECTION LAWS & SECTIONS
     # ==========================================
 
-    [r'(?i).*(laws?|batas).*(elect|halalan).*|.*(elect|halalan).*(laws?|batas).*',
+    [r'(?i).*\b(laws?|batas|election laws?|mga batas)\b.*',
      ["Key Philippine election laws include:\n* **RA 9006** (Fair Election Act): https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/3603\n* **RA 9369** (Automated Election System Law): https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/7412\n* **RA 8189** (Voter's Registration Act): https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/4068\n* **BP 881** (Omnibus Election Code): https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/2/53271"]],
     
     [r'(?i).*(republic act|r\.?a\.?)\s*(9006).*',
