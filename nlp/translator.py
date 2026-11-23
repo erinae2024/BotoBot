@@ -1,59 +1,85 @@
-# nlp/translator.py
+"""Entity-preserving bilingual translation for the published BotoBot architecture.
 
+External translation is best-effort. A failed network call must never crash BotoBot,
+and untranslated Tagalog must never be mistaken for validated English.
+"""
 import re
-from flashtext import KeywordProcessor
-from deep_translator import GoogleTranslator
 
+try:
+    from flashtext import KeywordProcessor
+except ImportError:  # Development/QA fallback; production uses flashtext.
+    KeywordProcessor = None
+
+try:
+    from deep_translator import GoogleTranslator
+except ImportError:  # Production dependencies are declared in requirements.txt.
+    GoogleTranslator = None
+
+# Preserve the heuristic described in the research paper.
 TAGALOG_TRIGGERS = r'(?i)\b(boto|bumoto|halalan|eleksyon|botohan|sino|ano|paano|saan|bakit|kailan|mga|niya|tungkol|ba|proyekto|kredensyal)\b'
 
+
+class _LocalKeywordProcessor:
+    """Fallback matcher when flashtext is unavailable in an offline test env."""
+    def __init__(self):
+        self.words = {}
+
+    def add_keyword(self, word, replacement):
+        self.words[word.lower()] = replacement
+
+    def replace_keywords(self, text):
+        if not self.words:
+            return text
+        pattern = r'(?<!\w)(?:' + '|'.join(re.escape(x) for x in sorted(self.words, key=len, reverse=True)) + r')(?!\w)'
+        return re.sub(pattern, lambda match: self.words[match.group().lower()], text, flags=re.IGNORECASE)
+
+
 def build_entity_masker(candidates_data):
-    kp = KeywordProcessor(case_sensitive=False)
-    mask_map = {}
-    counter = 0
-    
-    for key, data in candidates_data.items():
-        words_to_protect = [data['full_name']] + data.get('aliases', [])
-        for proj in data.get('projects', []):
-            words_to_protect.append(proj['name'])
-            
-        for word in words_to_protect:
-            placeholder = f"ENT{counter:04d}X" 
-            kp.add_keyword(word, placeholder)
-            mask_map[placeholder] = word
-            counter += 1
-            
-    return kp, mask_map
+    processor = KeywordProcessor(case_sensitive=False) if KeywordProcessor else _LocalKeywordProcessor()
+    replacement_map = {}
+    index = 0
+    for data in candidates_data.values():
+        words = [data['full_name'], *data.get('aliases', []),
+                 *(project['name'] for project in data.get('projects', []))]
+        for word in words:
+            placeholder = f"ENT{index:04d}X"
+            processor.add_keyword(word, placeholder)
+            replacement_map[placeholder] = word
+            index += 1
+    return processor, replacement_map
+
 
 def process_language(text, masker, mask_map, target_lang='en'):
-    is_tagalog = bool(re.search(TAGALOG_TRIGGERS, text))
-    
-    # 1. Mask URLs to prevent translation corruption
-    urls = re.findall(r'(https?://[^\s()]+)', text)
+    """Return (best-effort translated text, whether Tagalog markers were detected).
+
+    This is *not* an accuracy certificate. The external translation provider can fail;
+    callers should acknowledge that output may fall back to original language.
+    """
+    detected_tl = bool(re.search(TAGALOG_TRIGGERS, text))
+    if not detected_tl and target_lang != 'tl':
+        return text, False
+
+    # Mask URLs first, then entities; preserve hyperlinks and proper nouns.
     url_map = {}
-    for i, url in enumerate(urls):
-        placeholder = f"URL{i:04d}X"
-        text = text.replace(url, placeholder)
-        url_map[placeholder] = url
-
-    # 2. Mask Entities (Proper Nouns)
-    masked_text = masker.replace_keywords(text)
-        
-    # 3. Translate
-    if is_tagalog or target_lang == 'tl':
+    def replace_url(match):
+        placeholder = f"URL{len(url_map):04d}X"
+        url_map[placeholder] = match.group()
+        return placeholder
+    masked = re.sub(r'https?://[^\s()<>]+', replace_url, text)
+    masked = masker.replace_keywords(masked)
+    translated = masked
+    if GoogleTranslator:
         try:
-            translated = GoogleTranslator(source='auto', target=target_lang).translate(masked_text)
-            if "Error 500" in translated or "Please try again later" in translated:
-                translated = masked_text
+            result = GoogleTranslator(source='auto', target=target_lang).translate(masked)
+            if isinstance(result, str) and result.strip() and not any(
+                phrase in result.lower() for phrase in ('error 500', 'please try again later')
+            ):
+                translated = result
         except Exception:
-            translated = masked_text
-    else:
-        translated = masked_text
+            pass
 
-    # 4. Unmask Entities and URLs
-    for placeholder, original_kw in mask_map.items():
-        translated = translated.replace(placeholder, original_kw)
-        
-    for placeholder, original_url in url_map.items():
-        translated = translated.replace(placeholder, original_url)
-        
-    return translated, is_tagalog
+    for key, value in mask_map.items():
+        translated = translated.replace(key, value)
+    for key, value in url_map.items():
+        translated = translated.replace(key, value)
+    return translated, detected_tl

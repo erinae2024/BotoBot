@@ -1,183 +1,120 @@
-# app.py
+"""BotoBot: O-COCOSDA 2026 archival Streamlit research demonstration."""
+from pathlib import Path
+import json
 
 import streamlit as st
-import json
-import random
-import re
-import time # Added time for cache busting
 from nltk.chat.util import Chat, reflections
+
 from nlp.patterns import pairs
 from nlp.translator import build_entity_masker, process_language
-from nlp.classifier import train_classifier, get_intent
-from nlp.query_engine import (
-    get_dynamic_tags,
-    resolve_pronouns,
-    extract_and_normalize_slots,
-    match_candidates_by_tag,
-    get_candidate_projects,
-    verify_project_association
-)
+from nlp.classifier import train_classifier
+from nlp.query_engine import get_dynamic_tags
+from nlp.response_engine import respond_to_user
+from nlp.tagalog_fallback import offline_tagalog_reply
 
-USER_AVATAR = "UserMascot.png"
-BOT_AVATAR = "BotoBotMascot.png"
+BASE = Path(__file__).resolve().parent
+LOGO = BASE / 'BotoBot_WideLogoTransparent.png'
+BOT_AVATAR = str(BASE / 'BotoBotMascot.png') if (BASE / 'BotoBotMascot.png').exists() else '🤖'
+USER_AVATAR = str(BASE / 'UserMascot.png') if (BASE / 'UserMascot.png').exists() else '👤'
 
-st.set_page_config(page_title="BotoBot Chatbot", page_icon=BOT_AVATAR)
-st.image("BotoBot_WideLogoTransparent.png", width="stretch")
-st.caption("An NLP-powered chatbot for voter education. Developed by DLSU Computer Science Students.")
+st.set_page_config(page_title='BotoBot | O-COCOSDA 2026 Research Demo', page_icon='🗳️', layout='centered')
 
-# Hides the top right menu
-st.html("<style>[data-testid='stHeaderActionElements'] {display: none;}</style>")
+@st.cache_resource(show_spinner='Preparing the research knowledge base…')
+def load_assets():
+    with (BASE / 'data/candidates.json').open(encoding='utf-8') as f:
+        candidates = json.load(f)
+    masker, mask_map = build_entity_masker(candidates)
+    return candidates, masker, mask_map, train_classifier(), Chat(pairs, reflections), get_dynamic_tags(candidates)
 
-# Added TTL to force a refresh if the server hangs onto old memory
-@st.cache_resource(ttl=60)
-def load_assets_v3(force_refresh_token):
-    with open('data/candidates.json', 'r') as f:
-        candidates_data = json.load(f)
-    masker, mask_map = build_entity_masker(candidates_data)
-    classifier = train_classifier()
-    chatbot = Chat(pairs, reflections)
-    
-    dynamic_tags = get_dynamic_tags(candidates_data)
-    
-    return candidates_data, masker, mask_map, classifier, chatbot, dynamic_tags
+if LOGO.exists():
+    st.image(str(LOGO), use_container_width=True)
+else:
+    st.title('🗳️ BotoBot')
+st.caption('O-COCOSDA 2026 research demo • 2022 Philippine presidential candidates & selected election laws')
+st.markdown('**Technical contact / lead developer: Arron B. Baranquil** · [Email](mailto:baranquil.eyron@gmail.com) · [LinkedIn](https://www.linkedin.com/in/arnbrnql) · [GitHub](https://github.com/arnbrnql)')
+st.info('**Historical research scope:** BotoBot is based on the **2022** election. It is not an official COMELEC service, a real-time guide to upcoming elections, or a candidate endorsement. Check COMELEC for current rules.', icon='ℹ️')
 
-force_refresh_token = 1
-candidates_data, masker, mask_map, classifier, chatbot, dynamic_tags = load_assets_v3(force_refresh_token)
-
-if "messages" not in st.session_state:
-    st.session_state.messages = []
-    st.session_state.active_candidate_key = None
-    st.session_state.response_lang = None
-
-if not st.session_state.response_lang:
-    st.markdown("### How would you like me to respond? Paano mo gusto na sumagot ako?")
-    col1, col2 = st.columns(2)
-    if col1.button("English"):
-        st.session_state.response_lang = 'en'
-        st.session_state.messages.append({"role": "assistant", "content": "Welcome to BotoBot! Ask me a question about the 2022 Philippine presidential candidates, voting processes, or election-related laws! For example:\n- Who are the 2022 presidential candidates?\n- What are the requirements for a voter's ID?\n- What is RA 9006?\n- Who is (Candidate Name)?\n- What is (Candidate Name)'s projects?"})
-        st.rerun()
-    if col2.button("Tagalog"):
-        st.session_state.response_lang = 'tl'
-        st.session_state.messages.append({"role": "assistant", "content": "Maligayang pagdating sa BotoBot! Magtanong tungkol sa mga kandidato, o proseso ng pagboto, o mga batas tungkol sa eleksyon! Halimbawa:\n- Sino ang mga 2022 kandidato para sa pagkapangulo?\n- Ano ang mga kailangan para makakuha ng voter's ID?\n- Ano ang RA 9006?\n- Sino si (Pangalan ng Kandidato)?\n- Ano ang mga proyekto ni (Pangalan ng Kandidato)?"})
-        st.rerun()
+try:
+    assets = load_assets()
+except Exception:
+    st.error('The research knowledge base could not load. Please contact the technical maintainer listed below.')
     st.stop()
 
-for message in st.session_state.messages:
-    avatar = USER_AVATAR if message["role"] == "user" else BOT_AVATAR
-    with st.chat_message(message["role"], avatar=avatar):
-        st.markdown(message["content"])
+with st.expander('What BotoBot can answer / Ano ang puwedeng itanong?', expanded=False):
+    st.markdown('''- **Candidates:** Who is Leni Robredo? / Sino si Leni Robredo?
+- **Topics:** Which 2022 candidates are tagged for education, environment, and health?
+- **Projects:** What are Leni Robredo’s listed projects?
+- **Election law:** What is RA 9006?
+- **Procedure:** How to vote? / Paano bumoto?
+- **Voter ID:** Is a voter-ID card the same as voter registration?
 
-if prompt := st.chat_input("Ask about candidates, voting, or elections..."):
-    
-    st.session_state.messages.append({"role": "user", "content": prompt})
-    with st.chat_message("user", avatar=USER_AVATAR):
-        st.markdown(prompt)
+Responses are limited to the curated research database and cited material.''')
 
-    resolved_prompt = resolve_pronouns(prompt, st.session_state.active_candidate_key, candidates_data)
+if 'messages' not in st.session_state:
+    st.session_state.messages = []
+if 'active_candidate_key' not in st.session_state:
+    st.session_state.active_candidate_key = None
+if 'response_lang' not in st.session_state:
+    st.session_state.response_lang = 'en'
 
-    translated_prompt, is_tagalog = process_language(resolved_prompt, masker, mask_map, target_lang='en')
+with st.sidebar:
+    st.header('About this demonstration')
+    st.caption('Research method: NLTK Naive Bayes + regular-expression routing + fuzzy candidate/entity matching; optional translation of English/Tagalog inputs.')
+    st.markdown('**Research evaluation:** SUS **79.29** (n=7); **0% observed prompt-level hallucinations** on seven evaluated prompt groups; baseline answer score **7.31/10**, versus **8.64/10** for Gemini in that same benchmark. These are bounded observations—not a guarantee of universal accuracy.')
+    st.divider()
+    st.markdown('**Lead developer / demo support contact**')
+    st.markdown('**Arron B. Baranquil**')
+    st.markdown('[Email — primary](mailto:baranquil.eyron@gmail.com) · [DLSU email](mailto:arron_baranquil@dlsu.edu.ph)')
+    st.markdown('[GitHub](https://github.com/arnbrnql) · [LinkedIn](https://www.linkedin.com/in/arnbrnql) · [Facebook](https://www.facebook.com/arron.baranquil)')
+    st.caption('For bugs, technical collaboration, demo questions, or independent software inquiries.')
+    st.divider()
+    st.markdown('**Research authors and correspondence**')
+    st.caption('Maria Art Antonette D. Clariño; Arron B. Baranquil; Erin A. Evangelio; Zachary Andre A. Cruz; Alaine Carlo R. Magdaluyo.')
+    st.markdown('Paper corresponding author: [Dr. Maria Art Antonette D. Clariño](mailto:maria.art.clarino@dlsu.edu.ph). Technical-demo support is a separate role.')
+    if st.button('Clear conversation', use_container_width=True):
+        st.session_state.messages = []
+        st.session_state.active_candidate_key = None
+        st.rerun()
 
-    detected_candidate_key, project_found, normalized_prompt = extract_and_normalize_slots(
-        translated_prompt, st.session_state.active_candidate_key, candidates_data
-    )
+st.markdown('**Selected response language / Wika ng sagot:**')
+st.session_state.response_lang = st.radio('Response language', ['en','tl'], format_func=lambda v: 'English' if v=='en' else 'Tagalog', horizontal=True, label_visibility='collapsed', key='language_selector')
+for msg in st.session_state.messages:
+    avatar = USER_AVATAR if msg['role'] == 'user' else BOT_AVATAR
+    with st.chat_message(msg['role'], avatar=avatar):
+        st.write(msg['content']) if msg['role']=='user' else st.markdown(msg['content'])
 
-    if detected_candidate_key:
-        st.session_state.active_candidate_key = detected_candidate_key
+st.markdown('**Try a research question:**')
+example_labels = [
+    ('2022 candidates', 'List the 2022 presidential candidates'),
+    ('Multiple topics', 'Which 2022 candidates focus on education, environment, and health?'),
+    ('Voter-ID clarification', "What are the requirements for a voter's ID?"),
+    ('Tagalog sample', 'Paano bumoto?'),
+]
+example_columns = st.columns(2)
+example_prompt = None
+for i, (label, question) in enumerate(example_labels):
+    if example_columns[i % 2].button(label, key=f'example_{i}', use_container_width=True):
+        example_prompt = question
 
-    final_response = ""
-
-    regex_response = chatbot.respond(translated_prompt)
-
-    if regex_response:
-        final_response = regex_response
-    else:
-        # Let Naive Bayes attempt classification first with a STRICTER threshold (0.40)
-        intent = get_intent(normalized_prompt, classifier, threshold=0.40)
-        
-        # If Naive Bayes falls back (None), try matching by tags
-        if not intent:
-            tag_regex = r'(?i)\b(' + '|'.join(dynamic_tags) + r')\b'
-            if bool(re.search(tag_regex, translated_prompt)) and not project_found:
-                intent = '__MATCH_TAG__'
-                
-        # Safe downgrade for project verification
-        if intent == '__VERIFY_PROJECT__' and not project_found and detected_candidate_key:
-            intent = '__SHOW_PROFILE__'
-        
-        if intent == '__SHOW_LIST__':
-            list_str = "\n".join([f"* {data.get('full_name', key.title())}" for key, data in candidates_data.items()])
-            final_response = f"Here are the 2022 Presidential Candidates in my database:\n\n{list_str}"
-            
-        elif intent == '__MATCH_TAG__':
-            final_response = match_candidates_by_tag(translated_prompt, candidates_data, detected_candidate_key)
-            
-        elif intent == '__SHOW_PROJECTS__':
-            final_response = get_candidate_projects(st.session_state.active_candidate_key, candidates_data)
-            
-        elif intent == '__VERIFY_PROJECT__':
-            final_response = verify_project_association(translated_prompt, project_found, st.session_state.active_candidate_key, candidates_data)
-            
-        elif intent == '__SHOW_PROFILE__':
-            if st.session_state.active_candidate_key and st.session_state.active_candidate_key in candidates_data:
-                c = candidates_data[st.session_state.active_candidate_key]
-
-                # Defensive Extraction Logic
-                full_name = c.get('full_name', st.session_state.active_candidate_key.title())
-                age = c.get('age', 'N/A')
-                
-                positions = c.get('positions', [])
-                pos_str = ', '.join(positions) if isinstance(positions, list) and positions else "None listed"
-                
-                education = c.get('education', [])
-                edu_str = ', '.join(education) if isinstance(education, list) and education else "None listed"
-                
-                projects = c.get('projects', [])
-                if isinstance(projects, list) and projects:
-                    projects_list = [p.get('name', 'Unnamed Project') for p in projects if isinstance(p, dict)]
-                    proj_str = ', '.join(projects_list) if projects_list else "None listed"
-                else:
-                    proj_str = "None listed"
-
-                links = c.get('links', [])
-                if isinstance(links, list) and links:
-                    links_str = ', '.join(links)
-                elif isinstance(links, str) and links:
-                    links_str = links
-                else:
-                    links_str = "None listed"
-
-                final_response = (
-                    f"### {full_name}\n"
-                    f"* **Age:** {age}\n"
-                    f"* **Positions:** {pos_str}\n"
-                    f"* **Education:** {edu_str}\n"
-                    f"* **Projects:** {proj_str}\n\n"
-                    f"Links: {links_str}\n"
-                )
-            else:
-                final_response = "Who are you asking about?"
-                
-        elif intent == '__SHOW_AGE__':
-            if st.session_state.active_candidate_key and st.session_state.active_candidate_key in candidates_data:
-                c = candidates_data[st.session_state.active_candidate_key]
-                full_name = c.get('full_name', st.session_state.active_candidate_key.title())
-                age = c.get('age', 'N/A')
-                final_response = f"**{full_name}** is {age}."
-            else:
-                final_response = "Which candidate's age do you want to know?"
-        else:
-            final_response = "I'm not sure I understand. Try asking me to 'show the 2022 presidential candidates'!"
-
-    if random.random() < 0.40:
-        hints = ["Which candidates prioritize education?", "Which candidates have government experience?", "Who focuses on labor?"]
-        if st.session_state.active_candidate_key and st.session_state.active_candidate_key in candidates_data:
-            name = candidates_data[st.session_state.active_candidate_key].get('full_name', 'this candidate')
-            hints.extend([f"How old is {name}?", f"What are {name}'s projects?"])
-        final_response += f"\n\n💡 *Tip: You can also ask me: '{random.choice(hints)}'*"
-
+chat_prompt = st.chat_input('Ask about the 2022 candidates, voting, or election laws…', max_chars=1200)
+prompt = example_prompt or chat_prompt
+if prompt:
+    with st.chat_message('user', avatar=USER_AVATAR):
+        st.write(prompt)
+    st.session_state.messages.append({'role': 'user','content': prompt})
+    answer, new_active = respond_to_user(prompt, st.session_state.active_candidate_key, assets)
+    st.session_state.active_candidate_key = new_active
     if st.session_state.response_lang == 'tl':
-        final_response, _ = process_language(final_response, masker, mask_map, target_lang='tl')
+        translated, _ = process_language(answer, assets[1], assets[2], target_lang='tl')
+        if translated != answer:
+            answer = translated
+        else:
+            answer = offline_tagalog_reply(prompt, answer, assets[0]) or (
+                '*Maaaring pansamantalang hindi available ang Tagalog translation; ipinapakita ang orihinal na sagot.*\n\n' + answer
+            )
+    with st.chat_message('assistant', avatar=BOT_AVATAR):
+        st.markdown(answer)
+    st.session_state.messages.append({'role': 'assistant','content':answer})
 
-    with st.chat_message("assistant", avatar=BOT_AVATAR):
-        st.markdown(final_response)
-    st.session_state.messages.append({"role": "assistant", "content": final_response})
+st.divider()
+st.caption('BotoBot — O-COCOSDA 2026 academic demonstration. All historical profiles are from a fixed 2022 dataset. For official current election information, use COMELEC. Do not send personal information; English–Tagalog translation can use a third-party translation provider. Chat history exists within your active Streamlit session and platform logs may apply.')

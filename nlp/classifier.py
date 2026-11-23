@@ -1,11 +1,11 @@
 # nlp/classifier.py
 
 import nltk
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import TreebankWordTokenizer
 from nltk.classify import NaiveBayesClassifier
 
-nltk.download('punkt', quiet=True)
-nltk.download('punkt_tab', quiet=True)
+# TreebankWordTokenizer uses bundled rules, so startup needs no network downloads.
+_TOKENIZER = TreebankWordTokenizer()
 
 TRAINING_DATA = [
     # SHOW CANDIDATE LIST
@@ -104,7 +104,7 @@ def extract_features(text):
     # Brutal fix for rogue verbs spiking the candidate list probability
     STOP_WORDS = {"what", "is", "are", "the", "of", "a", "an", "i", "how", "about", "which", "to", "want", "for", "me", "do", "you"}
 
-    words = word_tokenize(text.lower())
+    words = _TOKENIZER.tokenize(text.lower())
     return {word: True for word in words if word not in STOP_WORDS}
 
 def train_classifier():

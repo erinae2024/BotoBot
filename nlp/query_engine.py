@@ -1,8 +1,10 @@
 # nlp/query_engine.py
 
 import re
-from nltk.tokenize import word_tokenize
+from nltk.tokenize import TreebankWordTokenizer
 from rapidfuzz import fuzz, process
+
+_TOKENIZER = TreebankWordTokenizer()
 
 def get_dynamic_tags(candidates_data):
     """Dynamically extracts all valid tags from the candidate database."""
@@ -11,7 +13,7 @@ def get_dynamic_tags(candidates_data):
         tags.update(data.get('tags', []))
         for proj in data.get('projects', []):
             tags.update(proj.get('tags', []))
-    return list(tags)
+    return sorted(tags, key=lambda tag: (-len(tag), tag))
 
 def normalize_contractions(text):
     """Normalizes common user contractions for clean tokenization."""
@@ -25,6 +27,15 @@ def resolve_pronouns(text, active_candidate_key, candidates_data):
     if not active_candidate_key:
         return text
     
+    # Do not inject the prior candidate if the user explicitly names another.
+    for key, candidate in candidates_data.items():
+        if key == active_candidate_key:
+            continue
+        aliases = [candidate['full_name'], *candidate.get('aliases', [])]
+        if any(len(alias) >= 4 and re.search(r'(?<!\w)' + re.escape(alias) + r'(?!\w)', text, re.IGNORECASE)
+               for alias in aliases):
+            return text
+
     specific_pronouns = candidates_data[active_candidate_key].get('pronouns', [])
     generic_pronouns = ['he', 'she', 'they', 'her', 'his', 'him', 'niya', 'kanya']
     all_pronouns = list(set(specific_pronouns + generic_pronouns))
@@ -35,7 +46,7 @@ def resolve_pronouns(text, active_candidate_key, candidates_data):
 
 def extract_and_normalize_slots(text, active_candidate_key, candidates_data):
     normalized_text = normalize_contractions(text)
-    words = word_tokenize(normalized_text)
+    words = _TOKENIZER.tokenize(normalized_text)
     
     alias_map = {}
     for key, data in candidates_data.items():
@@ -51,7 +62,7 @@ def extract_and_normalize_slots(text, active_candidate_key, candidates_data):
         "service", "branches", "creating", "additional", "system", "management", "transparency", 
         "establishing", "province", "handbook", "advocacy", "village", "free", "amendments", 
         "postponing", "increasing", "excise", "tobacco", "alcohol", "cigarettes", "district", 
-        "office", "court", "regional", "laws", "law", "act", "platform"
+        "office", "court", "regional", "laws", "law", "act", "platform", "election", "electoral", "candidate", "president", "presidential", "registration", "republic", "bill", "constitution", "government", "fair", "vote", "ballot"
     }
 
     for key, data in candidates_data.items():
@@ -134,7 +145,7 @@ def extract_and_normalize_slots(text, active_candidate_key, candidates_data):
 
 def match_candidates_by_tag(query_text, candidates_data, detected_candidate_key=None):
     dynamic_tags = get_dynamic_tags(candidates_data)
-    tag_regex = r'(?i)\b(' + '|'.join(dynamic_tags) + r')\b'
+    tag_regex = r'(?i)\b(' + '|'.join(map(re.escape, dynamic_tags)) + r')\b'
     match = re.search(tag_regex, query_text)
     
     if not match:
@@ -209,7 +220,7 @@ def verify_project_association(query_text, project_found, active_candidate_key, 
             link_data = proj_data.get('link', '')
             link_str = " and ".join(link_data) if isinstance(link_data, list) else link_data
             
-            return f"Yes, '{proj_data['name']}' is a project by **{c_data['full_name']}**.\nDetails: {link_str}"
+            return f"Yes, '{proj_data['name']}' is listed under **{c_data['full_name']}** in the curated 2022 project database.\nDetails: {link_str}"
 
     all_projects = []
     for key, data in candidates_data.items():
@@ -230,7 +241,7 @@ def verify_project_association(query_text, project_found, active_candidate_key, 
             active_name = candidates_data[active_candidate_key]['full_name']
             return f"There is no information associating {active_name} with that project. However, '{proj_data['name']}' is actually a project by **{owner_name}**.\nDetails: {link_str}"
         else:
-            return f"'{proj_data['name']}' is a project by **{owner_name}**.\nDetails: {link_str}"
+            return f"'{proj_data['name']}' is listed under **{owner_name}** in the curated 2022 project database.\nDetails: {link_str}"
 
     if active_candidate_key:
         return f"There is no information associating {candidates_data[active_candidate_key]['full_name']} with that project in my database."
