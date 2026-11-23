@@ -197,7 +197,7 @@ def get_candidate_projects(active_candidate_key, candidates_data):
     if not projects:
         return f"No specific projects are currently listed for {c_data['full_name']}."
         
-    response = f"Here are the major projects/programs of **{c_data['full_name']}**:\n"
+    response = f"Selected projects, programs, and legislative activities listed for **{c_data['full_name']}** in the 2022 research dataset:\n"
     for p in projects:
         link_data = p.get('link', '')
         link_str = " and ".join(link_data) if isinstance(link_data, list) else link_data
@@ -220,7 +220,7 @@ def verify_project_association(query_text, project_found, active_candidate_key, 
             link_data = proj_data.get('link', '')
             link_str = " and ".join(link_data) if isinstance(link_data, list) else link_data
             
-            return f"Yes, '{proj_data['name']}' is listed under **{c_data['full_name']}** in the curated 2022 project database.\nDetails: {link_str}"
+            return f"Yes, '{proj_data['name']}' is listed under **{c_data['full_name']}** in the curated 2022 research dataset.\nDetails: {link_str}"
 
     all_projects = []
     for key, data in candidates_data.items():
@@ -239,10 +239,10 @@ def verify_project_association(query_text, project_found, active_candidate_key, 
         
         if active_candidate_key and active_candidate_key != owning_candidate_key:
             active_name = candidates_data[active_candidate_key]['full_name']
-            return f"There is no information associating {active_name} with that project. However, '{proj_data['name']}' is actually a project by **{owner_name}**.\nDetails: {link_str}"
+            return f"The 2022 research dataset does not associate {active_name} with that activity. It lists '{proj_data['name']}' under **{owner_name}**.\nDetails: {link_str}"
         else:
-            return f"'{proj_data['name']}' is listed under **{owner_name}** in the curated 2022 project database.\nDetails: {link_str}"
+            return f"'{proj_data['name']}' is listed under **{owner_name}** in the curated 2022 research dataset.\nDetails: {link_str}"
 
     if active_candidate_key:
-        return f"There is no information associating {candidates_data[active_candidate_key]['full_name']} with that project in my database."
-    return "I couldn't find any information about that specific project in my database."
+        return f"The 2022 research dataset does not associate {candidates_data[active_candidate_key]['full_name']} with that project."
+    return "I could not find that project in the 2022 research dataset."

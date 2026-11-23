@@ -17,7 +17,12 @@ LOGO = BASE / 'BotoBot_WideLogoTransparent.png'
 BOT_AVATAR = str(BASE / 'BotoBotMascot.png') if (BASE / 'BotoBotMascot.png').exists() else '🤖'
 USER_AVATAR = str(BASE / 'UserMascot.png') if (BASE / 'UserMascot.png').exists() else '👤'
 
-st.set_page_config(page_title='BotoBot | O-COCOSDA 2026 Research Demo', page_icon='🗳️', layout='centered')
+st.set_page_config(
+    page_title='BotoBot | O-COCOSDA 2026 Research Demo',
+    page_icon='🗳️',
+    layout='centered',
+    initial_sidebar_state='collapsed',
+)
 
 @st.cache_resource(show_spinner='Preparing the research knowledge base…')
 def load_assets():
@@ -27,7 +32,7 @@ def load_assets():
     return candidates, masker, mask_map, train_classifier(), Chat(pairs, reflections), get_dynamic_tags(candidates)
 
 if LOGO.exists():
-    st.image(str(LOGO), use_container_width=True)
+    st.image(str(LOGO), width="stretch")
 else:
     st.title('🗳️ BotoBot')
 st.caption('O-COCOSDA 2026 research demo • 2022 Philippine presidential candidates & selected election laws')
@@ -71,19 +76,23 @@ with st.sidebar:
     st.markdown('**Research authors and correspondence**')
     st.caption('Maria Art Antonette D. Clariño; Arron B. Baranquil; Erin A. Evangelio; Zachary Andre A. Cruz; Alaine Carlo R. Magdaluyo.')
     st.markdown('Paper corresponding author: [Dr. Maria Art Antonette D. Clariño](mailto:maria.art.clarino@dlsu.edu.ph). Technical-demo support is a separate role.')
-    if st.button('Clear conversation', use_container_width=True):
+    if st.button('Clear conversation', width="stretch"):
         st.session_state.messages = []
         st.session_state.active_candidate_key = None
         st.rerun()
 
-st.markdown('**Selected response language / Wika ng sagot:**')
+st.markdown('**Answer language / Wika ng sagot**')
+st.caption('Your selection applies to new answers; previous messages remain unchanged.')
 st.session_state.response_lang = st.radio('Response language', ['en','tl'], format_func=lambda v: 'English' if v=='en' else 'Tagalog', horizontal=True, label_visibility='collapsed', key='language_selector')
 for msg in st.session_state.messages:
     avatar = USER_AVATAR if msg['role'] == 'user' else BOT_AVATAR
     with st.chat_message(msg['role'], avatar=avatar):
-        st.write(msg['content']) if msg['role']=='user' else st.markdown(msg['content'])
+        if msg['role'] == 'user':
+            st.write(msg['content'])
+        else:
+            st.markdown(msg['content'])
 
-st.markdown('**Try a research question:**')
+st.markdown('**Try a research question**' if not st.session_state.messages else '**Ask another question**')
 example_labels = [
     ('2022 candidates', 'List the 2022 presidential candidates'),
     ('Multiple topics', 'Which 2022 candidates focus on education, environment, and health?'),
@@ -93,7 +102,7 @@ example_labels = [
 example_columns = st.columns(2)
 example_prompt = None
 for i, (label, question) in enumerate(example_labels):
-    if example_columns[i % 2].button(label, key=f'example_{i}', use_container_width=True):
+    if example_columns[i % 2].button(label, key=f'example_{i}', width="stretch"):
         example_prompt = question
 
 chat_prompt = st.chat_input('Ask about the 2022 candidates, voting, or election laws…', max_chars=1200)

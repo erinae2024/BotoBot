@@ -41,6 +41,23 @@ def _urls(values):
     return result
 
 
+def _source_name(url):
+    """Use informative publisher labels instead of uninformative Source 1/2 links."""
+    host = (urlparse(url).hostname or '').removeprefix('www.')
+    names = {
+        'gmanetwork.com': 'GMA News',
+        'abs-cbn.com': 'ABS-CBN',
+        'hks.harvard.edu': 'Harvard Kennedy School',
+        'issuances-library.senate.gov.ph': 'Senate legislative record',
+        'ldr.senate.gov.ph': 'Senate legislative record',
+        'newsinfo.inquirer.net': 'Inquirer',
+        'rappler.com': 'Rappler',
+        'southpointschool.edu.ph': 'Southpoint School',
+        'lawphil.net': 'Lawphil',
+    }
+    return names.get(host, host)
+
+
 def _profile(key, candidates):
     if not key or key not in candidates:
         return 'Which **2022 presidential candidate** do you mean?'
@@ -49,10 +66,10 @@ def _profile(key, candidates):
              f"**Age recorded in the 2022 research dataset:** {c.get('age', 'Not listed')} (not a current-age calculation)",
              '**Positions listed in the research dataset:** ' + '; '.join(c.get('positions', []) or ['Not listed']),
              '**Education listed:** ' + '; '.join(c.get('education', []) or ['Not listed']),
-             '**Projects/programs listed:** ' + '; '.join(p.get('name', 'Unspecified') for p in c.get('projects', []))]
+             '**Projects, programs and legislative activities recorded:** ' + '; '.join(p.get('name', 'Unspecified') for p in c.get('projects', []))]
     urls = _urls(c.get('links', []))
     if urls:
-        lines.append('**Reference links:** ' + ' · '.join(f'[Source {i}]({url})' for i, url in enumerate(urls, 1)))
+        lines.append('**Reference links:** ' + ' · '.join(f'[{_source_name(url)}]({url})' for url in urls))
     lines.append('*Historical 2022 candidate profile; listing does not imply endorsement or verify all claims.*')
     return '\n\n'.join(lines)
 
@@ -101,6 +118,49 @@ def _registration_response():
             f"Official source: [COMELEC registration requirements]({COMELEC_REGISTRATION})")
 
 
+
+def _precinct_response():
+    return ("**Where do I vote? / Saan boboto?** BotoBot cannot access voter registration "
+            "records or determine your assigned polling place. For election-specific precinct "
+            "information, use the [COMELEC Precinct Finder](https://precinctfinder.comelec.gov.ph/) "
+            "when available, or contact your local COMELEC election office. The service may "
+            "not be available outside election periods. Do not send your personal details "
+            "to this chatbot. [COMELEC official website](https://www.comelec.gov.ph/).")
+
+
+def _voting_procedure_question(text):
+    """Recognize common, non-advisory ways of asking for voting steps."""
+    patterns = (
+        r'\bhow\s+(?:do|can|could|should|would)\s+(?:(?:i|we|you|she|he|they)\s+)?(?:actually\s+)?(?:vote|cast\s+(?:(?:my|a|the)\s+)?(?:vote|ballot))\b',
+        r'\bhow\s+to\s+vote\b',
+        r'\bi\s+(?:wanna|want\s+to|would\s+like\s+to|need\s+to|am\s+ready\s+to)\s+vote\b',
+        r'\b(?:paano|pano)\s+(?:(?:ba|naman|po)\s+)?(?:(?:ako|kayo|tayo|siya)\s+)?(?:(?:ba|po)\s+)?(?:bumoto|boboto|mag[- ]?boto|mag[- ]?vote)\b',
+        r'\b(?:gusto|nais)\s+(?:(?:ko|kong|namin|niya)\s*)?(?:ng\s+)?(?:bumoto|boboto)\b',
+    )
+    return any(re.search(pattern, text, re.I) for pattern in patterns)
+
+
+def _voting_procedure_response():
+    return ('To vote in Philippine elections:\n\n'
+            '1. Go to your assigned voting precinct on election day.\n'
+            '2. Get your official ballot from the Electoral Board.\n'
+            '3. Fully shade the oval beside your chosen candidate on the ballot.\n'
+            '4. Follow the Electoral Board instructions for the Vote Counting Machine and voter receipt.\n\n'
+            'Check your assigned precinct using the '
+            '[COMELEC Precinct Finder](https://precinctfinder.comelec.gov.ph/) '
+            '(availability may vary by election period). For current voting procedures, '
+            'always follow [COMELEC](https://www.comelec.gov.ph/).')
+
+
+def _short_conversation_reply(text):
+    """Avoid treating acknowledgments as failed 2022 candidate lookups."""
+    if re.fullmatch(r'\s*(?:ok|okay|okey|sige|thanks?|thank you|ty|salamat|salamat po)[.!? ]*', text, re.I):
+        return 'You’re welcome! You can ask about a 2022 candidate, an election law, or how voting works.'
+    if re.fullmatch(r'\s*(?:ayoko na|yoko na|tama na|no thanks|that\'s all|stop|bye|goodbye|paalam)[.!? ]*', text, re.I):
+        return 'Okay. Feel free to return whenever you want to explore the 2022 research information.'
+    return None
+
+
 def _candidate_list(candidates):
     return ('**2022 Philippine presidential candidates in the research database:**\n\n'
             + '\n'.join(f"- {x['full_name']}" for x in candidates.values())
@@ -116,12 +176,25 @@ def respond_to_user(text, active_candidate_key, assets):
     if len(text) > 1200:
         return 'Please shorten your question to 1,200 characters or fewer.', active_candidate_key
 
+    conversation_reply = _short_conversation_reply(text)
+    if conversation_reply is not None:
+        return conversation_reply, active_candidate_key
+
     # Guard both the published temporal boundary and the political neutrality boundary.
     if re.search(r'\b(who should i vote|who do you endorse|recommend (a |which )?candidate|best candidate|vote for me)\b', text, re.I):
         return ('I do not recommend or endorse candidates. I can present source-linked historical '
                 'profiles from the 2022 dataset so you can make your own assessment.'), active_candidate_key
     if re.search(r'\b(2025|2026|2027|2028|2029|2030|current|upcoming|latest|today|this year|next election)\b', text, re.I) and re.search(r'\b(candidate|presiden|election|vote|voting|poll|registration|kandidato)\w*', text, re.I):
         return OUT_OF_SCOPE, active_candidate_key
+
+    # A precinct is a personal, election-specific record: route to COMELEC, never guess.
+    if re.search(r'\b(saan\s+(?:ako\s+)?(?:boboto|bumoboto)|where\s+(?:(?:do|can|should)\s+i\s+)?vote|polling\s+(?:place|precinct)|voting\s+precinct)\b', text, re.I):
+        return _precinct_response(), active_candidate_key
+
+    # Explain the act of casting a ballot before prior-candidate context or the
+    # statistical classifier can misread 'vote' as a request for a candidate list.
+    if _voting_procedure_question(text):
+        return _voting_procedure_response(), active_candidate_key
 
     resolved = resolve_pronouns(text, active_candidate_key, candidates)
     translated, _ = process_language(resolved, masker, mask_map, target_lang='en')

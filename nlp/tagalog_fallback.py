@@ -8,7 +8,14 @@ import re
 
 def offline_tagalog_reply(question, english_answer, candidates):
     q = question.lower()
-    if re.search(r'\b(paano bumoto|how to vote)\b', q):
+    if re.search(r'\b(saan\s+(?:ako\s+)?(?:boboto|bumoboto)|where\s+(?:(?:do|can|should)\s+i\s+)?vote|polling\s+(?:place|precinct))\b', q):
+        return ('**Saan boboto?** Hindi matutukoy ng BotoBot ang iyong presinto dahil '
+                'wala itong access sa talaan ng mga botante. Para sa opisyal na impormasyon, '
+                'gamitin ang [COMELEC Precinct Finder](https://precinctfinder.comelec.gov.ph/) '
+                'kapag available, o makipag-ugnayan sa lokal na tanggapan ng COMELEC. '
+                'Maaaring hindi bukas ang online service sa labas ng panahon ng halalan. '
+                '**Huwag magbahagi ng personal na impormasyon rito.**')
+    if re.search(r'\b(paano bumoto|how to vote)\b', q) or english_answer.startswith('To vote in Philippine elections:'):
         return ('**Paano bumoto (pangkalahatang proseso ng halalan):**\n\n'
                 '1. Pumunta sa itinakdang presinto sa araw ng halalan.\n'
                 '2. Kunin ang opisyal na balota mula sa Electoral Board.\n'

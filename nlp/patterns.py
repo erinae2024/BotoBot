@@ -18,17 +18,17 @@ pairs = [
      ["To register as a voter (not apply for a voter's ID card):\n1. Bring a valid government-issued ID.\n2. Print and fill up the CEF-1 form (through computer or by pen) before going to the Office of the Election Officer (OEO) OR go the OEO and fill up the CEF-1 form there.\n\n(https://comelec.gov.ph/?r=VoterRegistration/HowtoRegister)"]],
 
     [r'(?i).*(where).*(vote|precinct|polling).*|.*(vote|precinct|polling).*(where).*',
-     ["Voting is done at the voting precinct assigned to you. You can find your precinct at COMELEC's Precinct Finder.\n\n(https://precinctfinder.comelec.gov.ph)"]],
+     ["Voting is done at the voting precinct assigned to you. You can find your precinct at COMELEC's Precinct Finder.\n\n[COMELEC Precinct Finder](https://precinctfinder.comelec.gov.ph/) (availability may vary by election period)"]],
      
     [r'(?i).*(how).*(find|check).*(precinct|polling).*|.*(find|check).*(precinct|polling).*(how).*',
-     ["Voting is done at the voting precinct assigned to you. You can find your precinct at COMELEC's Precinct Finder.\n\n(https://precinctfinder.comelec.gov.ph)"]],
+     ["Voting is done at the voting precinct assigned to you. You can find your precinct at COMELEC's Precinct Finder.\n\n[COMELEC Precinct Finder](https://precinctfinder.comelec.gov.ph/) (availability may vary by election period)"]],
 
     [r'(?i).*(valid|list of|what).*(id|ids).*(vote|voter|register|apply).*|.*(vote|voter|register|apply).*(valid|list of|what).*(id|ids).*',
      ["The following are examples of IDs historically listed for voter registration, NOT for requesting a new voter's ID card. Check the latest COMELEC ID requirements before visiting:\n1. National identification (ID) card (PhilSys)\n2. Postal ID card\n3. PWD ID Card\n4. Student's ID card or library card\n5. Senior Citizen's ID card\n6. LTO Driver's license/Student Permit\n7. NBI clearance\n8. Philippine Passport\n9. SSS/GSIS or UMID card\n10. IBP ID card\n11. PRC License\n12. NCIP Certificate of Confirmation\n13. Barangay Identification / Certification with photo\n\nNOTE: Cedula and Police clearances will not be accepted.\n\n(https://comelec.gov.ph/?r=VoterRegistration/WhatisVoterRegistration/RegistrationRequirements)"]],
 
     # Voting Process Trigger ("how to vote", "paano bumoto")
     [r'(?i).*(how to vote|paano (bumoto|mag vote|magboto|iboto)).*',
-     ["To vote in Philippine elections:\n1. Go to your assigned voting precinct on election day.\n2. Get your official ballot from the Electoral Board.\n3. Fully shade the oval next to your chosen candidate's name.\n4. Feed your ballot into the Vote Counting Machine (VCM) and verify your voter receipt.\n\nCheck your precinct here:\n\n(https://precinctfinder.comelec.gov.ph)"]],
+     ["To vote in Philippine elections:\n1. Go to your assigned voting precinct on election day.\n2. Get your official ballot from the Electoral Board.\n3. Fully shade the oval next to your chosen candidate's name.\n4. Feed your ballot into the Vote Counting Machine (VCM) and verify your voter receipt.\n\nCheck your precinct here:\n\n[COMELEC Precinct Finder](https://precinctfinder.comelec.gov.ph/) (availability may vary by election period)"]],
 
     # ==========================================
     # 2. CANDIDATE LISTINGS (Strict Trigger)

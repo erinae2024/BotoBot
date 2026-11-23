@@ -1,0 +1,10 @@
+# Project-level settings for the BotoBot research demonstration.
+[runner]
+magicEnabled = false
+
+[theme]
+primaryColor = "#185ABD"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F3F7FC"
+textColor = "#17243A"
+font = "sans serif"
