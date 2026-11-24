@@ -6,11 +6,12 @@ import streamlit as st
 from nltk.chat.util import Chat, reflections
 
 from nlp.patterns import pairs
-from nlp.translator import build_entity_masker, process_language
+from nlp.translator import build_entity_masker
 from nlp.classifier import train_classifier
 from nlp.query_engine import get_dynamic_tags
 from nlp.response_engine import respond_to_user
-from nlp.tagalog_fallback import offline_tagalog_reply
+from nlp.tagalog_fallback import localize_answer
+from nlp.intent_guard import topic_for_reply
 
 BASE = Path(__file__).resolve().parent
 LOGO = BASE / 'BotoBot_WideLogoTransparent.png'
@@ -32,7 +33,8 @@ def load_assets():
     return candidates, masker, mask_map, train_classifier(), Chat(pairs, reflections), get_dynamic_tags(candidates)
 
 if LOGO.exists():
-    st.image(str(LOGO), width="stretch")
+    # Keep the brand visible without pushing the first interactive controls below the fold.
+    st.image(str(LOGO), width=400)
 else:
     st.title('🗳️ BotoBot')
 st.caption('O-COCOSDA 2026 research demo • 2022 Philippine presidential candidates & selected election laws')
@@ -61,6 +63,8 @@ if 'active_candidate_key' not in st.session_state:
     st.session_state.active_candidate_key = None
 if 'response_lang' not in st.session_state:
     st.session_state.response_lang = 'en'
+if 'last_topic' not in st.session_state:
+    st.session_state.last_topic = None
 
 with st.sidebar:
     st.header('About this demonstration')
@@ -79,6 +83,7 @@ with st.sidebar:
     if st.button('Clear conversation', width="stretch"):
         st.session_state.messages = []
         st.session_state.active_candidate_key = None
+        st.session_state.last_topic = None
         st.rerun()
 
 st.markdown('**Answer language / Wika ng sagot**')
@@ -111,16 +116,16 @@ if prompt:
     with st.chat_message('user', avatar=USER_AVATAR):
         st.write(prompt)
     st.session_state.messages.append({'role': 'user','content': prompt})
-    answer, new_active = respond_to_user(prompt, st.session_state.active_candidate_key, assets)
+    answer, new_active = respond_to_user(
+        prompt, st.session_state.active_candidate_key, assets,
+        previous_topic=st.session_state.last_topic,
+    )
     st.session_state.active_candidate_key = new_active
-    if st.session_state.response_lang == 'tl':
-        translated, _ = process_language(answer, assets[1], assets[2], target_lang='tl')
-        if translated != answer:
-            answer = translated
-        else:
-            answer = offline_tagalog_reply(prompt, answer, assets[0]) or (
-                '*Maaaring pansamantalang hindi available ang Tagalog translation; ipinapakita ang orihinal na sagot.*\n\n' + answer
-            )
+    st.session_state.last_topic = topic_for_reply(prompt, answer, st.session_state.last_topic)
+    answer = localize_answer(
+        prompt, answer, st.session_state.response_lang,
+        assets[0], assets[1], assets[2],
+    )
     with st.chat_message('assistant', avatar=BOT_AVATAR):
         st.markdown(answer)
     st.session_state.messages.append({'role': 'assistant','content':answer})

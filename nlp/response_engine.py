@@ -7,9 +7,14 @@ import re
 from urllib.parse import urlparse
 
 from nltk.chat.util import Chat, reflections
+from rapidfuzz import fuzz
 
 from nlp.patterns import pairs
 from nlp.translator import process_language
+from nlp.intent_guard import (
+    is_voting_procedure_question, is_ambiguous_process_followup,
+    is_vote_buying_question, is_precinct_question, is_registration_question,
+)
 from nlp.classifier import get_intent
 from nlp.query_engine import (
     resolve_pronouns, extract_and_normalize_slots, get_dynamic_tags,
@@ -128,16 +133,43 @@ def _precinct_response():
             "to this chatbot. [COMELEC official website](https://www.comelec.gov.ph/).")
 
 
-def _voting_procedure_question(text):
-    """Recognize common, non-advisory ways of asking for voting steps."""
-    patterns = (
-        r'\bhow\s+(?:do|can|could|should|would)\s+(?:(?:i|we|you|she|he|they)\s+)?(?:actually\s+)?(?:vote|cast\s+(?:(?:my|a|the)\s+)?(?:vote|ballot))\b',
-        r'\bhow\s+to\s+vote\b',
-        r'\bi\s+(?:wanna|want\s+to|would\s+like\s+to|need\s+to|am\s+ready\s+to)\s+vote\b',
-        r'\b(?:paano|pano)\s+(?:(?:ba|naman|po)\s+)?(?:(?:ako|kayo|tayo|siya)\s+)?(?:(?:ba|po)\s+)?(?:bumoto|boboto|mag[- ]?boto|mag[- ]?vote)\b',
-        r'\b(?:gusto|nais)\s+(?:(?:ko|kong|namin|niya)\s*)?(?:ng\s+)?(?:bumoto|boboto)\b',
-    )
-    return any(re.search(pattern, text, re.I) for pattern in patterns)
+def _strong_candidate_reference(text, key, candidates):
+    """Reject fuzzy candidate matches from ordinary non-name words.
+
+    Exact candidate names/aliases are always accepted. Approximate spellings
+    require an explicit candidate-information request and a close match to a
+    distinctive alias, not arbitrary 3-grams within a voting question.
+    """
+    if not key or key not in candidates:
+        return False
+    data = candidates[key]
+    aliases = [data['full_name'], *data.get('aliases', [])]
+    if any(re.search(r'(?<!\w)' + re.escape(alias) + r'(?!\w)', text, re.I)
+           for alias in aliases if len(alias) >= 3):
+        return True
+    if not re.search(r'\b(?:who\s+is|who\s+was|sino\s+si|sino\s+ang|tell\s+me\s+about|'
+                     r'profile|biography|info(?:rmation)?\s+about|how\s+old\s+is|'
+                     r'projects?\s+of|about\s+the\s+candidate)\b', text, re.I):
+        return False
+    tokens = re.findall(r'[a-z]{5,}', text.casefold())
+    distinctive = [part.casefold() for alias in aliases for part in alias.split()
+                   if len(part) >= 5]
+    # A meaningful single-word near match such as "Robreddo" remains supported.
+    return any(fuzz.ratio(token, alias) >= 87 for token in tokens for alias in distinctive)
+
+
+def _explicit_project_reference(text, project):
+    if not project:
+        return False
+    if project.casefold() in text.casefold():
+        return True
+    # Broad project triggers are not evidence; require a distinctive sequence.
+    project_tokens = [token for token in re.findall(r'[a-z]{5,}', project.casefold())
+                      if token not in {'project', 'program', 'voting', 'election',
+                                       'senate', 'republic', 'national', 'government',
+                                       'voters', 'registration', 'philippines'}]
+    return any(re.search(r'(?<!\w)' + re.escape(token) + r'(?!\w)', text, re.I)
+               for token in project_tokens)
 
 
 def _voting_procedure_response():
@@ -167,7 +199,7 @@ def _candidate_list(candidates):
             + '\n\n*Historical 2022 list, not a current election candidate list.*')
 
 
-def respond_to_user(text, active_candidate_key, assets):
+def respond_to_user(text, active_candidate_key, assets, previous_topic=None):
     """Return (markdown answer, next active candidate key). No Streamlit imports."""
     candidates, masker, mask_map, classifier, chatbot, _ = assets
     text = text.strip()
@@ -181,20 +213,55 @@ def respond_to_user(text, active_candidate_key, assets):
         return conversation_reply, active_candidate_key
 
     # Guard both the published temporal boundary and the political neutrality boundary.
-    if re.search(r'\b(who should i vote|who do you endorse|recommend (a |which )?candidate|best candidate|vote for me)\b', text, re.I):
+    if (re.search(r'\b(who should i vote|who do you endorse|recommend (a |which )?candidate|best candidate|vote for me)\b', text, re.I)
+            or re.search(r'\b(?:sino(?:ng)?|sino ang|sino ba ang)\s+(?:ang\s+)?(?:dapat\s+)?'
+                         r'(?:(?:ko|kong|namin|naming)\s+)?(?:iboto|botohin)\b', text, re.I)
+            or re.search(r'\b(?:sinong\s+dapat\s+(?:ko|kong)\s+iboto|'
+                         r'kaninong\s+kandidato\s+ang\s+dapat\s+kong\s+iboto)\b', text, re.I)):
         return ('I do not recommend or endorse candidates. I can present source-linked historical '
                 'profiles from the 2022 dataset so you can make your own assessment.'), active_candidate_key
-    if re.search(r'\b(2025|2026|2027|2028|2029|2030|current|upcoming|latest|today|this year|next election)\b', text, re.I) and re.search(r'\b(candidate|presiden|election|vote|voting|poll|registration|kandidato)\w*', text, re.I):
+    if re.search(r'\b(2025|2026|2027|2028|2029|2030|current|upcoming|latest|today|this year|next election)\b', text, re.I) and re.search(r'\b(candidate|presiden|election|vote|voting|poll|registration|kandidato|eleksyon|eleksiyon|halalan|boto|bumoto|boboto|pagboto|presinto|rehistro)\w*', text, re.I):
         return OUT_OF_SCOPE, active_candidate_key
 
     # A precinct is a personal, election-specific record: route to COMELEC, never guess.
-    if re.search(r'\b(saan\s+(?:ako\s+)?(?:boboto|bumoboto)|where\s+(?:(?:do|can|should)\s+i\s+)?vote|polling\s+(?:place|precinct)|voting\s+precinct)\b', text, re.I):
+    if is_precinct_question(text):
         return _precinct_response(), active_candidate_key
 
-    # Explain the act of casting a ballot before prior-candidate context or the
-    # statistical classifier can misread 'vote' as a request for a candidate list.
-    if _voting_procedure_question(text):
+    # Specific electoral offenses/registration win over the generic word "boto".
+    if (is_vote_buying_question(text)
+            and re.search(r'\b(?:penalt(?:y|ies)|punishment|prison|imprisonment|jail|'
+                          r'parusa|pagkakakulong|kulong)\b', text, re.I)):
+        return ('**Vote-buying and vote-selling:** Section 261(a) of BP 881 defines the '
+                'offenses, and Section 264 provides the general penalty of '
+                '**one to six years of imprisonment** for covered election offenses, '
+                'subject to the applicable statute and case circumstances. '
+                '[COMELEC — Omnibus Election Code]('
+                'https://www.comelec.gov.ph/?r=References/RelatedLaws/OmnibusElectionCode/OECArt22). '
+                'This is general legal information, not a case-specific ruling.'), active_candidate_key
+    if is_vote_buying_question(text):
+        return ('**Vote-buying and vote-selling** are election offenses under Section 261(a) '
+                'of BP 881 (Omnibus Election Code). Offering or accepting money or valuable '
+                'consideration to influence voting may constitute an offense. '
+                'For the legal text and current complaint channels, refer to '
+                '[COMELEC](https://www.comelec.gov.ph/). '
+                'This is general historical/legal information, not case-specific advice.'), active_candidate_key
+    # The ID-card distinction must take precedence over registration keywords.
+    # Example: "Is voter-ID the same as voter registration?"
+    if re.search(r"\bvoter[’']?s?\s*(?:id|identification card)\b|\bvoters?[- ]?id\b",
+                 text, re.I):
+        return _voter_id_response(), active_candidate_key
+    if is_registration_question(text):
+        return _registration_response(), active_candidate_key
+
+    # Recognize voting steps before fuzzy candidate/project matching or Naive Bayes.
+    if is_voting_procedure_question(text):
         return _voting_procedure_response(), active_candidate_key
+    if is_ambiguous_process_followup(text):
+        if previous_topic == 'voting_procedure':
+            return _voting_procedure_response(), active_candidate_key
+        return ('Do you mean **how to cast a ballot**? If so, I can explain '
+                'the general voting process. I do not have access to personal '
+                'voter records.'), active_candidate_key
 
     resolved = resolve_pronouns(text, active_candidate_key, candidates)
     translated, _ = process_language(resolved, masker, mask_map, target_lang='en')
@@ -253,6 +320,14 @@ def respond_to_user(text, active_candidate_key, assets):
         return f'**Republic Act No. {ra.group(1)} — {title}.**\n\nRead the [full official/legal text]({url}) for specific provisions.', active_candidate_key
 
     key, project, classification_text = extract_and_normalize_slots(normalized, active_candidate_key, candidates)
+    if key and not _strong_candidate_reference(resolved, key, candidates):
+        # The fuzzy engine sometimes matches colloquial words such as "paano"
+        # to candidate aliases. Reject the match and restore original text.
+        key = None
+        classification_text = normalized
+    if project and not _explicit_project_reference(resolved, project):
+        project = None
+        classification_text = normalized
     effective_key = key or active_candidate_key
     # Do not silently downgrade an unverified creation claim into a profile.
     if re.search(r'\b(did|created?|founded?|owns?|built|responsible for)\b', normalized, re.I) and key and not project:
@@ -297,6 +372,9 @@ def respond_to_user(text, active_candidate_key, assets):
             return f"**Age recorded in the 2022 dataset for {c['full_name']}:** {c.get('age', 'Not listed')}. This is not their age today.", effective_key
         return 'Which 2022 candidate do you mean?', active_candidate_key
     if intent == '__SHOW_PROFILE__':
+        if not key and not re.search(r'\b(?:he|she|her|his|him|niya|kanya|this candidate)\b', text, re.I):
+            return ('Which 2022 presidential candidate do you mean? '
+                    'Please provide a candidate name.'), active_candidate_key
         return _profile(effective_key, candidates), effective_key
     if project:
         return verify_project_association(normalized, project, effective_key, candidates), effective_key
