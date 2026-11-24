@@ -1,84 +1,45 @@
 # BotoBot
 
-BotoBot is a simple Streamlit chatbot for Philippine election and voting information. It uses pattern matching with NLTK to answer questions about the 2022 presidential candidates, voter registration, election rules, and related laws.
+BotoBot is a research chatbot for historical Philippine electoral information, including the 2022 presidential candidates, selected election laws, and general voting and registration procedures.
 
-## What You Need
+[Open the research demo](https://botobot.streamlit.app/)
 
-- Windows 10/11
-- Python 3.10 or newer
-- Internet access for the first package install
+## Run locally
 
-## Project Files
+Use Python 3.11 or newer. From the repository root on Windows CMD:
 
-- [BotoBot_V1.py](BotoBot_V1.py) - main app
-- [BotoBotWideLogo.png](BotoBotWideLogo.png) - app banner image
-- [UserMascot.png](UserMascot.png) - user avatar
-- [BotoBotMascot.png](BotoBotMascot.png) - bot avatar
-
-## Install and Run
-
-Follow these steps in PowerShell from the project folder.
-
-### 1. Open the project folder
-
-```powershell
-cd path\to\BotoBot
+```cmd
+python -m venv .venv
+.venv\Scripts\activate.bat
+python -m pip install -r requirements.txt
+python -m streamlit run app.py
 ```
 
-If you already opened the project folder in PowerShell or VS Code, you can skip this step.
+To run the automated regression tests:
 
-### 2. Create a virtual environment
-
-```powershell
-py -m venv .venv
+```cmd
+python -m pip install -r requirements-dev.txt
+python -m pytest -q
 ```
 
-### 3. Activate the virtual environment
+## Architecture
 
-```powershell
-.venv\Scripts\Activate.ps1
-```
+The application uses Streamlit, NLTK Naive Bayes intent classification, regular-expression rules, fuzzy entity matching, and a curated JSON dataset. English–Tagalog translation is best-effort; common procedural answers have offline wording. Post-study engineering changes address routing and presentation defects and have not been evaluated using the original study protocol.
 
-If PowerShell blocks script execution, run this once first:
+## Try it
 
-```powershell
-Set-ExecutionPolicy -Scope Process RemoteSigned
-```
+- Who is Leni Robredo?
+- What are her projects?
+- What is RA 9006?
+- Paano bumoto?
+- Paano magparehistro?
 
-### 4. Install the dependencies
+## Research and limitations
 
-```powershell
-python -m pip install --upgrade pip
-pip install streamlit nltk
-```
+*LLM Benchmarking of BotoBot: Evaluating an NLTK and Regex-Based Virtual Assistant for Philippine Electoral Information and Voter Empowerment* (O-COCOSDA 2026).
 
-### 5. Start the app
+Authors: Maria Art Antonette D. Clariño, Arron B. Baranquil, Erin A. Evangelio, Zachary Andre A. Cruz, and Alaine Carlo R. Magdaluyo (De La Salle University). Corresponding author: Dr. Maria Art Antonette D. Clariño.
 
-```powershell
-streamlit run BotoBot_V1.py
-```
+The dataset is historical and does not cover current elections. Candidate records are not endorsements; individual claims may require further source verification. Unrecognized questions can receive a clarification or an unsupported-topic response. Automated tests are regression checks, not a new accuracy or hallucination benchmark.
 
-Streamlit will open the app in your browser, usually at `http://localhost:8501`.
-
-## How to Test It
-
-Try these prompts in the chat box:
-
-- `Show me the 2022 presidential candidates`
-- `Tell me about Leni Robredo`
-- `How do I register to vote?`
-- `What are my rights?`
-- `What can you do?`
-
-If the bot is working, it should either show a candidate list, display a profile card, or answer with a short election-related response.
-
-## Troubleshooting
-
-- If you see `ModuleNotFoundError`, run the install command again inside the activated virtual environment.
-- If the app cannot find an image file, make sure the PNG files are still in the same folder as [BotoBot_V1.py](BotoBot_V1.py).
-- If PowerShell refuses to activate `.venv`, rerun the activation command after setting the execution policy for the current process.
-
-## Notes
-
-- This chatbot uses fixed matching rules, so it works best when you ask questions in a similar style to the example prompts above.
-- The candidate data in the script is focused on the 2022 Philippine presidential election.
+BotoBot is not an official COMELEC service and cannot access voter records. Consult [COMELEC](https://www.comelec.gov.ph/) for current rules. Do not enter personal information; translation may use a third-party service.

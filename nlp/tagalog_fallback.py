@@ -95,7 +95,7 @@ def offline_tagalog_reply(question, english_answer, candidates):
                 'voter-ID card. **Hindi kailangan ang voter-ID card para bumoto.** '
                 '[Sanggunian: COMELEC]('
                 'https://www.comelec.gov.ph/index.html?r=VoterRegistration%2FWhatisVoterRegistration%2FVoterIDIssuance).')
-    if ('RA 9006' in english_answer or 'Republic Act No. 9006' in english_answer):
+    if english_answer.startswith(('**RA 9006 —', '**Republic Act No. 9006 —')) and 'requested section' not in english_answer:
         return ('**Republic Act 9006 — Fair Election Act.** Tumutukoy ito sa mga patakaran '
                 'sa kampanya, propaganda, at paggamit ng media sa halalan. '
                 '[Basahin ang batas](https://lawphil.net/statutes/repacts/ra2001/ra_9006_2001.html).')
@@ -103,13 +103,26 @@ def offline_tagalog_reply(question, english_answer, candidates):
         return ('**Sampung kandidato sa pagkapangulo noong 2022 na nasa pananaliksik:**\n\n'
                 + '\n'.join('- ' + c['full_name'] for c in candidates.values())
                 + '\n\n*Hindi ito listahan ng mga kasalukuyang kandidato.*')
+    if english_answer.startswith('**Voter eligibility'):
+        return ('**Kwalipikasyon ng botante — Article V, Section 1:** Sa pambansang halalan, '
+                'karaniwang kailangan ang pagkamamamayang Pilipino, edad na 18 pataas sa araw ng halalan, '
+                'paninirahan sa Pilipinas nang hindi bababa sa isang taon at sa lugar ng pagboto nang anim na buwan '
+                'bago ang halalan, at walang legal na diskwalipikasyon. Kailangan ding sumunod sa mga tuntunin ng pagpaparehistro. '
+                'Hindi ko matitiyak ang iyong personal na kwalipikasyon. '
+                '[Saligang Batas](https://elibrary.judiciary.gov.ph/thebookshelf/showdocs/3/353) · [COMELEC](https://www.comelec.gov.ph/).')
+    if english_answer.startswith('I do not have verified information about that Republic Act'):
+        return 'Wala akong beripikadong impormasyon tungkol sa batas na iyon sa 2022 election database. Tingnan ang [Lawphil](https://lawphil.net/).'
+    if english_answer.startswith('Which candidate would you like to discuss first?'):
+        return 'Sino sa mga kandidatong iyon ang gusto mong talakayin muna? Magtanong tungkol sa isang kandidato sa bawat tanong.'
+    if english_answer.startswith('Hello! Welcome to BotoBot!'):
+        return 'Kumusta! Magtanong tungkol sa mga kandidato noong 2022, batas sa halalan, o proseso ng pagboto.'
     if english_answer.startswith('I could not confidently match') or english_answer.startswith('I could not find a verified answer'):
         return ('Hindi ko matukoy nang may sapat na katiyakan ang tanong sa 2022 research database. '
                 'Subukan ang “Sino si Leni Robredo?”, “Ano ang RA 9006?”, o “Paano bumoto?”.')
     if english_answer.startswith('I cannot identify that person'):
         return ('Hindi ko matukoy ang taong iyon sa database ng mga kandidato noong 2022. '
                 'Maaari mong itanong ang listahan ng mga kandidato.')
-    if english_answer.startswith('Which **2022 presidential candidate**'):
+    if english_answer.startswith(('Which **2022 presidential candidate**', 'Which 2022 presidential candidate')):
         return 'Aling **kandidato sa pagkapangulo noong 2022** ang tinutukoy mo?'
     if english_answer.startswith('**Age recorded in the 2022 dataset for '):
         for candidate in candidates.values():
@@ -146,7 +159,10 @@ def localize_answer(question, english_answer, response_lang, candidates, masker,
     reviewed = offline_tagalog_reply(question, english_answer, candidates)
     if reviewed is not None:
         return reviewed
-    translated, _ = process_language(english_answer, masker, mask_map, target_lang='tl')
+    try:
+        translated, _ = process_language(english_answer, masker, mask_map, target_lang='tl')
+    except Exception:
+        translated = english_answer
     if translated != english_answer and translated.strip():
         return translated
     return ('*Hindi available ang awtomatikong pagsasalin sa ngayon; '

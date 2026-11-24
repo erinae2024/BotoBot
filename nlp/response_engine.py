@@ -168,8 +168,8 @@ def _explicit_project_reference(text, project):
                       if token not in {'project', 'program', 'voting', 'election',
                                        'senate', 'republic', 'national', 'government',
                                        'voters', 'registration', 'philippines'}]
-    return any(re.search(r'(?<!\w)' + re.escape(token) + r'(?!\w)', text, re.I)
-               for token in project_tokens)
+    matching = [token for token in project_tokens if re.search(r'(?<!\w)' + re.escape(token) + r'(?!\w)', text, re.I)]
+    return len(set(matching)) >= 2 or bool(matching and re.search(r'\b(?:project|program|proyekto|programa|created?|founded?|built|associated|implemented)\w*\b', text, re.I))
 
 
 def _voting_procedure_response():
@@ -199,6 +199,15 @@ def _candidate_list(candidates):
             + '\n\n*Historical 2022 list, not a current election candidate list.*')
 
 
+def _eligibility_response():
+    return ('**Voter eligibility — Article V, Section 1:** For Philippine national elections, '
+            'the general constitutional requirements include Philippine citizenship, age 18 or older '
+            'on election day, residence in the Philippines for at least one year and in the voting '
+            'locality for at least six months immediately before the election, and no legal disqualification. '
+            'Registration rules also apply. I cannot determine individual eligibility; consult '
+            f'[the Constitution]({CONSTITUTION}) and [COMELEC](https://www.comelec.gov.ph/).')
+
+
 def respond_to_user(text, active_candidate_key, assets, previous_topic=None):
     """Return (markdown answer, next active candidate key). No Streamlit imports."""
     candidates, masker, mask_map, classifier, chatbot, _ = assets
@@ -212,15 +221,19 @@ def respond_to_user(text, active_candidate_key, assets, previous_topic=None):
     if conversation_reply is not None:
         return conversation_reply, active_candidate_key
 
+    if previous_topic is not None and previous_topic != 'candidate':
+        active_candidate_key = None
+
     # Guard both the published temporal boundary and the political neutrality boundary.
     if (re.search(r'\b(who should i vote|who do you endorse|recommend (a |which )?candidate|best candidate|vote for me)\b', text, re.I)
             or re.search(r'\b(?:sino(?:ng)?|sino ang|sino ba ang)\s+(?:ang\s+)?(?:dapat\s+)?'
                          r'(?:(?:ko|kong|namin|naming)\s+)?(?:iboto|botohin)\b', text, re.I)
+            or re.search(r'\b(?:who\s+(?:would|should|do)\s+(?:you|i|we)\s+(?:vote\s+for|support|choose)|sino(?:ng)?\s+(?:(?:ba|ang|dapat|ko|kong|namin|naming)\s+)*(?:iboto|botohin|pinakamagaling|pinakamabuti))\b', text, re.I)
             or re.search(r'\b(?:sinong\s+dapat\s+(?:ko|kong)\s+iboto|'
                          r'kaninong\s+kandidato\s+ang\s+dapat\s+kong\s+iboto)\b', text, re.I)):
         return ('I do not recommend or endorse candidates. I can present source-linked historical '
                 'profiles from the 2022 dataset so you can make your own assessment.'), active_candidate_key
-    if re.search(r'\b(2025|2026|2027|2028|2029|2030|current|upcoming|latest|today|this year|next election)\b', text, re.I) and re.search(r'\b(candidate|presiden|election|vote|voting|poll|registration|kandidato|eleksyon|eleksiyon|halalan|boto|bumoto|boboto|pagboto|presinto|rehistro)\w*', text, re.I):
+    if re.search(r'\b(20(?:[01]\d|2[013-9]|[3-9]\d)|current|upcoming|latest|today|now|this year|next election|ngayon|kasalukuyan|susunod|darating|pinakabago)\b', text, re.I) and re.search(r'\b(candidate|presiden|election|vote|voting|poll|registration|kandidato|eleksyon|eleksiyon|halalan|boto|bumoto|boboto|pagboto|presinto|rehistro|magparehistro)\w*', text, re.I):
         return OUT_OF_SCOPE, active_candidate_key
 
     # A precinct is a personal, election-specific record: route to COMELEC, never guess.
@@ -252,6 +265,19 @@ def respond_to_user(text, active_candidate_key, assets, previous_topic=None):
         return _voter_id_response(), active_candidate_key
     if is_registration_question(text):
         return _registration_response(), active_candidate_key
+
+    if re.search(r'\b(?:voter eligibility|eligible to vote|who can vote|who may vote|'
+                 r'qualifications? (?:for|to) (?:vote|voters?)|can i vote at|'
+                 r'(?:pwede|puwede|maaari)\s+(?:ba\s+)?(?:ako|akong|ko|siya)\s+bumoto|'
+                 r'sino\s+ang\s+(?:puwedeng|pwedeng|maaaring)\s+bumoto|'
+                 r'(?:anong|ano ang)\s+(?:kailangan|requirements?)\s+sa\s+pagboto)\b', text, re.I):
+        return _eligibility_response(), None
+    if previous_topic == 'registration' and (is_ambiguous_process_followup(text) or re.fullmatch(
+            r'(?i)\s*(?:ano(?:ng)?(?: ang)? kailangan|what do i need|requirements?|saan|where)[?.! ]*', text)):
+        return _registration_response(), None
+    if previous_topic in ('voting_procedure', 'precinct') and re.fullmatch(
+            r'(?i)\s*(?:where|saan|saan po|where exactly|which precinct)[?.! ]*', text):
+        return _precinct_response(), None
 
     # Recognize voting steps before fuzzy candidate/project matching or Naive Bayes.
     if is_voting_procedure_question(text):
@@ -307,6 +333,14 @@ def respond_to_user(text, active_candidate_key, assets, previous_topic=None):
                 f'[COMELEC voter-ID guidance]({COMELEC_VOTER_ID}).'), active_candidate_key
     if re.search(r'\b(how many|number of|count)\b', normalized, re.I) and re.search(r'\b(candidate|kandidato)\w*', normalized, re.I):
         return f'The fixed 2022 research database contains **{len(candidates)} presidential candidates**. This is not a current candidate list.', active_candidate_key
+    statute = re.search(r'\b(?:r\.?a\.?|republic act)\s*[-:# ]*\s*(\d{3,6})\b', normalized, re.I)
+    if statute and statute.group(1) not in LEGAL:
+        return ('I do not have verified information about that Republic Act in the 2022 election database. '
+                'Please consult [Lawphil](https://lawphil.net/) or the official statute.'), None
+    if statute and re.search(r'\b(?:section|sec\.?)\s*\d+\b', normalized, re.I):
+        title, url = LEGAL[statute.group(1)]
+        return (f'**Republic Act No. {statute.group(1)} — {title}.** '
+                f'I cannot reliably summarize the requested section. [Read the statute]({url}).'), None
     if re.search(r'\b(?:section|sec\.?)\s*\d+\b', normalized, re.I) and not re.search(r'\b(?:bp\s*881|omnibus election code)\b', normalized, re.I):
         return ('Which Philippine statute or constitutional article do you mean? '
                 'A section number alone does not identify the law.'), active_candidate_key
@@ -319,6 +353,11 @@ def respond_to_user(text, active_candidate_key, assets, previous_topic=None):
         title, url = LEGAL[ra.group(1)]
         return f'**Republic Act No. {ra.group(1)} — {title}.**\n\nRead the [full official/legal text]({url}) for specific provisions.', active_candidate_key
 
+    explicit_keys = [candidate_key for candidate_key, data in candidates.items()
+                     if any(re.search(r'(?<!\w)' + re.escape(alias) + r'(?!\w)', text, re.I)
+                            for alias in [data['full_name'], *data.get('aliases', [])] if len(alias) >= 3)]
+    if len(explicit_keys) > 1:
+        return ('Which candidate would you like to discuss first? Please ask about one 2022 candidate at a time.'), None
     key, project, classification_text = extract_and_normalize_slots(normalized, active_candidate_key, candidates)
     if key and not _strong_candidate_reference(resolved, key, candidates):
         # The fuzzy engine sometimes matches colloquial words such as "paano"
@@ -328,7 +367,7 @@ def respond_to_user(text, active_candidate_key, assets, previous_topic=None):
     if project and not _explicit_project_reference(resolved, project):
         project = None
         classification_text = normalized
-    effective_key = key or active_candidate_key
+    effective_key = key or (active_candidate_key if re.search(r'\b(?:he|she|her|his|him|niya|kanya|this candidate)\b', text, re.I) else None)
     # Do not silently downgrade an unverified creation claim into a profile.
     if re.search(r'\b(did|created?|founded?|owns?|built|responsible for)\b', normalized, re.I) and key and not project:
         if key == 'bongbong marcos' and re.search(r'\b(bangui|windmill)\w*', normalized, re.I):

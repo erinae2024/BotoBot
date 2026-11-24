@@ -21,6 +21,8 @@ def is_vote_buying_question(text):
 
 
 def is_registration_question(text):
+    if re.search(r'\b(?:magparehistro|pagpaparehistro|rehistro|mag[- ]?register)\b', text, re.I):
+        return True
     return bool(_REGISTRATION.search(text) and re.search(
         r'\b(?:vot\w*|elect\w*|boto|botante|halalan|eleksyon|voter|pagboto)\b', text, re.I))
 
@@ -87,10 +89,14 @@ def topic_for_reply(question, answer, previous_topic=None):
         return previous_topic
     if answer.startswith('To vote in Philippine elections:'):
         return 'voting_procedure'
+    if answer.startswith('**To register as a voter:**'):
+        return 'registration'
+    if answer.startswith('**Voter eligibility'):
+        return 'eligibility'
     if answer.startswith('**Where do I vote?'):
         return 'precinct'
     if answer.startswith('**Vote-buying'):
         return 'vote_buying'
-    if answer.startswith('### '):
+    if answer.startswith(('### ', '**Age recorded in the 2022 dataset for ', 'Selected projects, programs, and legislative activities listed for **')):
         return 'candidate'
     return None

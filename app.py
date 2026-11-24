@@ -69,7 +69,7 @@ if 'last_topic' not in st.session_state:
 with st.sidebar:
     st.header('About this demonstration')
     st.caption('Research method: NLTK Naive Bayes + regular-expression routing + fuzzy candidate/entity matching; optional translation of English/Tagalog inputs.')
-    st.markdown('**Research evaluation:** SUS **79.29** (n=7); **0% observed prompt-level hallucinations** on seven evaluated prompt groups; baseline answer score **7.31/10**, versus **8.64/10** for Gemini in that same benchmark. These are bounded observations—not a guarantee of universal accuracy.')
+    st.markdown('**Original study (not a re-evaluation of this demo):** SUS **79.29** (n=7); **0% observed prompt-level hallucinations** on seven evaluated prompt groups; baseline answer score **7.31/10**, versus **8.64/10** for Gemini in that same benchmark. These are bounded observations—not a guarantee of universal accuracy.')
     st.divider()
     st.markdown('**Lead developer / demo support contact**')
     st.markdown('**Arron B. Baranquil**')
@@ -120,8 +120,8 @@ if prompt:
         prompt, st.session_state.active_candidate_key, assets,
         previous_topic=st.session_state.last_topic,
     )
-    st.session_state.active_candidate_key = new_active
     st.session_state.last_topic = topic_for_reply(prompt, answer, st.session_state.last_topic)
+    st.session_state.active_candidate_key = new_active if st.session_state.last_topic == "candidate" else None
     answer = localize_answer(
         prompt, answer, st.session_state.response_lang,
         assets[0], assets[1], assets[2],

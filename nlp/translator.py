@@ -74,9 +74,14 @@ def process_language(text, masker, mask_map, target_lang='en'):
             if isinstance(result, str) and result.strip() and not any(
                 phrase in result.lower() for phrase in ('error 500', 'please try again later')
             ):
-                translated = result
+                placeholders = re.findall(r'(?:ENT|URL)\d{4}X', masked)
+                if all(result.count(key) == masked.count(key) for key in set(placeholders)):
+                    translated = result
         except Exception:
             pass
+
+    if translated == masked:
+        return text, detected_tl
 
     for key, value in mask_map.items():
         translated = translated.replace(key, value)
